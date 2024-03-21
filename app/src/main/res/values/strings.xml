@@ -1,0 +1,23 @@
+<resources>
+    <string name="app_name">Gravity</string>
+    <string name="skip">Skip</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+    <string name="app_logo">App logo</string>
+    <string name="on_boarding_image">On Boarding Image</string>
+    <string name="Title1">Welcome to Gravity</string>
+    <string name="Title2">Personalization</string>
+    <string name="Title3">You\'re Not Alone</string>
+    <string name="Title4">Dieting Made Simple</string>
+    <string name="Title5">Access Resources</string>
+    <string name="Title6">Help at Hand</string>
+    <string name="Title7">Let\'s Go!</string>
+    <string name="desc1">Welcome to Gravity, your personal guide to holistic well-being. Experience personalized support, connect with a vibrant community, and embark on your journey to better health and vitality.</string>
+    <string name="desc2"> Gravity tailors your experience to your unique needs and preferences. From personalized nutrition plans to customized exercise routines, we\'re here to help you achieve your health goals, your way.</string>
+    <string name="desc3"> Join our supportive community of like-minded individuals on Gravity. Share your experiences, find motivation, and build lasting friendships as you work towards a healthier, happier you.</string>
+    <string name="desc4">Say goodbye to fad diets and restrictive meal plans. Gravity offers practical nutrition guidance and meal ideas to help you make sustainable, healthy choices that fit your lifestyle.</string>
+    <string name="desc5">Explore a wealth of resources at your fingertips with Gravity. From informative articles to expert advice, discover everything you need to empower your health journey.</string>
+    <string name="desc6">Need assistance or guidance? Our dedicated team of health professionals is here for you. Chat with a live expert, ask questions, and get the support you need in real-time.</string>
+    <string name="desc7">Ready to take control of your health and well-being? Let\'s get started! Join Gravity today and unlock a world of possibilities for a healthier, happier life.</string>
+
+</resources>

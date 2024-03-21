@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:layout_gravity="center"
+    android:gravity="center"
+    app:flow_horizontalAlign="center">
+
+    <ImageView
+        android:id="@+id/sliderImageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="20dp"
+        android:adjustViewBounds="true"
+        android:contentDescription="@string/on_boarding_image"
+        android:maxWidth="200dp"
+        android:maxHeight="200dp"
+        android:src="@drawable/gravity" />
+
+    <TextView
+        android:id="@+id/sliderTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        tools:text="Welcome to Gravity" />
+
+    <TextView
+        android:id="@+id/sliderDescription"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp"
+        android:padding="15dp"
+        android:textAlignment="center"
+        android:textSize="14sp"
+        tools:text="Gravity is a Digital Social Prescribing Platform designed specially to assist people with Obesity. This is an All Round approach in enhancing your Weight loss Journey and making it more efficient and less worrying " />
+</LinearLayout>
