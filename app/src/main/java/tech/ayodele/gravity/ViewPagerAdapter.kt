@@ -18,7 +18,7 @@ class ViewPagerAdapter(private var context: Context) : PagerAdapter() {
         R.drawable.diet,
         R.drawable.resources,
         R.drawable.help,
-        R.drawable.community2
+        R.drawable.begin
     )
 
     //    arraw of the slider titles

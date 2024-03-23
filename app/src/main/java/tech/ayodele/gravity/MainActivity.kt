@@ -63,7 +63,7 @@ class MainActivity : AppCompatActivity() {
                 editor.putBoolean(PREF_ONBOARDING_COMPLETE, true)
                 editor.apply()
 
-                val intent: Intent = Intent(this@MainActivity, Dashboard::class.java)
+                val intent: Intent = Intent(this@MainActivity, Signin::class.java)
                 startActivity(intent)
                 finish()
             }
@@ -82,7 +82,7 @@ class MainActivity : AppCompatActivity() {
                 editor.putBoolean(PREF_ONBOARDING_COMPLETE, true)
                 editor.apply()
 
-                val intent: Intent = Intent(this@MainActivity, Dashboard::class.java)
+                val intent: Intent = Intent(this@MainActivity, Signin::class.java)
                 startActivity(intent)
                 finish()
             }
@@ -102,7 +102,7 @@ class MainActivity : AppCompatActivity() {
             editor.putBoolean(PREF_ONBOARDING_COMPLETE, true)
             editor.apply()
 
-            val intent: Intent = Intent(this@MainActivity, Dashboard::class.java)
+            val intent: Intent = Intent(this@MainActivity, Signin::class.java)
             startActivity(intent)
             finish()
         }

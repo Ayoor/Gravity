@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "917376278402",
+    "project_id": "gravity-2d673",
+    "storage_bucket": "gravity-2d673.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:917376278402:android:6d131338db24e42c5d799b",
+        "android_client_info": {
+          "package_name": "tech.ayodele.gravity"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBQO6bjAuURDCWeYEmMsEYjgXfL9Chs2OQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

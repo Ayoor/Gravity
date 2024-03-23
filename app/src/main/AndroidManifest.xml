@@ -16,6 +16,12 @@
             android:name=".Dashboard"
             android:exported="false" />
         <activity
+            android:name=".Signin"
+            android:exported="false" />
+        <activity
+            android:name=".Signup"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>

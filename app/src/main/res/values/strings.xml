@@ -20,5 +20,14 @@
     <string name="desc6">Need assistance or guidance? Our dedicated team of health professionals is here for you. Chat with a live expert, ask questions, and get the support you need in real-time.</string>
     <string name="desc7">Ready to take control of your health and well-being? Let\'s get started! Join Gravity today and unlock a world of possibilities for a healthier, happier life.</string>
     <string name="get_started">Get Started</string>
+    <string name="height_cm">Height (cm)</string>
+    <string name="email">Email</string>
+    <string name="name">Name</string>
+    <string name="password">Password</string>
+    <string name="weight_kg">Weight (kg)</string>
+    <string name="signup">Signup</string>
+    <string name="already_logged_in_sign_in">Already logged in? Sign in</string>
+    <string name="already_registered_sign_in">Already Registered? Sign Up</string>
+    <string name="sign_in">Sign In</string>
 
 </resources>
