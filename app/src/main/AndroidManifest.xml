@@ -13,6 +13,19 @@
         android:theme="@style/Theme.Gravity"
         tools:targetApi="31">
         <activity
+            android:name=".SignupSuccess"
+            android:exported="false" />
+        <activity
+            android:name=".OnBoardingSurvey"
+            android:exported="true"> <!-- TODO: set to false later -->
+             <intent-filter>
+             <action android:name="android.intent.action.MAIN" />
+
+
+             <category android:name="android.intent.category.LAUNCHER" />
+             </intent-filter>
+        </activity>
+        <activity
             android:name=".Dashboard"
             android:exported="false" />
         <activity
@@ -23,12 +36,12 @@
             android:exported="false" />
         <activity
             android:name=".MainActivity"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+            android:exported="false"> <!-- TODO: set to true later -->
+<!--            <intent-filter>-->
+<!--                <action android:name="android.intent.action.MAIN" />-->
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+<!--                <category android:name="android.intent.category.LAUNCHER" />-->
+<!--            </intent-filter>-->
         </activity>
     </application>
 

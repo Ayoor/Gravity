@@ -29,5 +29,8 @@
     <string name="already_logged_in_sign_in">Already logged in? Sign in</string>
     <string name="already_registered_sign_in">Already Registered? Sign Up</string>
     <string name="sign_in">Sign In</string>
+    <string name="submit">Submit</string>
+    <string name="success">Success</string>
+    <string name="welcome_Message">Welcome to Gravity</string>
 
 </resources>

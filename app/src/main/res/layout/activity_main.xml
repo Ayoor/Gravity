@@ -62,7 +62,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-        <!-- Pushed to the far left -->
+
         <TextView
             android:id="@+id/backET"
             android:layout_width="0dp"
@@ -74,7 +74,7 @@
             android:layout_margin="30dp"
             android:text="@string/previous" />
 
-        <!-- Pushed to the far right -->
+
         <TextView
             android:id="@+id/nextET"
             android:layout_width="0dp"

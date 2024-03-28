@@ -1,9 +1,9 @@
 package tech.ayodele.gravity
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.annotation.RequiresApi
@@ -16,13 +16,9 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import tech.ayodele.gravity.databinding.ActivitySigninBinding
-import java.io.Serializable
-import java.security.MessageDigest
-import java.security.SecureRandom
 import java.util.Base64
 import javax.crypto.Cipher
 import javax.crypto.spec.SecretKeySpec
-import kotlin.io.encoding.ExperimentalEncodingApi
 
 class Signin : AppCompatActivity() {
 
@@ -46,7 +42,7 @@ class Signin : AppCompatActivity() {
         binding = ActivitySigninBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        //initalise firebase and database reference
+        //initialise firebase and database reference
 
 
         binding.signinBtn.setOnClickListener {
@@ -54,7 +50,7 @@ class Signin : AppCompatActivity() {
             val password = binding.passwordET.text.toString()
 
 
-
+            // confirm necessary fiels
             if (email.isNotEmpty() && password.isNotEmpty()) {
                 //initalise firebase and database reference
                 firebaseDatabase = FirebaseDatabase.getInstance()
@@ -64,12 +60,15 @@ class Signin : AppCompatActivity() {
                 Toast.makeText(this, "Please fill in all fields", Toast.LENGTH_SHORT).show()
             }
         }
+//        redirect to Signup
         binding.redirectET.setOnClickListener {
             startActivity(Intent(this, Signup::class.java))
             finish()
         }
     }
+//   function to re-encrypt the signin password to compare to the database password
 
+    @SuppressLint("GetInstance")
     @RequiresApi(Build.VERSION_CODES.O)
     fun encryptPassword(input: String): String {
         val trimmedInput = input.trim()
@@ -79,20 +78,21 @@ class Signin : AppCompatActivity() {
         return Base64.getEncoder().encodeToString(encryptedBytes)
     }
 
+//function to handle the sign in
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun signIn(email: String, password: String) {
         val hashedPassword = encryptPassword(password)
-        val query = databaseReference.orderByChild("email").equalTo(email)
+        val query = databaseReference.orderByChild("email")
+            .equalTo(email) //check if the email exists in the database
         query.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
-                if (dataSnapshot.exists()) {
+                if (dataSnapshot.exists()) { // user exists
                     for (userDataSnapshot in dataSnapshot.children) {
                         val userData = userDataSnapshot.getValue(UserDetails::class.java)
-                        Log.i("SignIn", "UserData: $userData")
                         if (userData?.password == hashedPassword) {
                             // Passwords match, proceed with login
-                            val intent = Intent(this@Signin, Dashboard::class.java)
+                            val intent = Intent(this@Signin, OnBoardingSurvey::class.java)
                             intent.putExtra("userData", userData)
                             startActivity(intent)
                             finish()

@@ -1,5 +1,6 @@
 package tech.ayodele.gravity
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
@@ -22,6 +23,7 @@ import javax.crypto.spec.SecretKeySpec
 import kotlin.io.encoding.ExperimentalEncodingApi
 
 class Signup : AppCompatActivity() {
+    // variable declarations
     private lateinit var binding: ActivitySignupBinding
     private lateinit var firebaseDatabase: FirebaseDatabase
     private lateinit var databaseReference: DatabaseReference // for database connection
@@ -29,7 +31,7 @@ class Signup : AppCompatActivity() {
     private val key: String = "mysecretkey12345" // You can use any tech.ayodele.gravity.getKey
     private val secretKeySpec: Key = SecretKeySpec(key.toByteArray(), "AES")
 
-    @RequiresApi(Build.VERSION_CODES.O)
+    @RequiresApi(Build.VERSION_CODES.O) // required for password encryption
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -41,6 +43,7 @@ class Signup : AppCompatActivity() {
         }
 
 //        set up view binding
+
         binding = ActivitySignupBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -50,7 +53,6 @@ class Signup : AppCompatActivity() {
 
 //        bind ui elements
 
-
         binding.signupBtn.setOnClickListener {
             val email: String = binding.emailET.text.toString()
             val password = binding.passwordET.text.toString()
@@ -58,6 +60,7 @@ class Signup : AppCompatActivity() {
             val weight = binding.weightET.text.toString()
             val height = binding.heightET.text.toString()
 
+            // verify all required fields
             if (email.isNotEmpty() && password.isNotEmpty() && name.isNotEmpty()) {
                 val hashedPassword = encryptPassword(password)
                 signupUser(name, hashedPassword, email, height.toInt(), weight.toInt())
@@ -67,6 +70,7 @@ class Signup : AppCompatActivity() {
 
 
         }
+        //redirect to signin page
         binding.redirectET.setOnClickListener {
             startActivity(Intent(this, Signin::class.java))
             finish()
@@ -74,7 +78,9 @@ class Signup : AppCompatActivity() {
     }
 
 
-    // Function to hash a password using SHA-256 and salt
+    // Function to encrypt password
+
+    @SuppressLint("GetInstance")
     @RequiresApi(Build.VERSION_CODES.O)
     fun encryptPassword(input: String): String {
         val trimmedInput = input.trim()
@@ -85,6 +91,7 @@ class Signup : AppCompatActivity() {
     }
 
 
+    //Signup function
 
     private fun signupUser(
         userName: String,
@@ -93,21 +100,23 @@ class Signup : AppCompatActivity() {
         height: Int,
         weight: Int
     ) {
+        //check for the provided email exits
         databaseReference.orderByChild("email").equalTo(email)
             .addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    //if the user exists
                     if (!dataSnapshot.exists()) {
                         val id =
                             databaseReference.push().key // Generate a unique tech.ayodele.gravity.getKey for the new user
                         val userData = UserDetails(id, userName, email, password, height, weight)
-                        databaseReference.child(id!!).setValue(userData)
+                        databaseReference.child(id!!).setValue(userData) // save "userdata"
                             .addOnSuccessListener {
                                 Toast.makeText(
                                     this@Signup,
                                     "Sign Up Successful",
                                     Toast.LENGTH_SHORT
                                 ).show()
-                                startActivity(Intent(this@Signup, Dashboard::class.java))
+                                startActivity(Intent(this@Signup, SignupSuccess::class.java))
                                 finish()
                             }
                             .addOnFailureListener { e ->

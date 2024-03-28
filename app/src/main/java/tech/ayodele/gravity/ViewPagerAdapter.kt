@@ -8,6 +8,7 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.viewpager.widget.PagerAdapter
+            //adapter for the onboarding screen viewpager
 
 class ViewPagerAdapter(private var context: Context) : PagerAdapter() {
     //    arraw of the slider images
@@ -22,7 +23,7 @@ class ViewPagerAdapter(private var context: Context) : PagerAdapter() {
     )
 
     //    arraw of the slider titles
-    private var titles = intArrayOf(
+    private var _titles = intArrayOf(
         R.string.Title1,
         R.string.Title2,
         R.string.Title3,
@@ -31,6 +32,7 @@ class ViewPagerAdapter(private var context: Context) : PagerAdapter() {
         R.string.Title6,
         R.string.Title7
     )
+    val titles = _titles  // exposed variable
     private var descriptions = intArrayOf(
         R.string.desc1,
         R.string.desc2,
@@ -41,13 +43,18 @@ class ViewPagerAdapter(private var context: Context) : PagerAdapter() {
         R.string.desc7
     )
 
+
+    //    get the count of the items in the slider
+
     override fun getCount(): Int {
-        return titles.size
+        return _titles.size
     }
 
     override fun isViewFromObject(view: View, `object`: Any): Boolean {
         return view === `object` as LinearLayout
     }
+
+    //setup slider elements
 
     override fun instantiateItem(container: ViewGroup, position: Int): Any {
         val layout = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
@@ -56,7 +63,7 @@ class ViewPagerAdapter(private var context: Context) : PagerAdapter() {
         val sliderTextView = view.findViewById<View>(R.id.sliderTitle) as TextView
         val sliderDescription = view.findViewById<View>(R.id.sliderDescription) as TextView
         sliderImageView.setImageResource(images[position])
-        sliderTextView.setText(titles[position])
+        sliderTextView.setText(_titles[position])
         sliderDescription.setText(descriptions[position])
         container.addView(view)
         return view
