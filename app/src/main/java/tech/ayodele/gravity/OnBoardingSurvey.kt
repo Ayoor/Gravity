@@ -28,9 +28,9 @@ class OnBoardingSurvey : AppCompatActivity() {
     private val PREF_ONBOARDINGSURVEY_COMPLETE = "survey_complete"
     private lateinit var prefs: SharedPreferences
     private val selectedAnswers = mutableListOf<String>()
+    private var itIsNewEntry = true
 
     /*TODO
-    *  Previous Button Functionality
     *   Highlight Selected Button
     *   Save Result in Database*/
     @SuppressLint("SetTextI18n")
@@ -80,36 +80,40 @@ class OnBoardingSurvey : AppCompatActivity() {
         binding.finish.setOnClickListener {
             finishSurvey(prefs)
         }
+
 //        handle the previous text click
         binding.previousET.setOnClickListener {
+            itIsNewEntry = false
             when {
 //                when the current question is not the first question
-                currentQuestionIndex > 0 && selectedAnswers.size == currentQuestionIndex + 1 -> {
+                currentQuestionIndex > 0 && selectedAnswers.size == currentQuestionIndex  -> {
+                    selectedAnswers.removeAt(currentQuestionIndex -1)
+                    currentQuestionIndex--
+                    binding.finish.visibility = View.GONE
+                    loadSurveyToScreen()
+                    Log.i("test2", selectedAnswers.toString())
+                }
+                currentQuestionIndex > 0 && selectedAnswers.size == currentQuestionIndex +1 -> {
                     selectedAnswers.removeAt(currentQuestionIndex)
                     currentQuestionIndex--
                     binding.finish.visibility = View.GONE
-                    Log.i("test2", selectedAnswers.toString())
                     loadSurveyToScreen()
+                    Log.i("test2", selectedAnswers.toString())
                 }
 //                remove the latest entry from the list to avoid double entry of the same answers
 //                  and go to previous questions
-                currentQuestionIndex > 2 -> {
-                    selectedAnswers.removeAt(currentQuestionIndex - 1)
+                selectedAnswers.size ==1 ->{
                     currentQuestionIndex--
-                    binding.finish.visibility = View.GONE
-                    Log.i("test2", selectedAnswers.toString())
                     loadSurveyToScreen()
+                    binding.previousET.visibility = View.GONE
+
+                    selectedAnswers.clear()
+                    Log.d("testC", "Contents of selectedAnswers: $selectedAnswers")
                 }
 
             }
-            Log.d("testS", "Size of selectedAnswers: ${selectedAnswers.size}")
 
 //            clear the list to avoid double entry of the same answers and go to previous questions
-            if (selectedAnswers.size == 2) {
-                Log.d("testC", "Contents of selectedAnswers: $selectedAnswers")
-                selectedAnswers.removeAt(1)
-                selectedAnswers.removeAt(0)
-            }
 
         }
     }
@@ -180,11 +184,22 @@ class OnBoardingSurvey : AppCompatActivity() {
             button.layoutParams = layoutParams
             button.layoutParams = buttonParams
 
-            // Set click listener
+            // Set click listener for the options button
             if (currentQuestionIndex < questionCount - 1) { // minus one because array starts from 0
                 button.setOnClickListener {
 
-                    selectedAnswers.add(button.text.toString())
+                    if(currentQuestionIndex == selectedAnswers.size || selectedAnswers.size == 0) {
+
+                        selectedAnswers.add(button.text.toString())
+                    }
+                    else{
+                        selectedAnswers[currentQuestionIndex] = button.text.toString()
+                    }
+
+                    if(selectedAnswers.size ==1 && !itIsNewEntry){
+                        selectedAnswers[currentQuestionIndex] = button.text.toString()
+                    }
+
                     Log.i("test", selectedAnswers.toString())
                     currentQuestionIndex++
                     loadSurveyToScreen()
@@ -199,9 +214,8 @@ class OnBoardingSurvey : AppCompatActivity() {
                 buttonLayout.addView(button)
 
                 button.setOnClickListener {
-                    currentQuestionIndex > 0 && selectedAnswers.size == currentQuestionIndex
                     if (selectedAnswers.size == questionCount) {
-                        selectedAnswers[currentQuestionIndex] = button.text.toString()
+                        selectedAnswers[currentQuestionIndex] = button.text.toString() //replace last index rather than add new one
                         binding.finish.visibility = View.VISIBLE
                     } else {
                         selectedAnswers.add(button.text.toString())
