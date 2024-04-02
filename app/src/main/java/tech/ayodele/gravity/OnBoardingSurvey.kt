@@ -9,12 +9,15 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.LinearLayout
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.google.android.material.button.MaterialButton
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 import tech.ayodele.gravity.databinding.ActivityOnBoardingSurveyBinding
 
 // Initial Onboarding survey for the users
@@ -27,22 +30,27 @@ class OnBoardingSurvey : AppCompatActivity() {
     private val PREFS_NAME = "MyPrefs"
     private val PREF_ONBOARDINGSURVEY_COMPLETE = "survey_complete"
     private lateinit var prefs: SharedPreferences
+    private lateinit var databaseReference: DatabaseReference
     private val selectedAnswers = mutableListOf<String>()
     private var itIsNewEntry = true
 
+
+
     /*TODO
     *   Highlight Selected Button
-    *   Save Result in Database*/
+    */
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         prefs = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
         val onboardingSurveyCompleted = prefs.getBoolean(PREF_ONBOARDINGSURVEY_COMPLETE, false)
 
+
 // set up binding
         binding = ActivityOnBoardingSurveyBinding.inflate(layoutInflater)
         setContentView(binding.root)
-// check if the survey has already been completed
+
+// check if the survey has not been completed
         if (!onboardingSurveyCompleted) {
             enableEdgeToEdge()
             ViewCompat.setOnApplyWindowInsetsListener(binding.main) { v, insets ->
@@ -78,6 +86,7 @@ class OnBoardingSurvey : AppCompatActivity() {
         }
 //            button finish the survey
         binding.finish.setOnClickListener {
+            submitSurvey(passUserData()?.id.toString())
             finishSurvey(prefs)
         }
 
@@ -113,7 +122,7 @@ class OnBoardingSurvey : AppCompatActivity() {
 
             }
 
-//            clear the list to avoid double entry of the same answers and go to previous questions
+
 
         }
     }
@@ -239,5 +248,43 @@ class OnBoardingSurvey : AppCompatActivity() {
 
     }
 
+    private fun submitSurvey(
+        userID: String
+    ) {
+        val questionList = SurveyData.getSurveyData()
+        databaseReference  =  FirebaseDatabase.getInstance().reference
+        val userAndResponse = mutableListOf<Any>()
 
+        //add survey question and corresponding answer to list
+        for (i in questionList.indices) {
+            val question = questionList[i]
+            val answer = selectedAnswers.getOrNull(i) ?: "Invalid Answer" // Get the corresponding answer or empty string if not found
+
+            userAndResponse.add(
+                SurveyResponse(question.question,answer)
+            )
+
+
+
+        }
+        userAndResponse.add(0, userID)
+
+        // Save the survey data map to Firebase Realtime Database
+        databaseReference.child("Survey Data").child(userID).setValue(userAndResponse)
+            .addOnSuccessListener {
+                Toast.makeText(
+                    this@OnBoardingSurvey,
+                    "Survey Submitted",
+                    Toast.LENGTH_SHORT
+                ).show()
+
+            }
+            .addOnFailureListener { e ->
+                Toast.makeText(
+                    this@OnBoardingSurvey,
+                    "Sign Up Failed: ${e.message}",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+    }
 }

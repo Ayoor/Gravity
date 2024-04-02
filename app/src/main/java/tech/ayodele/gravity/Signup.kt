@@ -2,9 +2,11 @@ package tech.ayodele.gravity
 
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -14,13 +16,10 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import tech.ayodele.gravity.databinding.ActivitySignupBinding
-import android.os.Build
-import androidx.annotation.RequiresApi
 import java.security.Key
 import java.util.Base64
 import javax.crypto.Cipher
 import javax.crypto.spec.SecretKeySpec
-import kotlin.io.encoding.ExperimentalEncodingApi
 
 class Signup : AppCompatActivity() {
     // variable declarations
@@ -106,10 +105,11 @@ class Signup : AppCompatActivity() {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
                     //if the user exists
                     if (!dataSnapshot.exists()) {
-                        val id =
-                            databaseReference.push().key // Generate a unique tech.ayodele.gravity.getKey for the new user
+                        //val id =
+                        //    databaseReference.push().key // Generate a unique tech.ayodele.gravity.getKey for the new user
+                        val id = "User ${dataSnapshot.childrenCount + 1}"
                         val userData = UserDetails(id, userName, email, password, height, weight)
-                        databaseReference.child(id!!).setValue(userData) // save "userdata"
+                        databaseReference.child(id).setValue(userData) // save "userdata"
                             .addOnSuccessListener {
                                 Toast.makeText(
                                     this@Signup,

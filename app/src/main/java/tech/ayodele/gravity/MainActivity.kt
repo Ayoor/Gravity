@@ -16,7 +16,6 @@ import androidx.viewpager.widget.ViewPager
 
 class MainActivity : AppCompatActivity() {
     /* todo
-        add GO name and hospital to the signup page (both optional)
     *   email on registration completed
     *   forgot password
     *   user questions -> 1. were you referred by a GP?
@@ -33,9 +32,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var backTextView: TextView
     private lateinit var nextTextView: TextView
     private lateinit var getStatedBtn: Button
-    lateinit var dots: Array<TextView>
     private var viewPagerAdapter: ViewPagerAdapter? = null
-    private val testBool = true
 
     private val PREFS_NAME = "MyPrefsFile"
     private val PREF_ONBOARDING_COMPLETE = "onboarding_complete"
@@ -47,7 +44,6 @@ class MainActivity : AppCompatActivity() {
         val onboardingCompleted = prefs.getBoolean(PREF_ONBOARDING_COMPLETE, false)
 
         if (!onboardingCompleted) { //if first Time use
-//            Log.i("kk", "$testBool")
             enableEdgeToEdge()
             setContentView(R.layout.activity_main)
             ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
@@ -62,19 +58,19 @@ class MainActivity : AppCompatActivity() {
             getStatedBtn = findViewById(R.id.get_started)
 
 //            backward Scroll of the onBoarding screen
-            backTextView.setOnClickListener(View.OnClickListener {
+            backTextView.setOnClickListener{
 
                 if (getItem() > 0) {
                     mSliderViewPager!!.setCurrentItem(getItem() - 1, true)
                 }
-            })
-//            skip first timetime onboarding screen
+            }
+//            skip first time onboarding screen
             skipTextView.setOnClickListener {
                 val editor = prefs.edit()
                 editor.putBoolean(PREF_ONBOARDING_COMPLETE, true)
                 editor.apply()
 
-                val intent: Intent = Intent(this@MainActivity, Signin::class.java)
+                val intent = Intent(this@MainActivity, Signin::class.java)
                 startActivity(intent)
                 finish()
             }
@@ -112,7 +108,7 @@ class MainActivity : AppCompatActivity() {
             editor.putBoolean(PREF_ONBOARDING_COMPLETE, true)
             editor.apply()
 
-            val intent: Intent = Intent(this@MainActivity, Signin::class.java)
+            val intent= Intent(this@MainActivity, Signin::class.java)
             startActivity(intent)
             finish()
         }
