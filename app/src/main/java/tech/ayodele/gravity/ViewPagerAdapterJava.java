@@ -18,10 +18,10 @@ public class ViewPagerAdapterJava extends PagerAdapter {
     int[] images = {
             R.drawable.gravity,
             R.drawable.personalization,
-            R.drawable.community,
+            R.drawable.community_icon,
             R.drawable.diet,
             R.drawable.resources,
-            R.drawable.help,
+            R.drawable.helpicon,
             R.drawable.community2
     };
     //    arraw of the slider titles

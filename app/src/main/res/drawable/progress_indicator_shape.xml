@@ -1,0 +1,9 @@
+<!-- custom_progress_indicator.xml -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="ring"
+    android:thickness="10dp"
+    android:innerRadius="24dp"
+    android:angle="0"
+    android:useLevel="true">
+<!-- Replace with your desired progress color -->
+    </shape>

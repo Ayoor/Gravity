@@ -15,10 +15,10 @@ class ViewPagerAdapter(private var context: Context) : PagerAdapter() {
     private var images = intArrayOf(
         R.drawable.gravity,
         R.drawable.personalization,
-        R.drawable.community,
+        R.drawable.community_icon,
         R.drawable.diet,
         R.drawable.resources,
-        R.drawable.help,
+        R.drawable.helpicon,
         R.drawable.begin
     )
 

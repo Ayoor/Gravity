@@ -52,7 +52,7 @@ class Signin : AppCompatActivity() {
 
             // confirm necessary fiels
             if (email.isNotEmpty() && password.isNotEmpty()) {
-                //initalise firebase and database reference
+                //initialise firebase and database reference
                 firebaseDatabase = FirebaseDatabase.getInstance()
                 databaseReference = firebaseDatabase.getReference("Users")
                 signIn(email, password)
@@ -100,7 +100,7 @@ class Signin : AppCompatActivity() {
                         }
                     }
                     // Password does not match
-                    Toast.makeText(this@Signin, "Incorrect Password", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@Signin, "Incorrect Password please try a different one", Toast.LENGTH_SHORT).show()
                 } else {
                     // User not found
                     Toast.makeText(this@Signin, "User not found", Toast.LENGTH_SHORT).show()

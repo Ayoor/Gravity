@@ -32,5 +32,17 @@
     <string name="submit">Submit</string>
     <string name="success">Success</string>
     <string name="welcome_Message">Welcome to Gravity</string>
+    <string name="hello">Hello </string>
+    <string name="quote_of_the_day">Inspiration of the Day:</string>
+    <string name="your_metrics_for_today">Your Metrics for Today</string>
+    <string name="edit"> <u>Edit</u></string>
+    <string name="water">Water</string>
+    <string name="calories">Calories</string>
+    <string name="exercise">Exercise</string>
+    <string name="steps">Steps</string>
+    <string name="weight">Weight</string>
+    <string name="height">Height</string>
+    <string name="body_fat">Body Fat</string>
+    <string name="body_measurements">Body Measurements</string>
 
 </resources>

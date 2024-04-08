@@ -1,16 +1,14 @@
 package tech.ayodele.gravity
 
 import android.annotation.SuppressLint
-import android.content.Intent
 import android.os.Build
 import android.os.Bundle
-import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.recyclerview.widget.LinearLayoutManager
 import tech.ayodele.gravity.databinding.ActivityDashboardBinding
-import tech.ayodele.gravity.databinding.ActivitySigninBinding
 import java.text.DecimalFormat
 //this is the landing page of the app
 class Dashboard : AppCompatActivity() {
@@ -42,13 +40,51 @@ class Dashboard : AppCompatActivity() {
         val weight = userData?.weight ?: 0
         val height = userData?.height ?: 0
         val name = userData?.name.toString()
+//        binding.waterProgressIndicator.setProgress(70, true)
+//        binding.stepsProgressIndicator.setProgress(30, true)
+//
+//        val caloryProgress= binding.caloryProgressIndicator
+//        caloryProgress.setProgress(80, true)
+//        caloryProgress.trackColor = ContextCompat.getColor(this, R.color.white);
+//        caloryProgress.setIndicatorColor(ContextCompat.getColor(this, R.color.purple));
+//
+////        second progress indicator to increase the overall thickness
+//
+//        val caloryProgress2= binding.caloryProgressIndicator2
+//        caloryProgress2.setProgress(80, true)
+//        caloryProgress2.trackColor = ContextCompat.getColor(this, R.color.white);
+//        caloryProgress2.setIndicatorColor(ContextCompat.getColor(this, R.color.purple));
+//        binding.name.text = "Hello Ayodele"
+//
+//        val exerciseProgress= binding.exerciseProgressIndicator
+//        exerciseProgress.setProgress(80, true)
+//        exerciseProgress.trackColor = ContextCompat.getColor(this, R.color.white);
+//        exerciseProgress.setIndicatorColor(ContextCompat.getColor(this, R.color.purple))
+//
+////        second progress indicator to increase the overall thickness
+//        val exerciseProgress2= binding.exerciseProgressIndicator2
+//        exerciseProgress2.setProgress(80, true)
+//        exerciseProgress2.trackColor = ContextCompat.getColor(this, R.color.white);
+//        exerciseProgress2.setIndicatorColor(ContextCompat.getColor(this, R.color.purple))
 
-        binding.name.text = name
-        binding.weight.text = weight.toString()
-        binding.height.text = height.toString()
+//        binding.weight.text = weight.toString()
+//        binding.height.text = height.toString()
 
 
-        binding.BMI.text = " BMI: ${(calculateBMI(weight, height))}"
+//        binding.BMI.text = " BMI: ${(calculateBMI(weight, height))}"
+
+        val progressData = DashboardData(
+            waterProgress = 70,
+            stepsProgress = 30,
+            caloryProgress = 80,
+            caloryProgress2 = 80,
+            exerciseProgress = 80,
+            exerciseProgress2 = 80,
+            userName = "Hello Ayodele"
+        )
+        val adapter = DashboardRecyclerAdapter(progressData)
+        binding.recyclerView.layoutManager = LinearLayoutManager(this)
+        binding.recyclerView.adapter = adapter
 
     }
     // this function calculates the BMI of the user
