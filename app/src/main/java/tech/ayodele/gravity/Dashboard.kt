@@ -3,11 +3,16 @@ package tech.ayodele.gravity
 import android.annotation.SuppressLint
 import android.os.Build
 import android.os.Bundle
+import android.view.MenuItem
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
+import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.GravityCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.navigation.NavigationBarView
 import tech.ayodele.gravity.databinding.ActivityDashboardBinding
 import java.text.DecimalFormat
 //this is the landing page of the app
@@ -21,7 +26,7 @@ class Dashboard : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_dashboard)
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.drawer_layout)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
@@ -80,11 +85,63 @@ class Dashboard : AppCompatActivity() {
             caloryProgress2 = 80,
             exerciseProgress = 80,
             exerciseProgress2 = 80,
-            userName = "Hello Ayodele"
+            userName = "Hello Ayodele!"
         )
         val adapter = DashboardRecyclerAdapter(progressData)
         binding.recyclerView.layoutManager = LinearLayoutManager(this)
         binding.recyclerView.adapter = adapter
+
+//bottom nav
+        val bottomNavigation = binding.bottomNavigation
+        bottomNavigation.setOnItemSelectedListener(object : NavigationBarView.OnItemSelectedListener {
+            override fun onNavigationItemSelected(item: MenuItem): Boolean {
+                when (item.itemId) {
+                    R.id.home -> {
+                        Toast.makeText(this@Dashboard, "Home", Toast.LENGTH_LONG).show()
+                        return true
+                    }
+                    R.id.community -> {
+                        Toast.makeText(this@Dashboard, "Community", Toast.LENGTH_LONG).show()
+                        return true
+                    }
+                    R.id.liveHelp -> {
+                        Toast.makeText(this@Dashboard, "live help", Toast.LENGTH_LONG).show()
+                        return true
+                    }
+                    // Add more cases for other menu items as needed
+                    else -> return false
+                }
+            }
+        })
+
+// side nav
+        val drawerLayout = binding.drawerLayout
+        val navigationView = binding.navigationView
+        val burgerMenu = binding.hamburgerMenu
+
+// Set OnClickListener for burger menu icon to toggle the drawer
+        burgerMenu.setOnClickListener {
+            if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+                drawerLayout.closeDrawer(GravityCompat.START)
+            } else {
+                drawerLayout.openDrawer(GravityCompat.START)
+            }
+        }
+
+//// Handle navigation item clicks
+//        navigationView.setNavigationItemSelectedListener { menuItem ->
+//            when (menuItem.itemId) {
+//                R.id.edit -> {
+//                    // Handle menu item 1 click
+//                    true
+//                }
+//                R.id.menu_item2 -> {
+//                    // Handle menu item 2 click
+//                    true
+//                }
+//                else -> false
+//            }
+//        }
 
     }
     // this function calculates the BMI of the user
@@ -95,5 +152,8 @@ class Dashboard : AppCompatActivity() {
         val bmi = decimalFormat.format(bmiDouble)
         return bmi.toDouble()
     }
+
+    //bottom nav
+
 
 }

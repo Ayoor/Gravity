@@ -44,5 +44,13 @@
     <string name="height">Height</string>
     <string name="body_fat">Body Fat</string>
     <string name="body_measurements">Body Measurements</string>
+    <string name="home">Home</string>
+    <string name="live_help">Live Help</string>
+    <string name="community">Community</string>
+    <string name="night_mode">Night Mode</string>
+    <string name="logout">Logout</string>
+    <string name="statistics">Statistics</string>
+    <string name="profile_image">profile image</string>
+    <string name="menu">Menu</string>
 
 </resources>

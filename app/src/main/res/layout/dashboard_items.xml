@@ -17,7 +17,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="25sp"
-        android:layout_marginTop="70dp"
         android:layout_marginStart="30dp"
         android:textStyle="bold"
         tools:text="Ayodele!" />
@@ -89,203 +88,203 @@
 
     </LinearLayout>
 
-<!--    &lt;!&ndash;metrics widget&ndash;&gt;-->
-<!--    <LinearLayout-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_marginTop="10dp"-->
-<!--        android:orientation="horizontal"-->
-<!--        android:baselineAligned="false">-->
+    <!--metrics widget-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal"
+        android:baselineAligned="false">
 
-<!--        &lt;!&ndash; First row &ndash;&gt;-->
-<!--        <LinearLayout-->
-<!--            android:layout_width="0dp"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_weight="1"-->
-<!--            android:orientation="vertical">-->
+        <!-- First row -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
 
-<!--            &lt;!&ndash; Water Metrics &ndash;&gt;-->
-<!--            <LinearLayout-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="100dp"-->
-<!--                android:background="@drawable/quote_background"-->
-<!--                android:orientation="vertical"-->
-<!--                android:padding="16dp">-->
+            <!-- Water Metrics -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:background="@drawable/quote_background"
+                android:orientation="vertical"
+                android:padding="16dp">
 
-<!--                <TextView-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:text="@string/water"-->
-<!--                    android:textStyle="bold"-->
-<!--                    app:drawableStartCompat="@drawable/waterdrop"-->
-<!--                    android:textSize="18sp"-->
-<!--                    />-->
-<!--                <TextView-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:text="800 0f 1500ml"-->
-<!--                    android:textSize="14sp"-->
-<!--                    android:layout_marginTop="15dp"-->
-<!--                    />-->
-<!--                <com.google.android.material.progressindicator.LinearProgressIndicator-->
-<!--                    android:id="@+id/waterProgressIndicator"-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_marginTop="10dp" />-->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/water"
+                    android:textStyle="bold"
+                    app:drawableStartCompat="@drawable/waterdrop"
+                    android:textSize="18sp"
+                    />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="800 0f 1500ml"
+                    android:textSize="14sp"
+                    android:layout_marginTop="15dp"
+                    />
+                <com.google.android.material.progressindicator.LinearProgressIndicator
+                    android:id="@+id/waterProgressIndicator"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp" />
 
 
-<!--            </LinearLayout>-->
+            </LinearLayout>
 
-<!--            &lt;!&ndash; Second item &ndash;&gt;-->
-<!--            <LinearLayout-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="200dp"-->
-<!--                android:background="@drawable/quote_background"-->
-<!--                android:layout_marginTop="10dp"-->
-<!--                android:orientation="vertical"-->
-<!--                android:padding="16dp">-->
+            <!-- Second item -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:background="@drawable/quote_background"
+                android:layout_marginTop="10dp"
+                android:orientation="vertical"
+                android:padding="16dp">
 
-<!--                <TextView-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:text="@string/calories"-->
-<!--                    android:textStyle="bold"-->
-<!--                    app:drawableStartCompat="@drawable/cutlery"-->
-<!--                    android:textSize="18sp" />-->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/calories"
+                    android:textStyle="bold"
+                    app:drawableStartCompat="@drawable/cutlery"
+                    android:textSize="18sp" />
 
-<!--                <TextView-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:text="Target 1900kcal"-->
-<!--                    android:textSize="14sp"-->
-<!--                    android:layout_marginTop="5dp"-->
-<!--                    />-->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Target 1900kcal"
+                    android:textSize="14sp"
+                    android:layout_marginTop="5dp"
+                    />
 
-<!--                <FrameLayout-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="match_parent">-->
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
 
-<!--                    <com.google.android.material.progressindicator.CircularProgressIndicator-->
-<!--                        android:id="@+id/caloryProgressIndicator"-->
-<!--                        android:layout_width="wrap_content"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:layout_gravity="center"-->
-<!--                        app:indicatorSize="100dp" />-->
-<!--                    &lt;!&ndash;                    a second one to increase the thickness&ndash;&gt;-->
-<!--                    <com.google.android.material.progressindicator.CircularProgressIndicator-->
-<!--                        android:id="@+id/caloryProgressIndicator2"-->
-<!--                        android:layout_width="wrap_content"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:layout_gravity="center"-->
-<!--                        app:indicatorSize="92dp" />-->
+                    <com.google.android.material.progressindicator.CircularProgressIndicator
+                        android:id="@+id/caloryProgressIndicator"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        app:indicatorSize="100dp" />
+                    <!--                    a second one to increase the thickness-->
+                    <com.google.android.material.progressindicator.CircularProgressIndicator
+                        android:id="@+id/caloryProgressIndicator2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        app:indicatorSize="92dp" />
 
-<!--                    <TextView-->
-<!--                        android:layout_width="wrap_content"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:layout_gravity="center"-->
-<!--                        android:textSize="18sp"-->
-<!--                        android:textStyle="bold"-->
-<!--                        android:textColor="@android:color/black"-->
-<!--                        android:text="475 kcal"-->
-<!--                        />-->
-<!--                </FrameLayout>-->
-<!--            </LinearLayout>-->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:textColor="@android:color/black"
+                        android:text="475 kcal"
+                        />
+                </FrameLayout>
+            </LinearLayout>
 
-<!--        </LinearLayout>-->
+        </LinearLayout>
 
-<!--        &lt;!&ndash; Second Column &ndash;&gt;-->
-<!--        <LinearLayout-->
-<!--            android:layout_width="0dp"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_weight="1"-->
-<!--            android:orientation="vertical"-->
-<!--            android:layout_marginStart="10dp">-->
+        <!-- Second Column -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:layout_marginStart="10dp">
 
-<!--            &lt;!&ndash; Third item &ndash;&gt;-->
-<!--            <LinearLayout-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="200dp"-->
-<!--                android:background="@drawable/quote_background"-->
-<!--                android:orientation="vertical"-->
-<!--                android:padding="16dp">-->
+            <!-- Third item -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:background="@drawable/quote_background"
+                android:orientation="vertical"
+                android:padding="16dp">
 
-<!--                <TextView-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:text="@string/exercise"-->
-<!--                    android:textStyle="bold"-->
-<!--                    app:drawableStartCompat="@drawable/exercise_gym"-->
-<!--                    android:textSize="18sp" />-->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/exercise"
+                    android:textStyle="bold"
+                    app:drawableStartCompat="@drawable/exercise_gym"
+                    android:textSize="18sp" />
 
-<!--                <TextView-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:text="Target 3 Exercises"-->
-<!--                    android:textSize="14sp"-->
-<!--                    android:layout_marginTop="5dp"-->
-<!--                    />-->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Target 3 Exercises"
+                    android:textSize="14sp"
+                    android:layout_marginTop="5dp"
+                    />
 
-<!--                <FrameLayout-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="match_parent">-->
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
 
-<!--                    <com.google.android.material.progressindicator.CircularProgressIndicator-->
-<!--                        android:id="@+id/exerciseProgressIndicator"-->
-<!--                        android:layout_width="wrap_content"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:layout_gravity="center"-->
-<!--                        app:indicatorSize="100dp" />-->
-<!--                    <com.google.android.material.progressindicator.CircularProgressIndicator-->
-<!--                        android:id="@+id/exerciseProgressIndicator2"-->
-<!--                        android:layout_width="wrap_content"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:layout_gravity="center"-->
-<!--                        app:indicatorSize="92dp" />-->
+                    <com.google.android.material.progressindicator.CircularProgressIndicator
+                        android:id="@+id/exerciseProgressIndicator"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        app:indicatorSize="100dp" />
+                    <com.google.android.material.progressindicator.CircularProgressIndicator
+                        android:id="@+id/exerciseProgressIndicator2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        app:indicatorSize="92dp" />
 
-<!--                    <TextView-->
-<!--                        android:layout_width="wrap_content"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:layout_gravity="center"-->
-<!--                        android:textSize="16sp"-->
-<!--                        android:textStyle="bold"-->
-<!--                        android:textColor="@android:color/black"-->
-<!--                        android:text="2 Workouts"-->
-<!--                        />-->
-<!--                </FrameLayout>-->
-<!--            </LinearLayout>-->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:textColor="@android:color/black"
+                        android:text="2 Workouts"
+                        />
+                </FrameLayout>
+            </LinearLayout>
 
-<!--            &lt;!&ndash; Fourth item &ndash;&gt;-->
-<!--            <LinearLayout-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="100dp"-->
-<!--                android:background="@drawable/quote_background"-->
-<!--                android:layout_marginTop="10dp"-->
-<!--                android:orientation="vertical"-->
-<!--                android:padding="16dp">-->
+            <!-- Fourth item -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:background="@drawable/quote_background"
+                android:layout_marginTop="10dp"
+                android:orientation="vertical"
+                android:padding="16dp">
 
-<!--                <TextView-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:text="@string/steps"-->
-<!--                    android:drawablePadding="2dp"-->
-<!--                    android:textStyle="bold"-->
-<!--                    app:drawableStartCompat="@drawable/footprint"-->
-<!--                    android:textSize="18sp" />-->
-<!--                <TextView-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:text="1590 0f 10000 steps"-->
-<!--                    android:textSize="14sp"-->
-<!--                    android:layout_marginTop="15dp"-->
-<!--                    />-->
-<!--                <com.google.android.material.progressindicator.LinearProgressIndicator-->
-<!--                    android:id="@+id/stepsProgressIndicator"-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_marginTop="10dp" />-->
-<!--            </LinearLayout>-->
-<!--        </LinearLayout>-->
-<!--    </LinearLayout>-->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/steps"
+                    android:drawablePadding="2dp"
+                    android:textStyle="bold"
+                    app:drawableStartCompat="@drawable/footprint"
+                    android:textSize="18sp" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="1590 0f 10000 steps"
+                    android:textSize="14sp"
+                    android:layout_marginTop="15dp"
+                    />
+                <com.google.android.material.progressindicator.LinearProgressIndicator
+                    android:id="@+id/stepsProgressIndicator"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
 
     <TextView
         android:layout_width="wrap_content"
@@ -293,12 +292,15 @@
         android:textSize="18sp"
         android:textStyle="bold"
         android:layout_marginTop="30dp"
+        android:layout_marginBottom="15dp"
         android:text="@string/body_measurements"
         />
     <!-- Body Measurements -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@drawable/quote_background"
+        android:paddingHorizontal="30dp"
         android:orientation="vertical">
 
         <!--        top row-->
@@ -306,7 +308,7 @@
             android:orientation="horizontal"
             android:layout_marginTop="5dp"
             android:padding="10dp"
-            android:background="@drawable/quote_background"
+            android:background="@drawable/widget_background"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:baselineAligned="false">
