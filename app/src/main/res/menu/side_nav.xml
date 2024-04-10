@@ -12,7 +12,7 @@
 
         <item  android:id="@+id/logout"
             android:title="@string/logout"
-            android:icon="@drawable/home"/>
+            android:icon="@drawable/logout"/>
         <item  android:id="@+id/nightmode"
             android:title="@string/night_mode"
             android:icon="@drawable/night_mode"/>

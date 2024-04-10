@@ -7,5 +7,8 @@ data class DashboardData(
     val caloryProgress2: Int,
     val exerciseProgress: Int,
     val exerciseProgress2: Int,
-    val userName: String
+    val name: String,
+    val userWeight: Int,
+    val userHeight: Int,
+    val inspiration: String,
 )

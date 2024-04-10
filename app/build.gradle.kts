@@ -49,6 +49,7 @@ dependencies {
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
     implementation(libs.firebase.database)
+    implementation(libs.firebase.auth.ktx)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -62,7 +63,7 @@ dependencies {
 
 //    for bottom nav
     implementation (libs.material)
-
+    implementation ("com.google.code.gson:gson:2.10.1")
 
 
 }

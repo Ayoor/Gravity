@@ -2,14 +2,26 @@ package tech.ayodele.gravity
 
 import android.os.Build
 import androidx.annotation.RequiresApi
-import java.security.Key
-import java.util.Base64
-import javax.crypto.Cipher
-import javax.crypto.spec.SecretKeySpec
+import java.time.LocalDate
 
-fun main(){
-    val list = mutableListOf<String>()
-    println(list.toString())
-    list.add("Egg")
-    println(list.toString())
+val inspirations = Inspirations.getInspirations()
+private var lastDate: LocalDate? = null
+
+@RequiresApi(Build.VERSION_CODES.O)
+fun getDailyInspiration(): String {
+    val currentDate = LocalDate.now()
+    return if (currentDate != lastDate) {
+        lastDate = currentDate
+        inspirations.random()
+    } else {
+        "Keep going! You've got this."
+    }
+}
+
+
+
+@RequiresApi(Build.VERSION_CODES.O)
+fun main() {
+    val currentDate = LocalDate.now()
+    println(currentDate)
 }
