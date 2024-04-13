@@ -26,7 +26,6 @@ class OnBoardingSurvey : AppCompatActivity() {
     private lateinit var binding: ActivityOnBoardingSurveyBinding
     private var currentQuestionIndex = 0
     private var allQuestions: List<QuestionModel> = mutableListOf()
-
     private val PREFS_NAME = "MyPrefs"
     private val PREF_ONBOARDINGSURVEY_COMPLETE = "survey_complete"
     private lateinit var prefs: SharedPreferences
@@ -65,21 +64,21 @@ class OnBoardingSurvey : AppCompatActivity() {
 
             //handle skip button
             binding.skip.setOnClickListener {
-                //alert to confirm the user skipping the survey
-                val alertDialogBuilder = AlertDialog.Builder(this)
-                alertDialogBuilder.apply {
-                    setTitle("Confirm Skip")
-                    setMessage("To get the most of this App, this Survey is necessary. Are you Sure you want to Skip?")
-                    setPositiveButton("Yes, I'm Sure") { dialog, _ ->
-                        finishSurvey(prefs)
+                    //alert to confirm the user skipping the survey
+                    val alertDialogBuilder = AlertDialog.Builder(this)
+                    alertDialogBuilder.apply {
+                        setTitle("Confirm Skip")
+                        setMessage("To get the most of this App, this Survey is necessary. Are you Sure you want to Skip?")
+                        setPositiveButton("Yes, I'm Sure") { dialog, _ ->
+                            finishSurvey(prefs)
+                        }
+                        setNegativeButton("Continue Survey") { dialog, _ ->
+                            // Dismiss the dialog if "No" is clicked
+                            dialog.dismiss()
+                        }
                     }
-                    setNegativeButton("Continue Survey") { dialog, _ ->
-                        // Dismiss the dialog if "No" is clicked
-                        dialog.dismiss()
-                    }
-                }
-                val alertDialog = alertDialogBuilder.create()
-                alertDialog.show()
+                    val alertDialog = alertDialogBuilder.create()
+                    alertDialog.show()
             }
         } else { // survey has been completed
             finishSurvey(prefs)

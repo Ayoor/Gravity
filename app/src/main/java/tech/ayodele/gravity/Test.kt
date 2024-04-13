@@ -2,26 +2,20 @@ package tech.ayodele.gravity
 
 import android.os.Build
 import androidx.annotation.RequiresApi
+import java.text.DecimalFormat
 import java.time.LocalDate
 
-val inspirations = Inspirations.getInspirations()
-private var lastDate: LocalDate? = null
-
-@RequiresApi(Build.VERSION_CODES.O)
-fun getDailyInspiration(): String {
-    val currentDate = LocalDate.now()
-    return if (currentDate != lastDate) {
-        lastDate = currentDate
-        inspirations.random()
-    } else {
-        "Keep going! You've got this."
-    }
+private fun calculateBMI(weight: Int, height: Int): Double {
+    val heightInMeters = height * 0.01
+    val bmiDouble = (weight / (heightInMeters * heightInMeters)).toDouble()
+    val decimalFormat = DecimalFormat("#.##")
+    val bmi = decimalFormat.format(bmiDouble)
+    return bmi.toDouble()
 }
-
 
 
 @RequiresApi(Build.VERSION_CODES.O)
 fun main() {
-    val currentDate = LocalDate.now()
-    println(currentDate)
+
+    println(Inspirations.getInspirations().random())
 }

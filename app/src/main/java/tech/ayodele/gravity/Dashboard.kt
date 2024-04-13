@@ -6,13 +6,12 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
 import android.widget.ImageView
-import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.annotation.RequiresApi
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.core.view.ViewCompat
@@ -69,24 +68,18 @@ class Dashboard : AppCompatActivity() {
 
 
 //        binding.BMI.text = " BMI: ${(calculateBMI(weight, height))}"
-
         val progressData = inspirations()?.let {
             DashboardData(
-                waterProgress = 70,
-                stepsProgress = 30,
-                caloryProgress = 80,
-                caloryProgress2 = 80,
-                exerciseProgress = 80,
-                exerciseProgress2 = 80,
                 name = "Hello $firstName!",
                 userWeight = weight,
                 userHeight = height,
                 inspiration= it
             )
         }
-        val adapter = progressData?.let { DashboardRecyclerAdapter(it) }
+        val adapter = progressData?.let { DashboardRecyclerAdapter(it, prefs) }
         binding.recyclerView.layoutManager = LinearLayoutManager(this)
         binding.recyclerView.adapter = adapter
+
 
 //bottom nav
         val bottomNavigation = binding.bottomNavigation
@@ -130,27 +123,10 @@ class Dashboard : AppCompatActivity() {
             Toast.makeText(this@Dashboard, "Edit", Toast.LENGTH_LONG).show()
         }
 
-        //edit metrics
-//        val editMetrics = findViewById<TextView>(R.id.editMetric)
-//        editMetrics.setOnClickListener {
-//            //alert to confirm the user skipping the survey
-//            val alertDialogBuilder = AlertDialog.Builder(this)
-//            alertDialogBuilder.apply {
-//                setTitle("Confirm Skip")
-//                setMessage("To get the most of this App, this Survey is necessary. Are you Sure you want to Skip?")
-//                setPositiveButton("Yes, I'm Sure") { dialog, _ ->
-//                }
-//                setNegativeButton("Continue Survey") { dialog, _ ->
-//                    // Dismiss the dialog if "No" is clicked
-//                    dialog.dismiss()
-//                }
-//            }
-//            val alertDialog = alertDialogBuilder.create()
-//            alertDialog.show()
-//        }
 
 
-        
+
+
 
         // Handle navigation item clicks
         navDrawer.setNavigationItemSelectedListener { menuItem ->
@@ -174,6 +150,8 @@ class Dashboard : AppCompatActivity() {
 
     }
 
+    //log user our
+
     private fun logoutUser() {
         // Sign out the user from Firebase Authentication
         FirebaseAuth.getInstance().signOut()
@@ -193,32 +171,40 @@ class Dashboard : AppCompatActivity() {
         editor.clear().apply()
     }
 //    get user first name
-    private fun firstName(name: String): String{
-        return name.substring(0, name.indexOf(" "))
+private fun firstName(name: String): String {
+    val indexOfSpace = name.indexOf(" ")
+    return if (indexOfSpace != -1) {
+        name.substring(0, indexOfSpace)
+    } else {
+        // If no space found, return the entire name as the first name
+        name
     }
+}
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun inspirations(): String? {
+        Log.i("Date", currentDate.toString())
+        Log.i("Date13", lastDate.toString())
         prefs = getSharedPreferences("dashboardData", Context.MODE_PRIVATE)
-        currentDate = LocalDate.now()
         return if (currentDate != lastDate) {
             lastDate = currentDate
-            val currentInspo = inspirations.random()
+            val currentInspo = Inspirations.getInspirations().random()
             val editor = prefs.edit()
             editor.putString("lastDate", currentDate.toString())
             editor.putString("lastInspo", currentInspo)
             editor.apply()
             currentInspo
         } else {
+            val editor = prefs.edit()
+            editor.putString("lastDate", currentDate.toString())
+            editor.apply()
             prefs.getString("lastInspo", "Every step forward, no matter how small, is a victory on the path to a healthier you")
+
         }
 
     }
 
 
 
-
-
-
-
 }
+
