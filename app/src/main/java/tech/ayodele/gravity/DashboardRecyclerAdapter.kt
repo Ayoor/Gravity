@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Build
+import android.text.InputType
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -18,9 +19,19 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import tech.ayodele.gravity.databinding.DashboardItemsBinding
 import java.text.DecimalFormat
+import java.text.SimpleDateFormat
 import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.LocalTime
+import java.time.ZoneId
+import java.util.Date
+import java.util.Locale
 import kotlin.math.roundToInt
 
 class DashboardRecyclerAdapter(
@@ -34,16 +45,15 @@ class DashboardRecyclerAdapter(
     @RequiresApi(Build.VERSION_CODES.O)
     private var currentDate = LocalDate.now()
 
-
     var waterProgress = 0
     var stepsProgress = 0
     var caloryProgress = 0
     var exerciseProgress = 0
 
-    var totalCups = prefs.getInt("totalCups", 0)
-    var totalSteps = prefs.getInt("totalSteps", 0)
-    var totalCalories = prefs.getInt("totalCalories", 0)
-    var totalExercise = prefs.getInt("totalExercise", 0)
+    private var totalCups = prefs.getInt("totalCups", 0)
+    private var totalSteps = prefs.getInt("totalSteps", 0)
+    private var totalCalories = prefs.getInt("totalCalories", 0)
+    private var totalExercise = prefs.getInt("totalExercise", 0)
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DashboardViewHolder {
@@ -57,20 +67,19 @@ class DashboardRecyclerAdapter(
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    @SuppressLint("SetTextI18n")
+    @SuppressLint("SetTextI18n", "ClickableViewAccessibility")
     override fun onBindViewHolder(holder: DashboardViewHolder, position: Int) {
         val binding = holder.binding
         val context = binding.root.context
 
         lastDate = prefs.getString("lastMetricsDate", "Unavailable")
 
-        Log.i("Date1", currentDate.toString())
-        Log.i("Date2", lastDate.toString())
-        if (currentDate.toString() != lastDate) {
+        if (currentDate.toString() != lastDate) { // it is a new day, use new data
 
             dailyDashboardRefresh(binding)
             updateMetricsChart(binding)
-        } else {
+        } else { // same day
+            //use saved data
             updateIndicatorData(binding, totalCups, totalCalories, totalExercise, totalSteps)
             updateMetricsChart(binding)
 
@@ -97,28 +106,188 @@ class DashboardRecyclerAdapter(
         val height = dashboardData.userHeight
         val name = dashboardData.name
         val userBMI = calculateBMI(weight, height)
-
+        val email = dashboardData.email
+        val userID = dashboardData.userID
 
         // Set dashboard details
         binding.name.text = name
-        binding.name.text = dashboardData.name
-        binding.userWeight.text = "$weight Kg"
-        binding.userHeight.text = "$height Cm"
-        binding.userBMI.text = "$userBMI BMI"
-        binding.BMIscale.text = BMIScale(userBMI)
         binding.quote.text = dashboardData.inspiration
-
+        refreshWeightData(userID, context, binding)
 
         val appcontext = holder.itemView.context
+
+//        update metrics
         holder.binding.updateMetric.setOnClickListener {
             //trigger metrics alert
             metricsAlert(appcontext, binding)
         }
 
+//        pop disclaimer
+        holder.binding.info.setOnClickListener {
+            disclaimer(appcontext)
+        }
+
+//        edit weight
+
+        holder.binding.weightEditIcon.setOnClickListener {
+            editWeight(binding, context)
+        }
+
+        holder.binding.saveWeight.setOnClickListener {
+
+            updateWeight(binding, context, userID)
+        }
+
+
     }
+
 
     inner class DashboardViewHolder(val binding: DashboardItemsBinding) :
         RecyclerView.ViewHolder(binding.root)
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    @SuppressLint("SetTextI18n")
+    private fun updateWeight(binding: DashboardItemsBinding, context: Context, userID: String) {
+        val weightET = binding.editWeight
+        val weightInput = binding.userWeight
+        weightET.visibility = View.GONE
+        weightInput.visibility = View.VISIBLE
+        binding.saveWeight.visibility = View.GONE
+        binding.weightEditIcon.visibility = View.VISIBLE
+
+
+
+        when {
+            weightET.text.toString().isEmpty() -> {
+                Toast.makeText(context, "Invalid Weight!, No changes Made", Toast.LENGTH_LONG)
+                    .show()
+            }
+
+            weightET.text.toString().toDouble() < 20 -> {
+                Toast.makeText(context, "Please enter a weight above 20kg", Toast.LENGTH_LONG)
+                    .show()
+            }
+
+            else -> {
+                weightInput.text = weightET.text.toString()
+                val userHeight = (binding.userHeight.text.toString()).toInt()
+                val userWeight = weightInput.text.toString().toDouble()
+                val decimalFormat = DecimalFormat("#.##")
+                 val userWeightF = decimalFormat.format(userWeight).toDouble()
+
+
+
+                //save to database
+                val database = FirebaseDatabase.getInstance()
+                val weightRef = database.getReference("Weight Data")
+                val dateTime = formattedDate(currentDate)
+                // Save weight to Firebase Realtime Database
+                val weightData = WeightData(
+                    userID,
+                    dateTime,
+                    userWeightF, userHeight
+                )
+                weightRef.setValue(weightData)
+
+                refreshWeightData(userID, context, binding)
+
+                Toast.makeText(context, "Weight Updated", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private  fun formattedDate(date: LocalDate): String {
+        // Convert LocalDate to LocalDateTime
+        val localDateTime = LocalDateTime.of(date, LocalTime.now())
+
+        // Convert LocalDateTime to Date
+        val dateObj = Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant())
+
+        // Define date and time format
+        val dateFormat = SimpleDateFormat("dd-MM-yy", Locale.getDefault())
+        val timeFormat = SimpleDateFormat("hh:mm a", Locale.getDefault())
+
+        // Format the date and time
+        val formattedDate = dateFormat.format(dateObj)
+        val formattedTime = timeFormat.format(dateObj)
+
+        // Return the formatted string
+        return "$formattedDate, $formattedTime"
+    }
+
+    private fun refreshWeightData(id: String, context: Context, binding: DashboardItemsBinding) {
+        Log.i("weightData", id)
+        // Get a reference to the Firebase database
+        val database = FirebaseDatabase.getInstance()
+        val databaseReference = database.getReference("Weight Data") // Update the path
+        var weightData = WeightData("", "", 0.0)
+        // Add a ValueEventListener to listen for changes in the data
+        databaseReference.addListenerForSingleValueEvent(object : ValueEventListener {
+            @SuppressLint("SetTextI18n")
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                // Check if the dataSnapshot contains any data
+                if (dataSnapshot.exists()) {
+                    // Retrieve the data for the given user ID and convert it to a WeightData object
+                    weightData = dataSnapshot.getValue(WeightData::class.java)!!
+
+                    binding.userWeight.text = weightData.value.toString()
+                    binding.lastUpdateDate.text = "Last Updated ${weightData.date}"
+
+                    val userBMI = calculateBMI(weightData.value, weightData.height)
+                    binding.userBMI.text = "$userBMI BMI"
+                    binding.BMIscale.text = BMIScale(userBMI)
+                    binding.targetWeight.text = targetWeight(weightData.height)
+                    binding.userWeight.text = "${weightData.value}Kg"
+
+                } else {
+                   Toast.makeText(context, "Something unexpected happened, please try again later", Toast.LENGTH_LONG).show()
+                }
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                // Handle any errors that occur during the data retrieval process
+                Log.e("weightData", "Data retrieval cancelled: ${databaseError.message}")
+            }
+        })
+
+    }
+
+
+
+    private fun targetWeight(height: Int): String {
+        //24.8
+        val heightInMeters = height * 0.01
+        val targetBMI = heightInMeters * heightInMeters * 24.8
+        val decimalFormat = DecimalFormat("#.##")
+        val bmi = decimalFormat.format(targetBMI)
+        return "Your Goal Weight: $bmi Kg"
+
+    }
+
+
+    @SuppressLint("ClickableViewAccessibility")
+    private fun editWeight(binding: DashboardItemsBinding, context: Context){
+        val weightET = binding.editWeight
+        val weight = binding.userWeight
+
+        weightET.visibility = View.VISIBLE
+        weight.visibility = View.GONE
+        binding.saveWeight.visibility = View.VISIBLE
+        binding.weightEditIcon.visibility = View.GONE
+
+        // Set input type to number
+        weightET.inputType = InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_FLAG_DECIMAL
+
+        // Set hint
+        weightET.hint = binding.root.context.getString(R.string.kg)
+        weightET.setBackgroundResource(R.drawable.edittext_border)
+
+
+
+    }
 
     private fun updateMetricsChart(binding: DashboardItemsBinding) {
         binding.waterProgressIndicator.setProgress(waterProgress, true)
@@ -131,9 +300,9 @@ class DashboardRecyclerAdapter(
 
     // this function calculates the BMI of the user
 
-    private fun calculateBMI(weight: Int, height: Int): Double {
+    private fun calculateBMI(weight: Double, height: Int): Double {
         val heightInMeters = height * 0.01
-        val bmiDouble = (weight / (heightInMeters * heightInMeters)).toDouble()
+        val bmiDouble = (weight / (heightInMeters * heightInMeters))
         val decimalFormat = DecimalFormat("#.##")
         val bmi = decimalFormat.format(bmiDouble)
         return bmi.toDouble()
@@ -142,12 +311,12 @@ class DashboardRecyclerAdapter(
     @RequiresApi(Build.VERSION_CODES.O)
     private fun metricsAlert(context: Context, binding: DashboardItemsBinding) {
         val dialogView = LayoutInflater.from(context).inflate(R.layout.dashboar_update_alert, null)
-        var activityCount = dialogView.findViewById<Spinner>(R.id.exerciseCount)
-        var stepsCount = dialogView.findViewById<EditText>(R.id.stepsCount)
-        var caloriesCount = dialogView.findViewById<EditText>(R.id.caloriesCount)
-        var waterCupsCount = dialogView.findViewById<Spinner>(R.id.waterCupsSpinner)
-        var buttonSave = dialogView.findViewById<Button>(R.id.buttonSave)
-        var buttonCancel = dialogView.findViewById<Button>(R.id.buttonCancel)
+        val activityCount = dialogView.findViewById<Spinner>(R.id.exerciseCount)
+        val stepsCount = dialogView.findViewById<EditText>(R.id.stepsCount)
+        val caloriesCount = dialogView.findViewById<EditText>(R.id.caloriesCount)
+        val waterCupsCount = dialogView.findViewById<Spinner>(R.id.waterCupsSpinner)
+        val buttonSave = dialogView.findViewById<Button>(R.id.buttonSave)
+        val buttonCancel = dialogView.findViewById<Button>(R.id.buttonCancel)
 
 
         stepsCount.setText(totalSteps.toString())
@@ -301,15 +470,6 @@ class DashboardRecyclerAdapter(
 
         updateIndicatorData(binding, waterProgress, caloryProgress, exerciseProgress, stepsProgress)
 
-//        binding.waterText.text = "0 of 1500ml"
-//        binding.caloryText.text = "0 kcal"
-//        binding.exerciseText.text = "0 Exercises"
-//        binding.stepsText.text = "0 of 10000 steps"
-
-
-//        editor.apply()
-
-
     }
 
     private fun BMIScale(BMI: Double): String {
@@ -336,4 +496,25 @@ class DashboardRecyclerAdapter(
         }
         return scale
     }
-}
+
+    private fun disclaimer(context: Context) {
+
+        val alertDialogBuilder = AlertDialog.Builder(context)
+        alertDialogBuilder.apply {
+            setTitle("Disclaimer!")
+            setMessage("BMI is a measure of weight relative to height and may not accurately reflect body composition, particularly for muscle mass.\n" +
+                    "WHO recommends using BMI alongside other diagnostic tools to assess health risks.")
+
+            setNegativeButton("Ok, Thanks") { dialog, _ ->
+                // Dismiss the dialog if "No" is clicked
+                dialog.dismiss()
+            }
+        }
+        val alertDialog = alertDialogBuilder.create()
+        alertDialog.show()
+    }
+
+
+        }
+//weightET.visibility = View.GONE
+//weight.visibility = View.VISIBLE

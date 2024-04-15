@@ -62,6 +62,8 @@ class Dashboard : AppCompatActivity() {
         val height = userData?.height ?: 0
         val name = userData?.name.toString()
         val firstName = firstName(name)
+        val userID = userData?.id.toString()
+        val email = userData?.email.toString()
 
 //        binding.weight.text = weight.toString()
 //        binding.height.text = height.toString()
@@ -73,7 +75,9 @@ class Dashboard : AppCompatActivity() {
                 name = "Hello $firstName!",
                 userWeight = weight,
                 userHeight = height,
-                inspiration= it
+                inspiration= it,
+                email = email,
+                userID = userID
             )
         }
         val adapter = progressData?.let { DashboardRecyclerAdapter(it, prefs) }
@@ -183,8 +187,6 @@ private fun firstName(name: String): String {
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun inspirations(): String? {
-        Log.i("Date", currentDate.toString())
-        Log.i("Date13", lastDate.toString())
         prefs = getSharedPreferences("dashboardData", Context.MODE_PRIVATE)
         return if (currentDate != lastDate) {
             lastDate = currentDate

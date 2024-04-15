@@ -6,6 +6,8 @@ data class DashboardData(
     val userWeight: Int,
     val userHeight: Int,
     val inspiration: String,
+    val email: String,
+    val userID : String
 )
 data class DashboardMetricData(
     var waterProgress: Int?,

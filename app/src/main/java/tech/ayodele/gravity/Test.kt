@@ -5,7 +5,7 @@ import androidx.annotation.RequiresApi
 import java.text.DecimalFormat
 import java.time.LocalDate
 
-private fun calculateBMI(weight: Int, height: Int): Double {
+fun calculateBMI(weight: Int, height: Int): Double {
     val heightInMeters = height * 0.01
     val bmiDouble = (weight / (heightInMeters * heightInMeters)).toDouble()
     val decimalFormat = DecimalFormat("#.##")
