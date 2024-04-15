@@ -24,6 +24,8 @@
         android:layout_height="70dp"
         android:layout_gravity="center"
         android:src="@drawable/user"
+        android:id="@+id/profile_image"
+
         android:background="@drawable/profile_circle"
         android:contentDescription="@string/profile_image" />
 
@@ -33,8 +35,9 @@
     android:textSize="18sp"
         android:textStyle="bold"
     android:layout_gravity="center"
+        android:id="@+id/profileName"
         android:layout_marginTop="10dp"
-    android:text="Ayodele Oduola" />
+    />
 
     <TextView
         android:layout_width="wrap_content"
@@ -42,6 +45,7 @@
         android:textSize="14sp"
         android:layout_gravity="center"
         android:layout_marginTop="10dp"
-        android:text="a024459@outlook.com" />
+        android:id="@+id/profileEmail"
+       />
 
 </LinearLayout>

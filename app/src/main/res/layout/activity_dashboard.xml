@@ -39,11 +39,11 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
             android:layout_marginTop="3dp"
-            android:layout_marginBottom="-30dp"
+            android:layout_marginBottom="-36dp"
             android:background="@color/testwhite"
             app:itemBackground="@color/lightGrey"
             app:itemIconSize="24dp"
-            app:itemPaddingBottom="25dp"
+            app:itemPaddingBottom="30dp"
             app:menu="@menu/bottom_nav" />
 
     </androidx.appcompat.widget.LinearLayoutCompat>

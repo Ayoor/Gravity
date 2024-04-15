@@ -18,8 +18,10 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.navigation.NavigationBarView
+import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
 import tech.ayodele.gravity.databinding.ActivityDashboardBinding
+import tech.ayodele.gravity.databinding.DrawerHeaderBinding
 import java.time.LocalDate
 
 
@@ -65,6 +67,8 @@ class Dashboard : AppCompatActivity() {
         val userID = userData?.id.toString()
         val email = userData?.email.toString()
 
+        setProfileDetails(name, email)
+
 //        binding.weight.text = weight.toString()
 //        binding.height.text = height.toString()
 
@@ -100,6 +104,11 @@ class Dashboard : AppCompatActivity() {
                     }
                     R.id.liveHelp -> {
                         Toast.makeText(this@Dashboard, "live help", Toast.LENGTH_LONG).show()
+                        return true
+                    }
+
+                    R.id.dieting -> {
+                        Toast.makeText(this@Dashboard, "Diet", Toast.LENGTH_LONG).show()
                         return true
                     }
                     // Add more cases for other menu items as needed
@@ -204,6 +213,20 @@ private fun firstName(name: String): String {
 
         }
 
+    }
+
+    private fun setProfileDetails(name: String, email: String){
+        // Get the NavigationView from your layout XML file
+        val navigationView: NavigationView = findViewById(R.id.sideNav)
+
+// Find the header view inside the NavigationView
+        val headerView = navigationView.getHeaderView(0)
+
+// Bind the header layout using data binding
+        val headerBinding = DrawerHeaderBinding.bind(headerView)
+
+    headerBinding.profileName.text = name
+    headerBinding.profileEmail.text = email
     }
 
 

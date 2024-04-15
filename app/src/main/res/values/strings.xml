@@ -59,5 +59,6 @@
     <string name="target_weight">Target Weight</string>
     <string name="information">Information</string>
     <string name="kg">KG</string>
+    <string name="diet">Diet</string>
 
 </resources>
