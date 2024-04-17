@@ -16,6 +16,7 @@ class Diet : AppCompatActivity() {
     private lateinit var binding: ActivityDietBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        overridePendingTransition(0, 0)
         enableEdgeToEdge()
         setContentView(R.layout.activity_diet)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->

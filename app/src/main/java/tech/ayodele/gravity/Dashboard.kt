@@ -46,6 +46,7 @@ class Dashboard : AppCompatActivity() {
         prefs = getSharedPreferences("dashboardData", Context.MODE_PRIVATE)
         val lastInspoDate = prefs.getString("lastDate", "$currentDate")
         lastDate = LocalDate.parse(lastInspoDate)
+        overridePendingTransition(0, 0)
         enableEdgeToEdge()
         setContentView(R.layout.activity_dashboard)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.drawer_layout)) { v, insets ->

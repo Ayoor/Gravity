@@ -119,7 +119,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="15dp"
-                    android:text="800 0f 1500ml"
+                    android:text="0 0f 1500ml"
                     android:textSize="14sp" />
 
                 <com.google.android.material.progressindicator.LinearProgressIndicator
@@ -178,7 +178,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:text="475 kcal"
+                        android:text="0 kcal"
                         android:textColor="@android:color/black"
                         android:textSize="18sp"
                         android:textStyle="bold" />
@@ -241,7 +241,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:text="2 Exercises"
+                        android:text="0 Exercises"
                         android:textColor="@android:color/black"
                         android:textSize="16sp"
                         android:textStyle="bold" />
@@ -271,7 +271,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="15dp"
-                    android:text="1590 0f 10000 steps"
+                    android:text="0 0f 10000 steps"
                     android:textSize="14sp" />
 
                 <com.google.android.material.progressindicator.LinearProgressIndicator
@@ -363,7 +363,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
-                    android:text="60kg"
+                    android:text="0kg"
                     android:textSize="38sp"
                     android:textStyle="bold" />
 
@@ -402,7 +402,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="1"
-                    android:text="Goal: 57Kg"
+                    android:text="Goal: 0Kg"
                     android:textAlignment="center"
                     android:textSize="16sp"
                     android:textStyle="bold" />
@@ -431,7 +431,7 @@
         android:id="@+id/userHeight"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="177"
+        android:text="0"
         android:textAlignment="center"
         android:textSize="18sp"
         android:textStyle="bold" />
@@ -467,7 +467,7 @@
                     android:id="@+id/userBMI"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="20.3 BMI"
+                    android:text="0 BMI"
                     android:textAlignment="center"
                     android:textSize="18sp"
 
@@ -479,7 +479,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginTop="5dp"
-                    android:text="Normal"
+                    android:text=""
                     android:textAlignment="center"
                     android:textSize="16sp"
                     android:textStyle="bold" />

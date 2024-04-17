@@ -19,6 +19,7 @@ class Community : AppCompatActivity(), CommunityAdapter.OnItemClickListener  {
     private lateinit var binding: ActivityCommunityBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        overridePendingTransition(0, 0)
         enableEdgeToEdge()
         setContentView(R.layout.activity_community)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->

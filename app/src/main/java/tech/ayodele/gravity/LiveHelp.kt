@@ -8,13 +8,13 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.google.android.material.navigation.NavigationBarView
-import tech.ayodele.gravity.databinding.ActivityDietBinding
 import tech.ayodele.gravity.databinding.ActivityLiveHelpBinding
 
 class LiveHelp : AppCompatActivity() {
     private lateinit var binding : ActivityLiveHelpBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        overridePendingTransition(0, 0)
         enableEdgeToEdge()
         setContentView(R.layout.activity_live_help)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
