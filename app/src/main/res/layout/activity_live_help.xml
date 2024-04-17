@@ -1,8 +1,8 @@
-<androidx.drawerlayout.widget.DrawerLayout
+<androidx.appcompat.widget.LinearLayoutCompat
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/drawer_layout"
+    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Dashboard">
@@ -11,7 +11,21 @@
     <FrameLayout
         android:id="@+id/fragment_container"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent" >
+
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/bottom_navigation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_marginTop="3dp"
+            android:layout_marginBottom="-10dp"
+            android:background="@color/testwhite"
+            app:itemBackground="@color/lightGrey"
+            app:itemIconSize="24dp"
+            app:itemPaddingBottom="20dp"
+            app:menu="@menu/bottom_nav" />
+    </FrameLayout>
 
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/sideNav"
@@ -55,21 +69,9 @@
             android:paddingHorizontal="20dp" />
 
         <!--  BottomNavigationView -->
-        <com.google.android.material.bottomnavigation.BottomNavigationView
-            android:id="@+id/bottom_navigation"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:layout_marginTop="3dp"
-            android:layout_marginBottom="-10dp"
-            android:background="@color/testwhite"
-            app:itemBackground="@color/lightGrey"
-            app:itemIconSize="24dp"
-            app:itemPaddingBottom="20dp"
-            app:menu="@menu/bottom_nav" />
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 
 
 
-</androidx.drawerlayout.widget.DrawerLayout>
+</androidx.appcompat.widget.LinearLayoutCompat>

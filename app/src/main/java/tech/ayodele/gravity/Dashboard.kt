@@ -17,9 +17,12 @@ import androidx.core.view.GravityCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.gms.common.api.Response
 import com.google.android.material.navigation.NavigationBarView
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
+import retrofit2.Call
+import retrofit2.Callback
 import tech.ayodele.gravity.databinding.ActivityDashboardBinding
 import tech.ayodele.gravity.databinding.DrawerHeaderBinding
 import java.time.LocalDate
@@ -30,8 +33,9 @@ class Dashboard : AppCompatActivity() {
 
     //   initialisation
     private lateinit var binding: ActivityDashboardBinding
-    private  lateinit var prefs : SharedPreferences
+    private lateinit var prefs: SharedPreferences
     private var lastDate: LocalDate? = null
+
     @RequiresApi(Build.VERSION_CODES.O)
     private var currentDate = LocalDate.now()
 
@@ -49,7 +53,9 @@ class Dashboard : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-            //set up element binding
+//        apiCall()
+        getData()
+        //set up element binding
         binding = ActivityDashboardBinding.inflate(layoutInflater)
         setContentView(binding.root)
         // get the user details object from the Signin Activity using Parcelables
@@ -79,7 +85,7 @@ class Dashboard : AppCompatActivity() {
                 name = "Hello $firstName!",
                 userWeight = weight,
                 userHeight = height,
-                inspiration= it,
+                inspiration = it,
                 email = email,
                 userID = userID
             )
@@ -91,24 +97,30 @@ class Dashboard : AppCompatActivity() {
 
 //bottom nav
         val bottomNavigation = binding.bottomNavigation
-        bottomNavigation.setOnItemSelectedListener(object : NavigationBarView.OnItemSelectedListener {
+        bottomNavigation.selectedItemId = R.id.home
+        bottomNavigation.setOnItemSelectedListener(object :
+            NavigationBarView.OnItemSelectedListener {
             override fun onNavigationItemSelected(item: MenuItem): Boolean {
                 when (item.itemId) {
                     R.id.home -> {
-                        Toast.makeText(this@Dashboard, "Home", Toast.LENGTH_LONG).show()
                         return true
                     }
+
                     R.id.community -> {
-                        Toast.makeText(this@Dashboard, "Community", Toast.LENGTH_LONG).show()
+                        startActivity(Intent(this@Dashboard, Community::class.java))
+                        finish()
                         return true
                     }
+
                     R.id.liveHelp -> {
-                        Toast.makeText(this@Dashboard, "live help", Toast.LENGTH_LONG).show()
+                        startActivity(Intent(this@Dashboard, LiveHelp::class.java))
+                        finish()
                         return true
                     }
 
                     R.id.dieting -> {
-                        Toast.makeText(this@Dashboard, "Diet", Toast.LENGTH_LONG).show()
+                        startActivity(Intent(this@Dashboard, Diet::class.java))
+                        finish()
                         return true
                     }
                     // Add more cases for other menu items as needed
@@ -131,14 +143,10 @@ class Dashboard : AppCompatActivity() {
             }
         }
 //            user profile edit
-            val editIcon = findViewById<ImageView>(R.id.edit)
-        editIcon.setOnClickListener{
+        val editIcon = findViewById<ImageView>(R.id.edit)
+        editIcon.setOnClickListener {
             Toast.makeText(this@Dashboard, "Edit", Toast.LENGTH_LONG).show()
         }
-
-
-
-
 
 
         // Handle navigation item clicks
@@ -153,10 +161,12 @@ class Dashboard : AppCompatActivity() {
                     Toast.makeText(this@Dashboard, "Stats", Toast.LENGTH_LONG).show()
                     true
                 }
+
                 R.id.logout -> {
                     logoutUser()
                     true
                 }
+
                 else -> false
             }
         }
@@ -183,16 +193,17 @@ class Dashboard : AppCompatActivity() {
         val editor = prefs.edit()
         editor.clear().apply()
     }
-//    get user first name
-private fun firstName(name: String): String {
-    val indexOfSpace = name.indexOf(" ")
-    return if (indexOfSpace != -1) {
-        name.substring(0, indexOfSpace)
-    } else {
-        // If no space found, return the entire name as the first name
-        name
+
+    //    get user first name
+    private fun firstName(name: String): String {
+        val indexOfSpace = name.indexOf(" ")
+        return if (indexOfSpace != -1) {
+            name.substring(0, indexOfSpace)
+        } else {
+            // If no space found, return the entire name as the first name
+            name
+        }
     }
-}
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun inspirations(): String? {
@@ -209,13 +220,16 @@ private fun firstName(name: String): String {
             val editor = prefs.edit()
             editor.putString("lastDate", currentDate.toString())
             editor.apply()
-            prefs.getString("lastInspo", "Every step forward, no matter how small, is a victory on the path to a healthier you")
+            prefs.getString(
+                "lastInspo",
+                "Every step forward, no matter how small, is a victory on the path to a healthier you"
+            )
 
         }
 
     }
 
-    private fun setProfileDetails(name: String, email: String){
+    private fun setProfileDetails(name: String, email: String) {
         // Get the NavigationView from your layout XML file
         val navigationView: NavigationView = findViewById(R.id.sideNav)
 
@@ -225,11 +239,42 @@ private fun firstName(name: String): String {
 // Bind the header layout using data binding
         val headerBinding = DrawerHeaderBinding.bind(headerView)
 
-    headerBinding.profileName.text = name
-    headerBinding.profileEmail.text = email
+        headerBinding.profileName.text = name
+        headerBinding.profileEmail.text = email
     }
 
 
+    private fun getData() {
+        val call = RetrofitClient.apiService.fetchData()
+        call.enqueue(object : Callback<CategoriesResponse> {
+            override fun onResponse(
+                call: Call<CategoriesResponse>,
+                response: retrofit2.Response<CategoriesResponse>
+            ) {
+                if (response.isSuccessful) {
+                    val categoriesResponse = response.body()
+                    categoriesResponse?.let {
+                        for (category in it.categories) {
+                            Log.i("response", category.toString())
+                        }
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<CategoriesResponse>, t: Throwable) {
+                Toast.makeText(
+                    this@Dashboard,
+                    "An error occurred while Retrieving Data, please try again Later.",
+                    Toast.LENGTH_LONG
+                ).show()
+                Log.i("response", t.toString())
+            }
+        })
+    }
+
 
 }
+
+
+
 

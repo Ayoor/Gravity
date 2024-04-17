@@ -2,6 +2,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -13,20 +17,36 @@
         android:theme="@style/Theme.Gravity"
         tools:targetApi="31">
         <activity
+            android:name=".LiveHelp"
+            android:exported="false" />
+        <activity
+            android:name=".Diet"
+            android:exported="false" /> <!-- Note:  android:windowSoftInputMode="adjustPan" prevent keyboard covering edittext -->
+        <activity
+            android:name=".TopicForum"
+            android:exported="false"
+            android:parentActivityName=".Community"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".Community"
+            android:exported="false"
+            android:parentActivityName=".Dashboard" />
+        <activity
             android:name=".SignupSuccess"
             android:exported="false" />
         <activity
             android:name=".OnBoardingSurvey"
-            android:exported="false">
-        </activity>
+            android:exported="false" />
         <activity
             android:name=".Dashboard"
-            android:exported="false" >
-<!--        <intent-filter>-->
-<!--            <action android:name="android.intent.action.MAIN" />-->
+            android:exported="false">
 
-<!--            <category android:name="android.intent.category.LAUNCHER" />-->
-<!--        </intent-filter>-->
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.intent.action.MAIN" /> -->
+
+
+            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+            <!-- </intent-filter> -->
         </activity>
         <activity
             android:name=".Signin"

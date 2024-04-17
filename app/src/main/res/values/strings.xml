@@ -60,5 +60,7 @@
     <string name="information">Information</string>
     <string name="kg">KG</string>
     <string name="diet">Diet</string>
+    <string name="commenticon">commentIcon</string>
+    <string name="no_posts_yet">No Posts Yet</string>
 
 </resources>
