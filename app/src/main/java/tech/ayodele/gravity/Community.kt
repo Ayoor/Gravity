@@ -104,9 +104,10 @@ class Community : AppCompatActivity(), CommunityAdapter.OnItemClickListener  {
         })
     }
     override fun onItemClick(item: CommunityItems) {
-        startActivity(Intent(this@Community, TopicForum::class.java))
+        val intent = Intent(this@Community, TopicForum::class.java)
+        intent.putExtra("topic", item.topic)
+        startActivity(intent)
         Log.i("item", item.toString())
-
     }
 
 }

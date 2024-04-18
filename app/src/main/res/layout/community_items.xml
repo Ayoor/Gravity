@@ -75,7 +75,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/comments"
-            android:background="@color/white"
+            android:background="@color/lightGrey"
 
             android:layout_marginBottom="-40dp"
             android:contentDescription="@string/commenticon" />

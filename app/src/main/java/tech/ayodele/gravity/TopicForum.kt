@@ -1,10 +1,16 @@
 package tech.ayodele.gravity
 
 import android.annotation.SuppressLint
+import android.content.Context
+import android.content.Intent
+import android.content.SharedPreferences
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -14,20 +20,35 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import com.google.gson.Gson
 import tech.ayodele.gravity.databinding.ActivityTopicForumBinding
 import java.text.SimpleDateFormat
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.LocalTime
+import java.time.ZoneId
 import java.util.Date
 import java.util.Locale
+
+//todo:
+// 1. get dateandtime and set to bubble -> done
+// 2. get topic and send it to Activity -> done
+// 3. get real username and set it to bubble ->
+// 4. adjust topic and arrow position / background -> done
+// 5. disallow empty posts
 
 class TopicForum : AppCompatActivity() {
 
     private lateinit var binding: ActivityTopicForumBinding
     private var allPosts: MutableList<ForumPost> = mutableListOf()
-
+    private lateinit var prefs: SharedPreferences
+    @RequiresApi(Build.VERSION_CODES.O)
     @SuppressLint("NotifyDataSetChanged")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+        prefs = getSharedPreferences("saveData", Context.MODE_PRIVATE)
+        val topic = intent.getStringExtra("topic")
         binding = ActivityTopicForumBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -40,24 +61,58 @@ class TopicForum : AppCompatActivity() {
         binding.forumRecycler.visibility = View.VISIBLE
         binding.noPost.visibility = View.GONE
 
+        binding.forumTopic.text = topic
+
         binding.sendButton.setOnClickListener {
             val messageText = binding.postEditText.text.toString()
-            val timestamp = SimpleDateFormat("HH:mm", Locale.getDefault()).format(Date())
-            val newPost = ForumPost("Gregg", messageText, timestamp)
-            uploadPost(newPost)
-//            allPosts.add(newPost)
+            val timestamp = formattedDate()
+            val name = retrieveUserName(prefs)
+            val newPost = ForumPost(name, messageText, timestamp)
+            uploadPost(newPost, topic!!)
             binding.postEditText.text.clear()
             retrievePosts()
+        }
+
+
+        binding.backArrow.setOnClickListener{
+            startActivity(Intent(this, Community::class.java))
+            finish()
         }
 
         // Retrieve posts from Firebase
         retrievePosts()
     }
+    @RequiresApi(Build.VERSION_CODES.O)
+    private  fun formattedDate(): String {
+        // Convert LocalDate to LocalDateTime
+        val currentDate = LocalDate.now()
+        val localDateTime = LocalDateTime.of(currentDate, LocalTime.now())
 
-    private fun uploadPost(post: ForumPost) {
-        val database = FirebaseDatabase.getInstance()
-        val postsRef = database.reference.child("Posts").child("Exercise")
-        postsRef.push().setValue(post)
+        // Convert LocalDateTime to Date
+        val dateObj = Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant())
+
+        // Define date and time format
+        val dateFormat = SimpleDateFormat("dd-MM-yy", Locale.getDefault())
+        val timeFormat = SimpleDateFormat("hh:mm a", Locale.getDefault())
+
+        // Format the date and time
+        val formattedDate = dateFormat.format(dateObj)
+        val formattedTime = timeFormat.format(dateObj)
+
+        // Return the formatted string
+        return "$formattedDate, $formattedTime"
+    }
+
+    private fun uploadPost(post: ForumPost, topic: String) {
+        if(post.message.isEmpty()){
+            Toast.makeText(this@TopicForum, "Please enter something to Post.", Toast.LENGTH_SHORT).show()
+        }
+        else{
+            val database = FirebaseDatabase.getInstance()
+            val postsRef = database.reference.child("Posts").child(topic)
+            postsRef.push().setValue(post)
+        }
+
     }
 
     private fun retrievePosts() {
@@ -85,5 +140,13 @@ class TopicForum : AppCompatActivity() {
                 Log.e("weightData", "Data retrieval cancelled: ${databaseError.message}")
             }
         })
+    }
+
+    private fun retrieveUserName(preferences: SharedPreferences): String {
+        val existingUser = preferences.getBoolean("existingUser", false)
+        val userDataJson = preferences.getString("userdata", null)
+        val gson = Gson()
+        val userData = gson.fromJson(userDataJson, UserDetails::class.java)
+        return userData.name.toString()
     }
 }

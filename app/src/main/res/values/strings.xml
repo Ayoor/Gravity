@@ -62,5 +62,6 @@
     <string name="diet">Diet</string>
     <string name="commenticon">commentIcon</string>
     <string name="no_posts_yet">No Posts Yet</string>
+    <string name="enter_your_post">Enter your post</string>
 
 </resources>
