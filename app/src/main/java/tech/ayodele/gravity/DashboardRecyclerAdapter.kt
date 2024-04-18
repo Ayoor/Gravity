@@ -412,7 +412,7 @@ class DashboardRecyclerAdapter(
         }
 
     }
-
+//convert cups to milliliter
     private fun cupsToMl(cups: String): String {
         val ml = cups.toInt() * 250
         return ml.toString()

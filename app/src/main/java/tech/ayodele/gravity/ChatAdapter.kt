@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 
 
 
-class ChatAdapter(private val chatMessages: MutableList<ChatMessage>, topicForum: TopicForum) :
+class ChatAdapter(private val forumPosts: MutableList<ForumPost>, topicForum: TopicForum) :
     RecyclerView.Adapter<ChatAdapter.ChatViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ChatViewHolder {
@@ -18,12 +18,12 @@ class ChatAdapter(private val chatMessages: MutableList<ChatMessage>, topicForum
     }
 
     override fun onBindViewHolder(holder: ChatViewHolder, position: Int) {
-        val chatMessage = chatMessages[position]
+        val chatMessage = forumPosts[position]
         holder.bind(chatMessage)
     }
 
     override fun getItemCount(): Int {
-        return chatMessages.size
+        return forumPosts.size
     }
 
     inner class ChatViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -31,10 +31,10 @@ class ChatAdapter(private val chatMessages: MutableList<ChatMessage>, topicForum
         private val messageTextView: TextView = itemView.findViewById(R.id.messageTextView)
         private val timestampTextView: TextView = itemView.findViewById(R.id.timestampTextView)
 
-        fun bind(chatMessage: ChatMessage) {
-            senderNameTextView.text = chatMessage.senderName
-            messageTextView.text = chatMessage.message
-            timestampTextView.text = chatMessage.timestamp
+        fun bind(forumPost: ForumPost) {
+            senderNameTextView.text = forumPost.senderName
+            messageTextView.text = forumPost.message
+            timestampTextView.text = forumPost.timestamp
         }
     }
 }
