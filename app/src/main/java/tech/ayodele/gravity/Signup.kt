@@ -46,9 +46,7 @@ class Signup : AppCompatActivity() {
         binding = ActivitySignupBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        //initalise firebase and database reference
-        firebaseDatabase = FirebaseDatabase.getInstance()
-        databaseReference = firebaseDatabase.getReference("Users")
+
 
 //        bind ui elements
 
@@ -99,6 +97,11 @@ class Signup : AppCompatActivity() {
         height: Int,
         weight: Int
     ) {
+
+        //initalise firebase and database reference
+        firebaseDatabase = FirebaseDatabase.getInstance()
+        databaseReference = firebaseDatabase.getReference("Users")
+
         //check for the provided email exits
         databaseReference.orderByChild("email").equalTo(email)
             .addListenerForSingleValueEvent(object : ValueEventListener {

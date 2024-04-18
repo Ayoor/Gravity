@@ -105,13 +105,14 @@ class DashboardRecyclerAdapter(
         val weight = dashboardData.userWeight
         val height = dashboardData.userHeight
         val name = dashboardData.name
-        val userBMI = calculateBMI(weight, height)
         val email = dashboardData.email
         val userID = dashboardData.userID
 
         // Set dashboard details
         binding.name.text = name
         binding.quote.text = dashboardData.inspiration
+        binding.userHeight.text = dashboardData.userHeight.toString()
+
         refreshWeightData(userID, context, binding)
 
         val appcontext = holder.itemView.context
@@ -223,7 +224,7 @@ class DashboardRecyclerAdapter(
         // Get a reference to the Firebase database
         val database = FirebaseDatabase.getInstance()
         val databaseReference = database.getReference("Weight Data") // Update the path
-        var weightData = WeightData("", "", 0.0)
+        var weightData: WeightData
         // Add a ValueEventListener to listen for changes in the data
         databaseReference.addListenerForSingleValueEvent(object : ValueEventListener {
             @SuppressLint("SetTextI18n")
@@ -301,11 +302,13 @@ class DashboardRecyclerAdapter(
     // this function calculates the BMI of the user
 
     private fun calculateBMI(weight: Double, height: Int): Double {
-        val heightInMeters = height * 0.01
-        val bmiDouble = (weight / (heightInMeters * heightInMeters))
-        val decimalFormat = DecimalFormat("#.##")
-        val bmi = decimalFormat.format(bmiDouble)
-        return bmi.toDouble()
+        val heightInMeters = height / 100.0
+
+        // Calculate BMI using the formula: weight (kg) / height (m)^2
+        val bmi = weight / (heightInMeters * heightInMeters)
+
+        // Round BMI to 2 decimal places
+        return String.format("%.2f", bmi).toDouble()
     }
 
     @RequiresApi(Build.VERSION_CODES.O)

@@ -3,75 +3,90 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
+    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Dashboard">
+    tools:context=".LiveHelp">
 
-    <!-- Fragment container -->
-    <FrameLayout
-        android:id="@+id/fragment_container"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent" >
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:padding="15dp"
+        android:layout_weight="1">
 
-        <com.google.android.material.bottomnavigation.BottomNavigationView
-            android:id="@+id/bottom_navigation"
+        <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:layout_marginTop="3dp"
-            android:layout_marginBottom="-10dp"
-            android:background="@color/testwhite"
-            app:itemBackground="@color/lightGrey"
-            app:itemIconSize="24dp"
-            app:itemPaddingBottom="20dp"
-            app:menu="@menu/bottom_nav" />
-    </FrameLayout>
+            android:textAlignment="center"
+            android:textSize="30sp"
+            android:textStyle="bold"
+            android:text="@string/get_live_help"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            android:text="Get Help from a Human Representative "/>
 
-    <com.google.android.material.navigation.NavigationView
-        android:id="@+id/sideNav"
-        android:paddingHorizontal="20dp"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_gravity="start"
-        app:headerLayout="@layout/drawer_header"
-        app:menu="@menu/side_nav">
-
-        <!-- Custom header layout -->
-        <include layout="@layout/drawer_header" />
-
-    </com.google.android.material.navigation.NavigationView>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:orientation="horizontal">
 
 
-    <!-- Main content -->
-    <androidx.appcompat.widget.LinearLayoutCompat
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textSize="16sp"
+                android:text="Subject:"/>
+            <EditText
+                android:layout_width="0dp"
+                android:id="@+id/subject"
+                android:hint="@string/help_subject"
+                android:layout_height="wrap_content"
+                android:background="@drawable/comment_item_bg"
+                android:layout_weight="3"/>
+        </LinearLayout>
 
-        android:orientation="vertical">
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="400dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/comment_item_bg"
+            android:gravity="top"
+            android:id="@+id/mailBody"
+            android:hint="@string/write_your_message_here"
+            android:inputType="textMultiLine"
+            android:padding="15dp" />
 
-        <ImageView
+
+
+        <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/menu"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="50dp"
-            android:layout_marginBottom="20dp"
-            android:id="@+id/hamburgerMenu"
-            android:contentDescription="@string/menu"/>
+            android:text="Send"
+            android:id="@+id/sendEmail"
+            android:layout_marginTop="20dp"
+            android:layout_gravity="center"
+            android:paddingHorizontal="90dp"/>
 
-        <!-- Your existing RecyclerView -->
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerView"
-            android:layout_marginTop="-10dp"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:paddingHorizontal="20dp" />
+    </LinearLayout>
 
-        <!--  BottomNavigationView -->
-
-    </androidx.appcompat.widget.LinearLayoutCompat>
-
-
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottom_navigation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:background="@color/testwhite"
+        app:itemBackground="@color/lightGrey"
+        app:itemIconSize="24dp"
+        android:layout_marginTop="20dp"
+        app:itemPaddingBottom="20dp"
+        app:menu="@menu/bottom_nav" />
 
 </androidx.appcompat.widget.LinearLayoutCompat>

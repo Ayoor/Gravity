@@ -17,10 +17,10 @@ import androidx.core.view.GravityCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.android.gms.common.api.Response
 import com.google.android.material.navigation.NavigationBarView
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
+import com.google.gson.Gson
 import retrofit2.Call
 import retrofit2.Callback
 import tech.ayodele.gravity.databinding.ActivityDashboardBinding
@@ -34,6 +34,7 @@ class Dashboard : AppCompatActivity() {
     //   initialisation
     private lateinit var binding: ActivityDashboardBinding
     private lateinit var prefs: SharedPreferences
+    private lateinit var userprefs: SharedPreferences
     private var lastDate: LocalDate? = null
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -44,6 +45,7 @@ class Dashboard : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         prefs = getSharedPreferences("dashboardData", Context.MODE_PRIVATE)
+        userprefs = getSharedPreferences("saveData", Context.MODE_PRIVATE)
         val lastInspoDate = prefs.getString("lastDate", "$currentDate")
         lastDate = LocalDate.parse(lastInspoDate)
         overridePendingTransition(0, 0)
@@ -60,27 +62,21 @@ class Dashboard : AppCompatActivity() {
         binding = ActivityDashboardBinding.inflate(layoutInflater)
         setContentView(binding.root)
         // get the user details object from the Signin Activity using Parcelables
-        val userData: UserDetails? = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            intent.getParcelableExtra("userData", UserDetails::class.java)
-        } else {
-            @Suppress("DEPRECATION")
-            intent.getParcelableExtra<UserDetails>("userData")
-        }
+     val userData = retrieveUserData(userprefs)
 
-        val weight = userData?.weight ?: 0
-        val height = userData?.height ?: 0
-        val name = userData?.name.toString()
+        val weight = userData.weight ?: 0
+        val height = userData.height ?: 0
+        val name = userData.name.toString()
         val firstName = firstName(name)
-        val userID = userData?.id.toString()
-        val email = userData?.email.toString()
+        val userID = userData.id.toString()
+        val email = userData.email.toString()
 
-        setProfileDetails(name, email)
+        Log.i("post", userData.toString())
 
-//        binding.weight.text = weight.toString()
-//        binding.height.text = height.toString()
+        setProfileDetails(name, email) //for side nav
 
 
-//        binding.BMI.text = " BMI: ${(calculateBMI(weight, height))}"
+
         val progressData = inspirations()?.let {
             DashboardData(
                 name = "Hello $firstName!",
@@ -174,7 +170,15 @@ class Dashboard : AppCompatActivity() {
 
     }
 
-    //log user our
+    //retrieve user data
+    private fun retrieveUserData(preferences: SharedPreferences): UserDetails {
+        val userDataJson = preferences.getString("userdata", null)
+        val gson = Gson()
+        return gson.fromJson(userDataJson, UserDetails::class.java)
+    }
+
+
+    //log user out
 
     private fun logoutUser() {
         // Sign out the user from Firebase Authentication

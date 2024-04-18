@@ -70,7 +70,7 @@ class TopicForum : AppCompatActivity() {
             val newPost = ForumPost(name, messageText, timestamp)
             uploadPost(newPost, topic!!)
             binding.postEditText.text.clear()
-            retrievePosts()
+            retrievePosts(topic)
         }
 
 
@@ -80,7 +80,7 @@ class TopicForum : AppCompatActivity() {
         }
 
         // Retrieve posts from Firebase
-        retrievePosts()
+        retrievePosts(topic!!)
     }
     @RequiresApi(Build.VERSION_CODES.O)
     private  fun formattedDate(): String {
@@ -115,9 +115,9 @@ class TopicForum : AppCompatActivity() {
 
     }
 
-    private fun retrievePosts() {
+    private fun retrievePosts(topic: String) {
         val database = FirebaseDatabase.getInstance()
-        val databaseReference = database.getReference("/Posts/Exercise")
+        val databaseReference = database.getReference("/Posts/$topic")
 
         databaseReference.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
@@ -130,10 +130,23 @@ class TopicForum : AppCompatActivity() {
                 }
                 allPosts = posts.reversed().toMutableList()
 
-                // Set up the RecyclerView and adapter after retrieving posts
-                val recyclerView: RecyclerView = findViewById(R.id.forumRecycler)
-                recyclerView.layoutManager = LinearLayoutManager(this@TopicForum)
-                recyclerView.adapter = ChatAdapter(allPosts, this@TopicForum)
+                if (allPosts.isNotEmpty()) {
+                    // Set up the RecyclerView and adapter after retrieving posts
+                    val recyclerView: RecyclerView = findViewById(R.id.forumRecycler)
+                    recyclerView.layoutManager = LinearLayoutManager(this@TopicForum)
+                    recyclerView.adapter = ChatAdapter(allPosts, this@TopicForum)
+                    recyclerView.adapter?.notifyDataSetChanged()
+
+                    // Show the RecyclerView and hide the "no post" message
+                    binding.noPost.visibility = View.GONE
+                    binding.forumRecycler.visibility = View.VISIBLE
+                } else {
+                    // Hide the RecyclerView and show the "no post" message
+                    binding.noPost.visibility = View.VISIBLE
+                    binding.forumRecycler.visibility = View.GONE
+                }
+
+
             }
 
             override fun onCancelled(databaseError: DatabaseError) {

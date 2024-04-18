@@ -36,7 +36,12 @@ class CommunityAdapter(private val items: List<CommunityItems>, private val list
             binding.apply {
                 topic.text = item.topic
                 content.text = item.description
-                commentCount.text = item.commentCount.toString()
+                if (item.commentCount == 0){
+                    commentCount.text = ""
+                }
+                else{
+                    commentCount.text = item.commentCount.toString()
+                }
             }
         }
 

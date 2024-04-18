@@ -63,5 +63,8 @@
     <string name="commenticon">commentIcon</string>
     <string name="no_posts_yet">No Posts Yet</string>
     <string name="enter_your_post">Enter your post</string>
+    <string name="get_live_help">Get Live Help</string>
+    <string name="write_your_message_here">Write your message here</string>
+    <string name="help_subject">Help Subject</string>
 
 </resources>
