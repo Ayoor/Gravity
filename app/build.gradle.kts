@@ -57,13 +57,16 @@ dependencies {
     implementation(platform("com.google.firebase:firebase-bom:32.8.0"))
 
 
-    // TODO: Add the dependencies for Firebase products you want to use
+
     // When using the BoM, don't specify versions in Firebase dependencies
     implementation("com.google.firebase:firebase-analytics")
 
 //    for bottom nav
     implementation (libs.material)
     implementation ("com.google.code.gson:gson:2.10.1")
+
+    implementation ("com.google.android.material:material:1.4.0")
+
 
     implementation ("com.squareup.retrofit2:retrofit:2.9.0")
     implementation ("com.squareup.retrofit2:converter-gson:2.9.0")
