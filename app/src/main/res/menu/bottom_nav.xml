@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-<item  android:id="@+id/home"
+<item  android:id="@+id/dashboard_home"
     android:title="@string/home"
     android:icon="@drawable/home"/>
     <item  android:id="@+id/community"
         android:title="@string/community"
         android:icon="@drawable/community"/>
+    <item  android:id="@+id/insightIcon"
+        android:title="@string/insights"
+        android:icon="@drawable/stats"/>
     <item  android:id="@+id/dieting"
         android:title="@string/diet"
         android:icon="@drawable/cutlery"/>

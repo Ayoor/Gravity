@@ -3,10 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:showIn ="navigation_view">
 
-    <include layout="@layout/drawer_header" />
+
     <group android:checkableBehavior="single">
 
-        <item  android:id="@+id/stats"
+        <item  android:id="@+id/insightIcon"
             android:title="@string/statistics"
             android:icon="@drawable/stats"/>
 

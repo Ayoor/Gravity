@@ -3,13 +3,11 @@ package tech.ayodele.gravity
 import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
-import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.google.android.material.navigation.NavigationBarView
-import tech.ayodele.gravity.databinding.ActivityDashboardBinding
 import tech.ayodele.gravity.databinding.ActivityDietBinding
 
 class Diet : AppCompatActivity() {
@@ -34,7 +32,7 @@ class Diet : AppCompatActivity() {
             NavigationBarView.OnItemSelectedListener {
             override fun onNavigationItemSelected(item: MenuItem): Boolean {
                 when (item.itemId) {
-                    R.id.home -> {
+                    R.id.dashboard_home -> {
                         startActivity(Intent(this@Diet, Dashboard::class.java))
                         finish()
                         return true
@@ -42,6 +40,12 @@ class Diet : AppCompatActivity() {
 
                     R.id.community -> {
                         startActivity(Intent(this@Diet, Community::class.java))
+                        finish()
+                        return true
+                    }
+
+                    R.id.insightIcon -> {
+                        startActivity(Intent(this@Diet, Insights::class.java))
                         finish()
                         return true
                     }

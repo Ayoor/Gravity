@@ -41,7 +41,7 @@ class LiveHelp : AppCompatActivity() {
             NavigationBarView.OnItemSelectedListener {
             override fun onNavigationItemSelected(item: MenuItem): Boolean {
                 when (item.itemId) {
-                    R.id.home -> {
+                    R.id.dashboard_home -> {
                         startActivity(Intent(this@LiveHelp, Dashboard::class.java))
                         finish()
                         return true
@@ -49,6 +49,12 @@ class LiveHelp : AppCompatActivity() {
 
                     R.id.community -> {
                         startActivity(Intent(this@LiveHelp, Community::class.java))
+                        finish()
+                        return true
+                    }
+
+                    R.id.insightIcon -> {
+                        startActivity(Intent(this@LiveHelp, Insights::class.java))
                         finish()
                         return true
                     }
@@ -73,7 +79,12 @@ class LiveHelp : AppCompatActivity() {
             val userData = retrieveUserData(userprefs)
             val name = userData.name?.let { it1 -> firstName(it1) }
             val fullName = userData.name
-            sendMail(message, userData.email.toString(), name?:"User", fullName?:"Invalid", subject)
+            if (message.isEmpty()|| subject.isEmpty()){
+                Toast.makeText(this, "Please fill in all fields", Toast.LENGTH_SHORT).show()
+            }
+            else{
+                sendMail(message, userData.email.toString(), name?:"User", fullName?:"Invalid", subject)
+            }
         }
     }
     private fun retrieveUserData(preferences: SharedPreferences): UserDetails {

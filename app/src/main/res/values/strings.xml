@@ -66,5 +66,7 @@
     <string name="get_live_help">Get Live Help</string>
     <string name="write_your_message_here">Write your message here</string>
     <string name="help_subject">Help Subject</string>
+    <string name="insights">Insights</string>
+    <string name="weekly_points">Weekly Points</string>
 
 </resources>

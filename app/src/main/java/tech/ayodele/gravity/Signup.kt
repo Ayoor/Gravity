@@ -1,9 +1,12 @@
 package tech.ayodele.gravity
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Build
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.annotation.RequiresApi
@@ -15,15 +18,26 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import com.google.gson.Gson
 import tech.ayodele.gravity.databinding.ActivitySignupBinding
+import tech.ayodele.gravity.databinding.DashboardItemsBinding
 import java.security.Key
+import java.text.DecimalFormat
+import java.text.SimpleDateFormat
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.LocalTime
+import java.time.ZoneId
 import java.util.Base64
+import java.util.Date
+import java.util.Locale
 import javax.crypto.Cipher
 import javax.crypto.spec.SecretKeySpec
 
 class Signup : AppCompatActivity() {
     // variable declarations
     private lateinit var binding: ActivitySignupBinding
+    private lateinit var prefs: SharedPreferences
     private lateinit var firebaseDatabase: FirebaseDatabase
     private lateinit var databaseReference: DatabaseReference // for database connection
 
@@ -47,7 +61,6 @@ class Signup : AppCompatActivity() {
         setContentView(binding.root)
 
 
-
 //        bind ui elements
 
         binding.signupBtn.setOnClickListener {
@@ -60,7 +73,7 @@ class Signup : AppCompatActivity() {
             // verify all required fields
             if (email.isNotEmpty() && password.isNotEmpty() && name.isNotEmpty()) {
                 val hashedPassword = encryptPassword(password)
-                signupUser(name, hashedPassword, email, height.toInt(), weight.toInt())
+                signupUser(name, hashedPassword, email, height.toInt(), weight.toDouble())
             } else {
                 Toast.makeText(this, "Please fill in all fields", Toast.LENGTH_SHORT).show()
             }
@@ -95,7 +108,7 @@ class Signup : AppCompatActivity() {
         password: String,
         email: String,
         height: Int,
-        weight: Int
+        weight: Double
     ) {
 
         //initalise firebase and database reference
@@ -105,20 +118,27 @@ class Signup : AppCompatActivity() {
         //check for the provided email exits
         databaseReference.orderByChild("email").equalTo(email)
             .addListenerForSingleValueEvent(object : ValueEventListener {
+                @RequiresApi(Build.VERSION_CODES.O)
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
-                    //if the user exists
                     if (!dataSnapshot.exists()) {
-                        //val id =
-                        //    databaseReference.push().key // Generate a unique tech.ayodele.gravity.getKey for the new user
-                        val id = "User ${dataSnapshot.childrenCount + 1}"
+                        val id = databaseReference.push().key ?: ""
                         val userData = UserDetails(id, userName, email, password, height, weight)
-                        databaseReference.child(id).setValue(userData) // save "userdata"
+                        databaseReference.child(id).setValue(userData)
                             .addOnSuccessListener {
                                 Toast.makeText(
                                     this@Signup,
                                     "Sign Up Successful",
                                     Toast.LENGTH_SHORT
                                 ).show()
+                                updateWeight(id, height, weight)
+                                val userdata = UserDetails(
+                                    id = id,
+                                    name = userName,
+                                    height = height,
+                                    weight = weight,
+                                    email = email
+                                )
+                                saveUserData(userdata)
                                 startActivity(Intent(this@Signup, SignupSuccess::class.java))
                                 finish()
                             }
@@ -139,8 +159,80 @@ class Signup : AppCompatActivity() {
                     Toast.makeText(this@Signup, error.message, Toast.LENGTH_SHORT).show()
                 }
             })
+
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun updateWeight(userID: String, height: Int, weight: Double) {
+        val decimalFormat = DecimalFormat("#.##")
+        val userWeightF = decimalFormat.format(weight).toDouble()
+        val database = FirebaseDatabase.getInstance()
+        val weightRef = database.getReference("Weight Data")
+
+        // Check if the user ID exists in the database
+        weightRef.child(userID).addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                if (!dataSnapshot.exists()) {
+                    // User ID does not exist, save the weight data
+                    val dateTime = formattedDate()
+                    val weightData = WeightData(userID, dateTime, userWeightF, height)
+                    weightRef.child(userID).setValue(weightData)
+
+                        .addOnFailureListener { e ->
+                            // Failed to save weight data
+                            Toast.makeText(
+                                this@Signup,
+                                "Failed to update weight data: ${e.message}",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                }
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                // Handle onCancelled event
+                Toast.makeText(
+                    this@Signup,
+                    "Database error: ${databaseError.message}",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        })
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun formattedDate(): String {
+        val date = LocalDate.now()
+        // Convert LocalDate to LocalDateTime
+        val localDateTime = LocalDateTime.of(date, LocalTime.now())
+
+        // Convert LocalDateTime to Date
+        val dateObj = Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant())
+
+        // Define date and time format
+        val dateFormat = SimpleDateFormat("dd-MM-yy", Locale.getDefault())
+        val timeFormat = SimpleDateFormat("hh:mm a", Locale.getDefault())
+
+        // Format the date and time
+        val formattedDate = dateFormat.format(dateObj)
+        val formattedTime = timeFormat.format(dateObj)
+
+        // Return the formatted string
+        return "$formattedDate, $formattedTime"
+    }
+
+    fun saveUserData(user: UserDetails) {
+        prefs = getSharedPreferences("saveData", Context.MODE_PRIVATE)
+        val editor = prefs.edit()
+        editor.putBoolean("existingUser", true)
+        val gson = Gson()
+        val json = gson.toJson(user)
+        editor.putString("userdata", json)
+        editor.apply()
+    }
 
 }
+
+
+
 

@@ -76,4 +76,6 @@ dependencies {
 
     implementation ("com.github.1902shubh:SendMail:1.0.0")
 
+    implementation ("androidx.work:work-runtime:2.9.0")
+
 }

@@ -1,26 +1,13 @@
-<androidx.drawerlayout.widget.DrawerLayout
+<androidx.appcompat.widget.LinearLayoutCompat
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    tools:openDrawer="start"
     tools:context=".Dashboard">
-
-    <com.google.android.material.navigation.NavigationView
-        android:id="@+id/sideNav"
-        android:paddingHorizontal="20dp"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_gravity="start"
-        app:headerLayout="@layout/drawer_header"
-        app:menu="@menu/side_nav">
-
-        <!-- Custom header layout -->
-        <include layout="@layout/drawer_header" />
-
-    </com.google.android.material.navigation.NavigationView>
-
 
     <!-- Main content -->
     <androidx.appcompat.widget.LinearLayoutCompat
@@ -29,20 +16,12 @@
 
         android:orientation="vertical">
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/menu"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="50dp"
-            android:layout_marginBottom="20dp"
-            android:id="@+id/hamburgerMenu"
-            android:contentDescription="@string/menu"/>
+
 
         <!-- Your existing RecyclerView -->
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"
-            android:layout_marginTop="-10dp"
+            android:layout_marginTop="10dp"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
@@ -55,7 +34,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
             android:layout_marginTop="3dp"
-            android:layout_marginBottom="-10dp"
+            android:layout_marginBottom="-17dp"
             android:background="@color/testwhite"
             app:itemBackground="@color/lightGrey"
             app:itemIconSize="24dp"
@@ -66,4 +45,4 @@
 
 
 
-</androidx.drawerlayout.widget.DrawerLayout>
+</androidx.appcompat.widget.LinearLayoutCompat>

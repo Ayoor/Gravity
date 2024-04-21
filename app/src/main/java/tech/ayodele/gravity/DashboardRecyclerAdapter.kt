@@ -2,6 +2,7 @@ package tech.ayodele.gravity
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Build
 import android.text.InputType
@@ -19,10 +20,12 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import com.google.gson.Gson
 import tech.ayodele.gravity.databinding.DashboardItemsBinding
 import java.text.DecimalFormat
 import java.text.SimpleDateFormat
@@ -39,18 +42,24 @@ class DashboardRecyclerAdapter(
     private var prefs: SharedPreferences
 ) :
     RecyclerView.Adapter<DashboardRecyclerAdapter.DashboardViewHolder>() {
+// * todo
+        // get and set total activities for the week
+        // get and set the percentage differences and set the icon
+        // handle when there is no data
+        // plot line chart for the week
+
 
     private var lastDate: String? = null
 
     @RequiresApi(Build.VERSION_CODES.O)
-    private var currentDate = LocalDate.now()
+    private var currentDate = LocalDate.now().plusDays(7)
 
-    var waterProgress = 0
-    var stepsProgress = 0
-    var caloryProgress = 0
-    var exerciseProgress = 0
+    private var waterProgress = 0
+    private var stepsProgress = 0
+    private var caloryProgress = 0
+    private var exerciseProgress = 0
 
-    private var totalCups = prefs.getInt("totalCups", 0)
+    private var totalMills = prefs.getInt("totalCups", 0)
     private var totalSteps = prefs.getInt("totalSteps", 0)
     private var totalCalories = prefs.getInt("totalCalories", 0)
     private var totalExercise = prefs.getInt("totalExercise", 0)
@@ -75,15 +84,23 @@ class DashboardRecyclerAdapter(
         lastDate = prefs.getString("lastMetricsDate", "Unavailable")
 
         if (currentDate.toString() != lastDate) { // it is a new day, use new data
-
-            dailyDashboardRefresh(binding)
+//            save current Metrics
+//
+            //reset the metrics
+            dailyDashboardReset(binding, holder)
             updateMetricsChart(binding)
+
         } else { // same day
             //use saved data
-            updateIndicatorData(binding, totalCups, totalCalories, totalExercise, totalSteps)
+            updateIndicatorData(binding, totalMills, totalCalories, totalExercise, totalSteps, holder)
             updateMetricsChart(binding)
 
         }
+
+            saveDailyMetricsData(holder,MetricsData(totalMills,totalSteps, totalCalories,totalExercise))
+
+
+
 
 
         // Set progress for each indicator
@@ -117,13 +134,30 @@ class DashboardRecyclerAdapter(
 
         val appcontext = holder.itemView.context
 
+        holder.binding.logout.setOnClickListener {
+            // Sign out the user from Firebase Authentication
+            FirebaseAuth.getInstance().signOut()
+
+            // Access the SharedPreferences from the context of the item view
+            val prefs = holder.itemView.context.getSharedPreferences("saveData", Context.MODE_PRIVATE)
+            prefs.edit().clear().apply()
+
+            // Redirect the user to the login screen
+            val intent = Intent(holder.itemView.context, Signin::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            holder.itemView.context.startActivity(intent)
+            Toast.makeText(holder.itemView.context, "User Signed Out", Toast.LENGTH_SHORT).show()
+        }
+
+
+
 //        update metrics
         holder.binding.updateMetric.setOnClickListener {
             //trigger metrics alert
-            metricsAlert(appcontext, binding)
+            metricsAlert(appcontext, binding, holder)
         }
 
-//        pop disclaimer
+//         disclaimer
         holder.binding.info.setOnClickListener {
             disclaimer(appcontext)
         }
@@ -141,6 +175,82 @@ class DashboardRecyclerAdapter(
 
 
     }
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun saveDailyMetricsData(holder: DashboardViewHolder, userMetrics: MetricsData) {
+
+
+            val prefs = holder.itemView.context.getSharedPreferences("weekPrefs", Context.MODE_PRIVATE)
+            val defaultMetrics = WeeklyMetricsList(
+                mutableListOf(),
+                mutableListOf(),
+                mutableListOf(),
+                mutableListOf()
+            )
+        val lastMetricsDate = prefs.getString("lastMetricsDate", null)
+
+            val retrievedMetricsString = prefs.getString("currentWeeklyMetrics", null)
+            val retrievedMetrics = if (retrievedMetricsString != null) {
+                Gson().fromJson(retrievedMetricsString, WeeklyMetricsList::class.java)
+            } else {
+                defaultMetrics
+            }
+
+//            val currentMetrics = Gson().fromJson(retrievedMetrics, WeeklyMetricsList::class.java)
+            val waterWeeklyData = retrievedMetrics.weeklyML
+            val exerciseWeeklyData = retrievedMetrics.weeklyExercise
+            val caloryWeeklyData = retrievedMetrics.weeklyKcal
+            val stepsWeeklyData = retrievedMetrics.weeklySteps
+
+
+        if (currentDate.toString() != lastMetricsDate) {
+//            it is a new day
+
+            //use one to check for all
+            when {
+                waterWeeklyData.size == 7 -> {
+                    //remove the oldest
+                    waterWeeklyData.removeAt(0)
+                    exerciseWeeklyData.removeAt(0)
+                    caloryWeeklyData.removeAt(0)
+                    stepsWeeklyData.removeAt(0)
+                }
+
+            }
+            waterWeeklyData.add(0)
+            exerciseWeeklyData.add(0)
+            caloryWeeklyData.add(0)
+            stepsWeeklyData.add(0)
+        }
+             else{ // same day
+
+                 waterWeeklyData[waterWeeklyData.size-1] = userMetrics.water
+                 exerciseWeeklyData[exerciseWeeklyData.size-1] = userMetrics.exercise
+                 caloryWeeklyData[caloryWeeklyData.size-1] = userMetrics.calories
+                 stepsWeeklyData[stepsWeeklyData.size-1] = userMetrics.steps
+                 }
+
+
+            val weeklyMetrics = WeeklyMetricsList(
+                waterWeeklyData,
+                stepsWeeklyData,
+                caloryWeeklyData,
+                exerciseWeeklyData
+
+            )
+
+            Log.i("waterWeeklyData",waterWeeklyData.toString())
+            Log.i("exerciseWeeklyData",exerciseWeeklyData.toString())
+            Log.i("stepsWeeklyData",stepsWeeklyData.toString())
+            Log.i("caloryWeeklyData", caloryWeeklyData.toString())
+            //save to memory
+
+            val editor = prefs.edit()
+            val json = Gson().toJson(weeklyMetrics)
+            editor.putString("currentWeeklyMetrics", json)
+            editor.putString("lastMetricsDate", currentDate.toString())
+            editor.apply()
+        }
+
 
 
     inner class DashboardViewHolder(val binding: DashboardItemsBinding) :
@@ -220,10 +330,9 @@ class DashboardRecyclerAdapter(
     }
 
     private fun refreshWeightData(id: String, context: Context, binding: DashboardItemsBinding) {
-        Log.i("weightData", id)
         // Get a reference to the Firebase database
         val database = FirebaseDatabase.getInstance()
-        val databaseReference = database.getReference("Weight Data") // Update the path
+        val databaseReference = database.getReference("/Weight Data/$id") // Update the path
         var weightData: WeightData
         // Add a ValueEventListener to listen for changes in the data
         databaseReference.addListenerForSingleValueEvent(object : ValueEventListener {
@@ -312,7 +421,7 @@ class DashboardRecyclerAdapter(
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    private fun metricsAlert(context: Context, binding: DashboardItemsBinding) {
+    private fun metricsAlert(context: Context, binding: DashboardItemsBinding, holder: DashboardViewHolder) {
         val dialogView = LayoutInflater.from(context).inflate(R.layout.dashboar_update_alert, null)
         val activityCount = dialogView.findViewById<Spinner>(R.id.exerciseCount)
         val stepsCount = dialogView.findViewById<EditText>(R.id.stepsCount)
@@ -346,11 +455,12 @@ class DashboardRecyclerAdapter(
                 waterInML.toInt(),
                 calories.toInt(),
                 exerciseCount.toInt(),
-                steps.toInt()
+                steps.toInt(), holder
             )
             updateMetricsChart(binding)
+        saveDailyMetricsData(holder, MetricsData( waterInML.toInt(),steps.toInt(),calories.toInt(),exerciseCount.toInt()))
+
             Toast.makeText(context, "Metrics Updated", Toast.LENGTH_SHORT).show()
-            // Save data here (e.g., to SharedPreferences, database, etc.)
             alertDialog.dismiss()
         }
 
@@ -379,7 +489,7 @@ class DashboardRecyclerAdapter(
         activityCount.adapter = adapter2
 
         //initial selection
-        waterCupsCount.setSelection(waterCups.indexOf(totalCups/250))
+        waterCupsCount.setSelection(waterCups.indexOf(totalMills/250))
         activityCount.setSelection(noOfExercise.indexOf(totalExercise))
 
         // Set an item selected listener for the spinner
@@ -428,7 +538,7 @@ class DashboardRecyclerAdapter(
         water: Int,
         kcal: Int,
         exercise: Int,
-        steps: Int
+        steps: Int, holder: DashboardViewHolder
     ) {
 
         // Set progress for each indicator
@@ -450,6 +560,8 @@ class DashboardRecyclerAdapter(
 
         //save to device memory
         lastDate = currentDate.toString()
+
+
         val editor = prefs.edit()
         editor.putString("lastMetricsDate", lastDate)
         editor.putInt("totalCups", water)
@@ -463,7 +575,7 @@ class DashboardRecyclerAdapter(
 
     @SuppressLint("SetTextI18n")
     @RequiresApi(Build.VERSION_CODES.O)
-    private fun dailyDashboardRefresh(binding: DashboardItemsBinding) {
+    private fun dailyDashboardReset(binding: DashboardItemsBinding, holder: DashboardViewHolder) {
 
 
         waterProgress = 0
@@ -471,7 +583,7 @@ class DashboardRecyclerAdapter(
         exerciseProgress = 0
         stepsProgress = 0
 
-        updateIndicatorData(binding, waterProgress, caloryProgress, exerciseProgress, stepsProgress)
+        updateIndicatorData(binding, waterProgress, caloryProgress, exerciseProgress, stepsProgress, holder)
 
     }
 

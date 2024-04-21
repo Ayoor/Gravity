@@ -8,23 +8,19 @@ import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
-import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.GravityCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.navigation.NavigationBarView
-import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.gson.Gson
 import retrofit2.Call
 import retrofit2.Callback
 import tech.ayodele.gravity.databinding.ActivityDashboardBinding
-import tech.ayodele.gravity.databinding.DrawerHeaderBinding
 import java.time.LocalDate
 
 
@@ -62,7 +58,7 @@ class Dashboard : AppCompatActivity() {
         binding = ActivityDashboardBinding.inflate(layoutInflater)
         setContentView(binding.root)
         // get the user details object from the Signin Activity using Parcelables
-     val userData = retrieveUserData(userprefs)
+        val userData = retrieveUserData(userprefs)
 
         val weight = userData.weight ?: 0
         val height = userData.height ?: 0
@@ -72,9 +68,6 @@ class Dashboard : AppCompatActivity() {
         val email = userData.email.toString()
 
         Log.i("post", userData.toString())
-
-        setProfileDetails(name, email) //for side nav
-
 
 
         val progressData = inspirations()?.let {
@@ -91,15 +84,16 @@ class Dashboard : AppCompatActivity() {
         binding.recyclerView.layoutManager = LinearLayoutManager(this)
         binding.recyclerView.adapter = adapter
 
+//        save user metrics at end of day
 
 //bottom nav
         val bottomNavigation = binding.bottomNavigation
-        bottomNavigation.selectedItemId = R.id.home
+        bottomNavigation.selectedItemId = R.id.dashboard_home
         bottomNavigation.setOnItemSelectedListener(object :
             NavigationBarView.OnItemSelectedListener {
             override fun onNavigationItemSelected(item: MenuItem): Boolean {
                 when (item.itemId) {
-                    R.id.home -> {
+                    R.id.dashboard_home -> {
                         return true
                     }
 
@@ -115,6 +109,12 @@ class Dashboard : AppCompatActivity() {
                         return true
                     }
 
+                    R.id.insightIcon -> {
+                        startActivity(Intent(this@Dashboard, Insights::class.java))
+                        finish()
+                        return true
+                    }
+
                     R.id.dieting -> {
                         startActivity(Intent(this@Dashboard, Diet::class.java))
                         finish()
@@ -125,48 +125,6 @@ class Dashboard : AppCompatActivity() {
                 }
             }
         })
-
-// side nav
-        val drawerLayout = binding.drawerLayout
-        val navDrawer = binding.sideNav
-        val burgerMenu = binding.hamburgerMenu
-
-// Set OnClickListener for burger menu icon to toggle the drawer
-        burgerMenu.setOnClickListener {
-            if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
-                drawerLayout.closeDrawer(GravityCompat.START)
-            } else {
-                drawerLayout.openDrawer(GravityCompat.START)
-            }
-        }
-//            user profile edit
-        val editIcon = findViewById<ImageView>(R.id.edit)
-        editIcon.setOnClickListener {
-            Toast.makeText(this@Dashboard, "Edit", Toast.LENGTH_LONG).show()
-        }
-
-
-        // Handle navigation item clicks
-        navDrawer.setNavigationItemSelectedListener { menuItem ->
-            when (menuItem.itemId) {
-                R.id.nightmode -> {
-                    Toast.makeText(this@Dashboard, "Night Mode", Toast.LENGTH_LONG).show()
-                    true
-                }
-
-                R.id.stats -> {
-                    Toast.makeText(this@Dashboard, "Stats", Toast.LENGTH_LONG).show()
-                    true
-                }
-
-                R.id.logout -> {
-                    logoutUser()
-                    true
-                }
-
-                else -> false
-            }
-        }
 
     }
 
@@ -193,7 +151,7 @@ class Dashboard : AppCompatActivity() {
         startActivity(intent)
     }
 
-    private fun clearUserData() {
+    fun clearUserData() {
         val prefs = getSharedPreferences("saveData", Context.MODE_PRIVATE)
         val editor = prefs.edit()
         editor.clear().apply()
@@ -220,7 +178,11 @@ class Dashboard : AppCompatActivity() {
             editor.putString("lastDate", currentDate.toString())
             editor.putString("lastInspo", currentInspo)
             editor.apply()
+
             currentInspo
+
+            //Save Weeekly Metrics
+
         } else {
             val editor = prefs.edit()
             editor.putString("lastDate", currentDate.toString())
@@ -234,19 +196,7 @@ class Dashboard : AppCompatActivity() {
 
     }
 
-    private fun setProfileDetails(name: String, email: String) {
-        // Get the NavigationView from your layout XML file
-        val navigationView: NavigationView = findViewById(R.id.sideNav)
 
-// Find the header view inside the NavigationView
-        val headerView = navigationView.getHeaderView(0)
-
-// Bind the header layout using data binding
-        val headerBinding = DrawerHeaderBinding.bind(headerView)
-
-        headerBinding.profileName.text = name
-        headerBinding.profileEmail.text = email
-    }
 
 
     private fun getData() {

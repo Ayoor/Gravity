@@ -16,7 +16,6 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import tech.ayodele.gravity.databinding.ActivityCommunityBinding
-import tech.ayodele.gravity.databinding.ActivityDietBinding
 
 class Community : AppCompatActivity(), CommunityAdapter.OnItemClickListener {
 
@@ -46,7 +45,7 @@ class Community : AppCompatActivity(), CommunityAdapter.OnItemClickListener {
             NavigationBarView.OnItemSelectedListener {
             override fun onNavigationItemSelected(item: MenuItem): Boolean {
                 when (item.itemId) {
-                    R.id.home -> {
+                    R.id.dashboard_home -> {
                         startActivity(Intent(this@Community, Dashboard::class.java))
                         finish()
                         return true
@@ -59,6 +58,12 @@ class Community : AppCompatActivity(), CommunityAdapter.OnItemClickListener {
 
                     R.id.liveHelp -> {
                         startActivity(Intent(this@Community, LiveHelp::class.java))
+                        finish()
+                        return true
+                    }
+
+                    R.id.insightIcon -> {
+                        startActivity(Intent(this@Community, Insights::class.java))
                         finish()
                         return true
                     }

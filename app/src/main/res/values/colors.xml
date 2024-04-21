@@ -5,4 +5,7 @@
     <color name="lightGrey">#EDE7E7</color>
     <color name="purple">#800080</color>
     <color name="testwhite">#F4F4F4</color>
+    <color name="green">#0BDA51</color>
+    <color name="red">#D2042D</color>
+
 </resources>
