@@ -29,3 +29,10 @@ data class  WeeklyMetricsList(
     val weeklyKcal: MutableList<Int>,
     val weeklyExercise: MutableList<Int>
 )
+
+data class SavedInsightPercentage(
+    var water: Double,
+    var steps: Double,
+    var calories: Double,
+    var exercise: Double,
+)

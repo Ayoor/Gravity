@@ -121,11 +121,9 @@ tools:context=".Insights">
                 android:id="@+id/waterInsightPercentage"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/red"
-                android:text="23.3%"
                 android:layout_marginTop="5dp"
-                android:textSize="16dp"
-                app:drawableStartCompat="@drawable/bottom_left_arrow" />
+                android:textStyle="bold"
+                android:textSize="16sp" />
 
 
         </LinearLayout>
@@ -159,13 +157,11 @@ tools:context=".Insights">
 
             <TextView
                 android:id="@+id/caloryInsightPercentage"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/red"
-                android:text="23.3%"
                 android:layout_marginTop="5dp"
-                android:textSize="16dp"
-                app:drawableStartCompat="@drawable/bottom_left_arrow" />
+                android:textStyle="bold"
+                android:textSize="16sp"/>
 
 
         </LinearLayout>
@@ -209,13 +205,11 @@ tools:context=".Insights">
 
             <TextView
                 android:id="@+id/exerciseInsightPercentage"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/green"
-                android:text="45.3%"
                 android:layout_marginTop="5dp"
-                android:textSize="16dp"
-                app:drawableStartCompat="@drawable/top_right_arrow" />
+                android:textStyle="bold"
+                android:textSize="16sp"/>
 
 
         </LinearLayout>
@@ -249,13 +243,11 @@ tools:context=".Insights">
 
             <TextView
                 android:id="@+id/stepsInsightPercentage"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/green"
-                android:text="45.3%"
                 android:layout_marginTop="5dp"
-                android:textSize="16dp"
-                app:drawableStartCompat="@drawable/top_right_arrow" />
+                android:textStyle="bold"
+                android:textSize="16sp"/>
 
 
         </LinearLayout>
@@ -273,10 +265,15 @@ tools:context=".Insights">
     android:textSize="18sp"
     android:textStyle="bold" />
 
-    <ImageView
+<!--    <ImageView-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:src="@drawable/graph"/>-->
+
+    <com.github.mikephil.charting.charts.LineChart
+        android:id="@+id/lineChart"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:src="@drawable/graph"/>
+        android:layout_height="match_parent" />
 </LinearLayout>
 
 <com.google.android.material.bottomnavigation.BottomNavigationView

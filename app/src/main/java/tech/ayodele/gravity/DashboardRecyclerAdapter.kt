@@ -42,11 +42,7 @@ class DashboardRecyclerAdapter(
     private var prefs: SharedPreferences
 ) :
     RecyclerView.Adapter<DashboardRecyclerAdapter.DashboardViewHolder>() {
-// * todo
-        // get and set total activities for the week
-        // get and set the percentage differences and set the icon
-        // handle when there is no data
-        // plot line chart for the week
+
 
 
     private var lastDate: String? = null
@@ -180,6 +176,7 @@ class DashboardRecyclerAdapter(
 
 
             val prefs = holder.itemView.context.getSharedPreferences("weekPrefs", Context.MODE_PRIVATE)
+            val editor = prefs.edit()
             val defaultMetrics = WeeklyMetricsList(
                 mutableListOf(),
                 mutableListOf(),
@@ -227,6 +224,9 @@ class DashboardRecyclerAdapter(
                  exerciseWeeklyData[exerciseWeeklyData.size-1] = userMetrics.exercise
                  caloryWeeklyData[caloryWeeklyData.size-1] = userMetrics.calories
                  stepsWeeklyData[stepsWeeklyData.size-1] = userMetrics.steps
+
+                 editor.putBoolean("isChange", true)
+
                  }
 
 
@@ -238,16 +238,12 @@ class DashboardRecyclerAdapter(
 
             )
 
-            Log.i("waterWeeklyData",waterWeeklyData.toString())
-            Log.i("exerciseWeeklyData",exerciseWeeklyData.toString())
-            Log.i("stepsWeeklyData",stepsWeeklyData.toString())
-            Log.i("caloryWeeklyData", caloryWeeklyData.toString())
             //save to memory
 
-            val editor = prefs.edit()
             val json = Gson().toJson(weeklyMetrics)
             editor.putString("currentWeeklyMetrics", json)
             editor.putString("lastMetricsDate", currentDate.toString())
+
             editor.apply()
         }
 

@@ -1,8 +1,11 @@
+import org.gradle.internal.impldep.bsh.commands.dir
+
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
     id("com.google.gms.google-services")
     id("kotlin-parcelize")
+//    id ("com.android.application")
 
 }
 
@@ -50,6 +53,8 @@ dependencies {
     implementation(libs.androidx.constraintlayout)
     implementation(libs.firebase.database)
     implementation(libs.firebase.auth.ktx)
+    implementation(libs.play.services.location)
+    implementation(libs.places)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -77,5 +82,11 @@ dependencies {
     implementation ("com.github.1902shubh:SendMail:1.0.0")
 
     implementation ("androidx.work:work-runtime:2.9.0")
+
+    implementation ("com.github.PhilJay:MPAndroidChart:v3.1.0")
+
+
+    implementation ("com.google.android.gms:play-services-location:18.0.0") // Google Play Services
+    implementation ("com.google.android.libraries.places:places:2.5.0") // Google Places
 
 }
