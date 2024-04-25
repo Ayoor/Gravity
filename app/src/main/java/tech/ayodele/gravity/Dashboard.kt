@@ -58,8 +58,7 @@ class Dashboard : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-//        apiCall()
-        getData()
+
         //set up element binding
         binding = ActivityDashboardBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -207,33 +206,7 @@ class Dashboard : AppCompatActivity() {
 
 
 
-    private fun getData() {
-        val call = RetrofitClient.apiService.fetchData()
-        call.enqueue(object : Callback<CategoriesResponse> {
-            override fun onResponse(
-                call: Call<CategoriesResponse>,
-                response: retrofit2.Response<CategoriesResponse>
-            ) {
-                if (response.isSuccessful) {
-                    val categoriesResponse = response.body()
-                    categoriesResponse?.let {
-                        for (category in it.categories) {
-                            Log.i("response", category.toString())
-                        }
-                    }
-                }
-            }
 
-            override fun onFailure(call: Call<CategoriesResponse>, t: Throwable) {
-                Toast.makeText(
-                    this@Dashboard,
-                    "An error occurred while Retrieving Data, please try again Later.",
-                    Toast.LENGTH_LONG
-                ).show()
-                Log.i("response", t.toString())
-            }
-        })
-    }
 
 
 }

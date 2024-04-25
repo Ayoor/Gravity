@@ -68,5 +68,12 @@
     <string name="help_subject">Help Subject</string>
     <string name="insights">Insights</string>
     <string name="weekly_points">Weekly Points</string>
+    <string name="recommended_meals">Your Meal Recommendations</string>
+    <string name="meal_image">meal Image</string>
+    <string name="nutrition_data">Nutrition Data</string>
+    <string name="extra_info">Extra Info</string>
+    <string name="kcal">Kcal</string>
+    <string name="fat">Fat</string>
+    <string name="carb">Carb</string>
 
 </resources>

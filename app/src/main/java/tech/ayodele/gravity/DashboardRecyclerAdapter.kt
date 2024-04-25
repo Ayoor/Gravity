@@ -115,10 +115,10 @@ class DashboardRecyclerAdapter(
         binding.exerciseProgressIndicator2.setIndicatorColor(purpleColor)
 
         // userdetails
-        val weight = dashboardData.userWeight
-        val height = dashboardData.userHeight
+//        val weight = dashboardData.userWeight
+//        val height = dashboardData.userHeight
         val name = dashboardData.name
-        val email = dashboardData.email
+//        val email = dashboardData.email
         val userID = dashboardData.userID
 
         // Set dashboard details
@@ -161,7 +161,7 @@ class DashboardRecyclerAdapter(
 //        edit weight
 
         holder.binding.weightEditIcon.setOnClickListener {
-            editWeight(binding, context)
+            editWeight(binding)
         }
 
         holder.binding.saveWeight.setOnClickListener {
@@ -338,7 +338,7 @@ class DashboardRecyclerAdapter(
                 if (dataSnapshot.exists()) {
                     // Retrieve the data for the given user ID and convert it to a WeightData object
                     weightData = dataSnapshot.getValue(WeightData::class.java)!!
-
+                    Log.i("weightData", weightData.value.toString())
                     binding.userWeight.text = weightData.value.toString()
                     binding.lastUpdateDate.text = "Last Updated ${weightData.date}"
 
@@ -375,7 +375,7 @@ class DashboardRecyclerAdapter(
 
 
     @SuppressLint("ClickableViewAccessibility")
-    private fun editWeight(binding: DashboardItemsBinding, context: Context){
+    private fun editWeight(binding: DashboardItemsBinding){
         val weightET = binding.editWeight
         val weight = binding.userWeight
 
@@ -526,7 +526,7 @@ class DashboardRecyclerAdapter(
         val ml = cups.toInt() * 250
         return ml.toString()
     }
-
+//----------------------------------------------------------------
     @RequiresApi(Build.VERSION_CODES.O)
     @SuppressLint("SetTextI18n")
     private fun updateIndicatorData(
@@ -568,7 +568,7 @@ class DashboardRecyclerAdapter(
         editor.apply()
 
     }
-
+//----------------------------------------------------------------
     @SuppressLint("SetTextI18n")
     @RequiresApi(Build.VERSION_CODES.O)
     private fun dailyDashboardReset(binding: DashboardItemsBinding, holder: DashboardViewHolder) {
@@ -582,7 +582,7 @@ class DashboardRecyclerAdapter(
         updateIndicatorData(binding, waterProgress, caloryProgress, exerciseProgress, stepsProgress, holder)
 
     }
-
+//---------------------------------------------------------------------------
     private fun BMIScale(BMI: Double): String {
         var scale = ""
 
@@ -607,7 +607,7 @@ class DashboardRecyclerAdapter(
         }
         return scale
     }
-
+//---------------------------------------------------------------------------
     private fun disclaimer(context: Context) {
 
         val alertDialogBuilder = AlertDialog.Builder(context)

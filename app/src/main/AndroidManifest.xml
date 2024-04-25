@@ -18,23 +18,24 @@
         android:theme="@style/Theme.Gravity"
         tools:targetApi="31">
         <activity
-            android:name=".Insights"
-            android:parentActivityName=".Dashboard"
+            android:name=".DietDetails"
             android:exported="false" />
+        <activity
+            android:name=".Insights"
+            android:exported="false"
+            android:parentActivityName=".Dashboard" />
         <activity
             android:name=".MailSuccess"
-            android:parentActivityName=".Dashboard"
-            android:exported="false" />
+            android:exported="false"
+            android:parentActivityName=".Dashboard" />
         <activity
             android:name=".LiveHelp"
-            android:parentActivityName=".Dashboard"
-            android:exported="false" />
+            android:exported="false"
+            android:parentActivityName=".Dashboard" />
         <activity
             android:name=".Diet"
-            android:parentActivityName=".Dashboard"
-            android:exported="false" />
-
-        <!-- Note:  android:windowSoftInputMode="adjustPan" prevent keyboard covering edittext -->
+            android:exported="false"
+            android:parentActivityName=".Dashboard" /> <!-- Note:  android:windowSoftInputMode="adjustPan" prevent keyboard covering edittext -->
         <activity
             android:name=".TopicForum"
             android:exported="false"
@@ -53,9 +54,7 @@
             android:parentActivityName=".Community" />
         <activity
             android:name=".Dashboard"
-            android:exported="false">
-
-        </activity>
+            android:exported="false"></activity>
         <activity
             android:name=".Signin"
             android:exported="false" />
