@@ -104,15 +104,20 @@ class DashboardRecyclerAdapter(
 
         // Set colors for indicators
         val whiteColor = ContextCompat.getColor(context, R.color.white)
-        val purpleColor = ContextCompat.getColor(context, R.color.purple)
+        val indicatorColor = ContextCompat.getColor(context, R.color.navyBlue)
         binding.caloryProgressIndicator.trackColor = whiteColor
-        binding.caloryProgressIndicator.setIndicatorColor(purpleColor)
+        binding.caloryProgressIndicator.setIndicatorColor(indicatorColor)
         binding.caloryProgressIndicator2.trackColor = whiteColor
-        binding.caloryProgressIndicator2.setIndicatorColor(purpleColor)
+        binding.caloryProgressIndicator2.setIndicatorColor(indicatorColor)
         binding.exerciseProgressIndicator.trackColor = whiteColor
-        binding.exerciseProgressIndicator.setIndicatorColor(purpleColor)
+        binding.exerciseProgressIndicator.setIndicatorColor(indicatorColor)
         binding.exerciseProgressIndicator2.trackColor = whiteColor
-        binding.exerciseProgressIndicator2.setIndicatorColor(purpleColor)
+        binding.exerciseProgressIndicator2.setIndicatorColor(indicatorColor)
+
+        binding.waterProgressIndicator.setIndicatorColor(indicatorColor)
+        binding.waterProgressIndicator.trackColor = whiteColor
+        binding.stepsProgressIndicator.setIndicatorColor(indicatorColor)
+        binding.stepsProgressIndicator.trackColor = whiteColor
 
         // userdetails
 //        val weight = dashboardData.userWeight

@@ -7,5 +7,16 @@
     <color name="testwhite">#F4F4F4</color>
     <color name="green">#0BDA51</color>
     <color name="red">#D2042D</color>
+    <color name="navyBlue">#354973</color>
+<!--    <color name="navyBlue">#1c2841</color>-->
+    <color name="brown">#836953</color>
+    <color name="mainWhite">#FCFBF8</color>
+    <color name="Pink">#AE2F8D</color>
+
+    <color name="Primary">#D8E1FC</color>
+    <color name="Secondary">#E3E8EC</color>
+    <color name="Tertiary">#E5C1CD</color>
+    <color name="Tertiary2">#FAFAFA</color>
+
 
 </resources>

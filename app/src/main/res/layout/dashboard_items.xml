@@ -7,7 +7,7 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:layout_marginTop="20dp"
-
+    android:background="@color/white"
     tools:context=".Dashboard">
 
     <!--user welcome -->
@@ -26,13 +26,14 @@
         android:layout_weight="1"
         tools:text="Ayodele!" />
 
-    <ImageView
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/logout"
+        android:text="@string/sign_out"
         android:id="@+id/logout"
         android:gravity="end"
-        android:contentDescription="@string/menu"/>
+        android:contentDescription="@string/menu"
+        app:drawableTopCompat="@drawable/logout" />
 </LinearLayout>
 
 
@@ -42,6 +43,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="start"
+        android:background="@color/white"
         android:orientation="vertical"
 
         >
@@ -51,6 +53,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:drawablePadding="2dp"
+            android:textColor="@color/Pink"
             android:text="@string/quote_of_the_day"
             android:textSize="18sp"
 
@@ -62,7 +65,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:background="@drawable/quote_background"
+            android:background="@drawable/tile1"
             android:padding="10dp"
             android:textAlignment="center"
             android:textSize="16sp"
@@ -90,6 +93,7 @@
             android:id="@+id/updateMetric"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:textColor="@color/Pink"
             android:layout_weight="1"
             android:text="@string/update"
             android:textAlignment="center"
@@ -117,7 +121,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
-                android:background="@drawable/quote_background"
+                android:background="@drawable/tile2"
                 android:orientation="vertical"
                 android:padding="16dp">
 
@@ -126,6 +130,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/water"
                     android:textSize="18sp"
+                   
                     android:textStyle="bold"
                     app:drawableStartCompat="@drawable/waterdrop" />
 
@@ -135,6 +140,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="15dp"
                     android:text="0 0f 1500ml"
+                   
                     android:textSize="14sp" />
 
                 <com.google.android.material.progressindicator.LinearProgressIndicator
@@ -151,7 +157,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
                 android:layout_marginTop="10dp"
-                android:background="@drawable/quote_background"
+                android:background="@drawable/tile1"
                 android:orientation="vertical"
                 android:padding="16dp">
 
@@ -159,6 +165,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/calories"
+                   
                     android:textSize="18sp"
                     android:textStyle="bold"
                     app:drawableStartCompat="@drawable/cutlery" />
@@ -167,6 +174,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
+                   
                     android:text="Target 1900kcal"
                     android:textSize="14sp" />
 
@@ -194,7 +202,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:text="0 kcal"
-                        android:textColor="@android:color/black"
+                       
                         android:textSize="18sp"
                         android:textStyle="bold" />
                 </FrameLayout>
@@ -214,7 +222,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
-                android:background="@drawable/quote_background"
+                android:background="@drawable/tile1"
                 android:orientation="vertical"
                 android:padding="16dp">
 
@@ -222,6 +230,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/exercise"
+                   
                     android:textSize="18sp"
                     android:textStyle="bold"
                     app:drawableStartCompat="@drawable/exercise_gym" />
@@ -230,6 +239,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
+                   
                     android:text="Target 3 Exercises"
                     android:textSize="14sp" />
 
@@ -257,7 +267,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:text="0 Exercises"
-                        android:textColor="@android:color/black"
+                       
                         android:textSize="16sp"
                         android:textStyle="bold" />
                 </FrameLayout>
@@ -268,7 +278,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
                 android:layout_marginTop="10dp"
-                android:background="@drawable/quote_background"
+                android:background="@drawable/tile2"
                 android:orientation="vertical"
                 android:padding="16dp">
 
@@ -278,6 +288,7 @@
                     android:drawablePadding="2dp"
                     android:text="@string/steps"
                     android:textSize="18sp"
+                   
                     android:textStyle="bold"
                     app:drawableStartCompat="@drawable/footprint" />
 
@@ -286,6 +297,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="15dp"
+                   
                     android:text="0 0f 10000 steps"
                     android:textSize="14sp" />
 
@@ -311,7 +323,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/quote_background"
+        android:background="@drawable/tile1"
         android:orientation="vertical"
         android:paddingHorizontal="30dp">
 
@@ -320,7 +332,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
-            android:background="@drawable/widget_background"
             android:baselineAligned="false"
             android:orientation="horizontal"
             android:padding="10dp">
@@ -353,6 +364,7 @@
                         android:layout_weight="1"
                         android:background="@color/lightGrey"
                         android:contentDescription="@string/edit"
+                        android:backgroundTint="@color/Primary"
                         android:gravity="start"
                         android:layout_marginEnd="30dp"
                         android:src="@drawable/edit" />
@@ -363,7 +375,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="20dp"
                         android:layout_weight="1"
-                        android:background="@color/lightGrey"
+                        android:background="@color/Primary"
                         android:contentDescription="@string/edit"
                         android:gravity="start"
                         android:layout_marginEnd="30dp"
@@ -427,7 +439,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/quote_background"
+            android:background="@drawable/tile1"
             android:baselineAligned="false"
             android:orientation="horizontal"
             android:padding="10dp">
@@ -504,9 +516,9 @@
                 android:id="@+id/info"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@color/lightGrey"
+                android:background="@color/Tertiary2"
                 android:contentDescription="@string/information"
-                android:src="@drawable/info" />
+                android:src="@drawable/baseline_warning_24" />
 
 
         </LinearLayout>
