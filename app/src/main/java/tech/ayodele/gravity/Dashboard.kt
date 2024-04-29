@@ -91,35 +91,33 @@ class Dashboard : AppCompatActivity() {
 
 //        save user metrics at end of day
 
-//bottom nav
+// Bottom nav
         val bottomNavigation = binding.bottomNavigation
         bottomNavigation.selectedItemId = R.id.dashboard_home
+//        setIconColor(bottomNavigation, R.id.dashboard_home, R.color.Primary)
         bottomNavigation.setOnItemSelectedListener(object :
             NavigationBarView.OnItemSelectedListener {
             override fun onNavigationItemSelected(item: MenuItem): Boolean {
                 when (item.itemId) {
                     R.id.dashboard_home -> {
+
                         return true
                     }
-
                     R.id.community -> {
                         startActivity(Intent(this@Dashboard, Community::class.java))
                         finish()
                         return true
                     }
-
                     R.id.liveHelp -> {
                         startActivity(Intent(this@Dashboard, LiveHelp::class.java))
                         finish()
                         return true
                     }
-
                     R.id.insightIcon -> {
                         startActivity(Intent(this@Dashboard, Insights::class.java))
                         finish()
                         return true
                     }
-
                     R.id.dieting -> {
                         startActivity(Intent(this@Dashboard, Diet::class.java))
                         finish()
@@ -130,6 +128,9 @@ class Dashboard : AppCompatActivity() {
                 }
             }
         })
+
+
+
 
     }
 

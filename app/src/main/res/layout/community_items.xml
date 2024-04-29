@@ -5,7 +5,7 @@
     android:padding="20dp"
     android:layout_marginBottom="10dp"
     android:background="@drawable/comment_item_bg"
-    android:layout_height="wrap_content">
+    android:layout_height="155dp">
 
 <!--    <LinearLayout-->
 <!--        android:layout_width="match_parent"-->

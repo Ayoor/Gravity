@@ -7,6 +7,7 @@ import android.content.SharedPreferences
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
@@ -43,7 +44,7 @@ class Insights : AppCompatActivity() {
         binding = ActivityInsightsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        viewModel = ViewModelProvider(this).get(InsightsViewModel::class.java)
+        viewModel = ViewModelProvider(this)[InsightsViewModel::class.java]
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
@@ -97,6 +98,7 @@ class Insights : AppCompatActivity() {
         drawLineChart()
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun drawLineChart(){
 
        val prefs = getSharedPreferences("weekPrefs", Context.MODE_PRIVATE)
@@ -145,9 +147,9 @@ class Insights : AppCompatActivity() {
             axisRight.isEnabled = false // Disable right Y-axis
             legend.isEnabled = true // Enable legend
         }
-
         // Set custom labels for X-axis
-        val labels = arrayOf("7DAGO", "6DAGO", "5DAGO", "4DAGO", "3DAGO", "Yesterday", "Today")
+//        val labels = listOf("7DAGO", "6DAGO", "5DAGO", "4DAGO", "3DAGO", "Yesterday", "Today")
+        val labels = getLabelArray()
         lineChart.xAxis.valueFormatter = IndexAxisValueFormatter(labels)
 // Set data to the chart
         lineChart.data = lineData
@@ -155,6 +157,19 @@ class Insights : AppCompatActivity() {
 // Refresh the chart
         lineChart.invalidate()
 
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun getLabelArray(): List<String> {
+        val currentdate = LocalDate.now()
+        val datelist= mutableListOf<String>()
+        for (i in 0 until 7){
+            val date = currentdate.minusDays(i.toLong())
+            datelist.add("${date.dayOfMonth}-${date.month}")
+//            Log.i("date", "${date.dayOfMonth}-${date.month}")
+        }
+
+        return datelist.reversed()
     }
     private fun observeViewModel() {
         viewModel.weeklySum.observe(this, Observer { weeklySum ->
@@ -244,6 +259,7 @@ class Insights : AppCompatActivity() {
         editor.apply()
     }
 
+    @SuppressLint("SetTextI18n")
     private fun updateInsightPercentage(textView: TextView, percentage: Double) {
         when {
             percentage < 0 -> {

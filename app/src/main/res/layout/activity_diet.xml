@@ -29,7 +29,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:paddingHorizontal="20dp" />
+            android:paddingHorizontal="8dp" />
 
         <!--  BottomNavigationView -->
         <com.google.android.material.bottomnavigation.BottomNavigationView
@@ -38,13 +38,11 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
             android:layout_marginTop="3dp"
-            android:layout_marginBottom="-10dp"
-            android:background="@color/testwhite"
-            app:itemBackground="@color/lightGrey"
+            android:layout_marginBottom="-12dp"
+            app:itemBackground="@color/white"
             app:itemIconSize="24dp"
             app:itemPaddingBottom="20dp"
             app:menu="@menu/bottom_nav" />
-
     </androidx.appcompat.widget.LinearLayoutCompat>
 
 
