@@ -464,7 +464,7 @@ object Meals {
         return menulist
     }
 
-    private fun getUserType(context: Context): String {
+     fun getUserType(context: Context): String {
         preferences = context.getSharedPreferences("saveData", Context.MODE_PRIVATE)
         val userDataJson = preferences.getString("userdata", null)
         val gson = Gson()

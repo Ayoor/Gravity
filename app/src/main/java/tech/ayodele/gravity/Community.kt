@@ -96,11 +96,16 @@ class Community : AppCompatActivity(), CommunityAdapter.OnItemClickListener {
     }
 
     private fun initCommunityItems() {
+        // Initialize the list of item
+        val exerciseResources = "https://www.webmd.com/fitness-exercise/ss/slideshow-exercises-weightloss"
+        val dietResources = "https://www.nutrition.org.uk/health-conditions/obesity-healthy-weight-loss-and-nutrition/"
+        val challengesResources= "https://www.womenshealthnetwork.com/weight-loss/overcome-weight-loss-resistance/"
+        val tipsAndIdeasResources = "https://www.nhs.uk/live-well/healthy-weight/managing-your-weight/tips-to-help-you-lose-weight/"
         items.clear()
-        items.add(CommunityItems("Exercise", "Useful insights on weight loss exercises", 0))
-        items.add(CommunityItems("Diet", "Discuss healthy meals and improving eating habits with others", 0))
-        items.add(CommunityItems("Challenges and Struggles", "You're not alone, share your struggles with others", 0))
-        items.add(CommunityItems("Tips and Ideas", "Suggestions on how to make the journey better", 0))
+        items.add(CommunityItems("Exercise", "Useful insights on weight loss exercises", 0, exerciseResources))
+        items.add(CommunityItems("Diet", "Discuss healthy meals and improving eating habits with others", 0, dietResources))
+        items.add(CommunityItems("Challenges and Struggles", "You're not alone, share your struggles with others", 0,challengesResources))
+        items.add(CommunityItems("Tips and Ideas", "Suggestions on how to make the journey better", 0,tipsAndIdeasResources))
 
         // Update post count for each item
         for (item in items) {

@@ -57,28 +57,51 @@
         android:textStyle="bold"
         android:text="What are the light weight exercises you guys are using to lose weight? Can any one help me? Please!!!!!!"
         android:layout_height="wrap_content"/>
+
+
+
+
+
     <LinearLayout
         android:id="@+id/commentlayout"
-        android:layout_width="wrap_content"
-        android:layout_height="35dp"
-        android:layout_gravity="end|bottom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:orientation="horizontal">
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_marginEnd="5dp"
+            android:id="@+id/link"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:id="@+id/commentCount"
-            android:textStyle="bold"
-            android:text="2"/>
-        <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/comments"
-            android:background="@color/white"
+            android:layout_weight="7"
+            android:textColor="@color/Pink"
+            android:paddingVertical="10dp"
+            android:text="@string/helpful_resources"
+            android:textStyle="bold" />
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_gravity="top"
+            android:layout_height="30dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_marginEnd="5dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/commentCount"
+                android:textStyle="bold"
+                android:text="2"/>
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/comments"
+                android:background="@color/white"
 
-            android:layout_marginBottom="-40dp"
-            android:contentDescription="@string/commenticon" />
+                android:layout_marginBottom="-40dp"
+                android:contentDescription="@string/commenticon" />
+
+        </LinearLayout>
+
+
 
     </LinearLayout>
 

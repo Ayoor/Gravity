@@ -5,3 +5,7 @@ convert project to MVVM design
 change the insights xdate logic to retrieve the xdate data from the database instead of counting down from the current date
 
 change the insights logic to save and retrieve the insights data from the database
+
+
+add links to community
+change to MVVM

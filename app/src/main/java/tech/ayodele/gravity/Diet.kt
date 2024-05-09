@@ -1,5 +1,6 @@
 package tech.ayodele.gravity
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -19,6 +20,7 @@ import tech.ayodele.gravity.databinding.ActivityDietBinding
 
 open class Diet : AppCompatActivity() {
     private lateinit var binding: ActivityDietBinding
+    @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         overridePendingTransition(0, 0)
         super.onCreate(savedInstanceState)
@@ -36,9 +38,21 @@ open class Diet : AppCompatActivity() {
 //adapter
 
         val recommendedMeals  = Meals.getMealDetails(this)
+        val userType = Meals.getUserType(this)
+        val userTyp= when(userType) {
+            "Active User" -> "AU"
+            "Passive User" -> "PU"
+            "Sedentary User" -> "SU"
+        else ->{
+            "DU"
+        }
+        }
+
+        binding.dietTitle.text = "Your Meal Suggestions ($userTyp)"
         val adapter = DietRecyclerAdapter(recommendedMeals, this)
         binding.recyclerView.layoutManager = LinearLayoutManager(this)
         binding.recyclerView.adapter = adapter
+
 
         //bottom nav
         val bottomNavigation = binding.bottomNavigation
@@ -81,47 +95,13 @@ open class Diet : AppCompatActivity() {
             }
         })
 
-        getData()
+
     }
 
 
 
 
-    private fun getData() {
-        val call = RetrofitClient.apiService.fetchData()
-        call.enqueue(object : retrofit2.Callback<RecipeInfo> {
-            override fun onResponse(
-                call: Call<RecipeInfo>,
-                response: retrofit2.Response<RecipeInfo>
-            ) {
-                if (response.isSuccessful) {
-                    Log.i("Recipe Label", "recipe.label")
-                    val recipeInfo = response.body()
-                    recipeInfo?.hits?.forEach { hit ->
-                        val recipe = hit.recipe
-                        Log.i("Recipe Label", recipe.label)
-                        Log.i("Regular Image", recipe.image)
-                        Log.i("Diet Labels", recipe.dietLabels.joinToString())
-                        Log.i("Calories", recipe.calories.toString())
-                    }
-                } else {
-                    // Handle unsuccessful response here
-                    Log.i("Response", "Unsuccessful")
-                }
-            }
 
-
-
-            override fun onFailure(call: Call<RecipeInfo>, t: Throwable) {
-                Toast.makeText(
-                    this@Diet,
-                    "An error occurred while Retrieving Data, please try again Later.",
-                    Toast.LENGTH_LONG
-                ).show()
-                Log.i("response", t.toString())
-            }
-        })
-    }
 
 
 }

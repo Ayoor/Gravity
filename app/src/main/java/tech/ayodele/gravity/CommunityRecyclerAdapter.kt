@@ -1,6 +1,8 @@
 package tech.ayodele.gravity
 
-import android.util.Log
+import android.content.Intent
+import android.net.Uri
+import android.text.method.LinkMovementMethod
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -36,11 +38,18 @@ class CommunityAdapter(private val items: List<CommunityItems>, private val list
             binding.apply {
                 topic.text = item.topic
                 content.text = item.description
-                if (item.commentCount == 0){
+                if (item.commentCount == 0) {
                     commentCount.text = ""
-                }
-                else{
+                } else {
                     commentCount.text = item.commentCount.toString()
+                }
+
+                // Retrieve the link from the CommunityItems object
+                val url = item.link
+                link.movementMethod = LinkMovementMethod.getInstance()
+                link.setOnClickListener {
+                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+                    link.context.startActivity(intent)
                 }
             }
         }
@@ -50,7 +59,6 @@ class CommunityAdapter(private val items: List<CommunityItems>, private val list
             if (position != RecyclerView.NO_POSITION) {
                 val item = items[position]
                 listener.onItemClick(item)
-
             }
         }
     }
