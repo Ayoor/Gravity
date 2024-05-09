@@ -1,6 +1,7 @@
 package tech.ayodele.gravity
 
 import android.annotation.SuppressLint
+import android.content.ContentValues.TAG
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
@@ -10,6 +11,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
@@ -18,16 +20,19 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.github.mikephil.charting.charts.LineChart
-import com.github.mikephil.charting.components.XAxis
-import com.github.mikephil.charting.data.Entry
-import com.github.mikephil.charting.data.LineData
-import com.github.mikephil.charting.data.LineDataSet
-import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
+import com.anychart.AnyChart
+import com.anychart.AnyChartView
+import com.anychart.chart.common.dataentry.DataEntry
+import com.anychart.chart.common.dataentry.ValueDataEntry
 import com.google.android.material.navigation.NavigationBarView
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import com.google.gson.Gson
 import tech.ayodele.gravity.databinding.ActivityInsightsBinding
 import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 class Insights : AppCompatActivity() {
     private lateinit var binding: ActivityInsightsBinding
@@ -95,89 +100,106 @@ class Insights : AppCompatActivity() {
 
         observeViewModel()
         updateWeeklyInsights(binding)
-        drawLineChart()
+//        drawLineChart()
+        lineChart(userdata.id?:"User")
     }
+
+
 
     @RequiresApi(Build.VERSION_CODES.O)
-    private fun drawLineChart(){
+    private fun lineChart(userID:String) {
 
-       val prefs = getSharedPreferences("weekPrefs", Context.MODE_PRIVATE)
-        // Initialize the LineChart
-        val lineChart: LineChart = findViewById(R.id.lineChart)
-        val defaultMetrics = WeeklyMetricsList(
-            mutableListOf(), mutableListOf(), mutableListOf(), mutableListOf()
-        )
-        val retrievedMetricsString = prefs.getString("currentWeeklyMetrics", null)
-        val retrievedMetrics = Gson().fromJson(retrievedMetricsString, WeeklyMetricsList::class.java) ?: defaultMetrics
+        var waterList = mutableListOf<Int>()
+        var stepsList = mutableListOf<Int>()
+        var caloriesList = mutableListOf<Int>()
 
-        val waterList = retrievedMetrics.weeklyML
-        val stepsList = retrievedMetrics.weeklySteps
-        val caloriesList = retrievedMetrics.weeklyKcal
+        val databaseReference = FirebaseDatabase.getInstance().getReference("Insights/$userID")
 
-        // Prepare your data
-        val entries1 = mutableListOf<Entry>()
-        val entries2 = mutableListOf<Entry>()
-        val entries3 = mutableListOf<Entry>()
+// Add a ValueEventListener to listen for changes in the data
+        databaseReference.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                // Check if the dataSnapshot exists and contains data
+                if (dataSnapshot.exists()) {
+                    val weeklyMetrics = dataSnapshot.getValue(WeeklyMetricsList::class.java)
+                    // Now you can use the retrieved weeklyMetrics object
+                    if (weeklyMetrics != null) {
+                        waterList = weeklyMetrics.weeklyML
+                        stepsList = weeklyMetrics.weeklySteps
+                        caloriesList = weeklyMetrics.weeklyKcal
 
-        // Populate the entries for each line
-        for (i in 0 until waterList.size) {
-            entries1.add(Entry(i.toFloat(), waterList[i].toFloat()))
-            entries2.add(Entry(i.toFloat(), stepsList[i].toFloat()))
-            entries3.add(Entry(i.toFloat(), caloriesList[i].toFloat()))
-        }
+                    }
 
-// Create LineDataSet for each line
-        val dataSet1 = LineDataSet(entries1, "Water(ml)")
-        val dataSet2 = LineDataSet(entries2, "Steps")
-        val dataSet3 = LineDataSet(entries3, "Calories")
+//--------------------------------------- use data to update chart-----------------------
+                    // Find the AnyChartView in your layout
+                    val anyChartView: AnyChartView = findViewById(R.id.lineChart)
 
-// Customize appearance for each dataset if needed
-// Example: Changing line color
-        dataSet1.color = Color.BLUE
-        dataSet2.color = Color.RED
-        dataSet3.color = Color.BLACK
+                    // Initialize AnyChart
+                    val cartesian = AnyChart.line()
 
-// Add LineDataSet objects to LineData
-        val lineData = LineData(dataSet1, dataSet2, dataSet3)
+                    // Prepare data for the line chart
+                    val data1: MutableList<DataEntry> = mutableListOf()
+                    val data2: MutableList<DataEntry> = mutableListOf()
+                    val data3: MutableList<DataEntry> = mutableListOf()
 
-// Configure the chart
-        lineChart.apply {
-            description.isEnabled = false // Disable chart description
-            xAxis.position = XAxis.XAxisPosition.BOTTOM // Position of X-axis
-            axisRight.isEnabled = false // Disable right Y-axis
-            legend.isEnabled = true // Enable legend
-        }
-        // Set custom labels for X-axis
-//        val labels = listOf("7DAGO", "6DAGO", "5DAGO", "4DAGO", "3DAGO", "Yesterday", "Today")
-        val labels = getLabelArray()
-        lineChart.xAxis.valueFormatter = IndexAxisValueFormatter(labels)
-// Set data to the chart
-        lineChart.data = lineData
+                    // Compile x dates list and reverse it
+                    val currentdate = LocalDate.now()
+                    val xDates = mutableListOf<String>()
 
-// Refresh the chart
-        lineChart.invalidate()
+//                    ----------- x axis date --------------------
+                    for (i in waterList.indices) {
+                        val date = currentdate.minusDays(i.toLong())
+                        val xDate = date.format(DateTimeFormatter.ofPattern("dd-MMM"))
+                        xDates.add(xDate)
+                    }
+                    xDates.reverse()
+
+                    // Generate data for demonstration
+                    for (i in waterList.indices) {
+                        val xDate = xDates[i]
+
+                        data1.add(ValueDataEntry(xDate, waterList[i]))
+                        data2.add(ValueDataEntry(xDate, stepsList[i]))
+                        data3.add(ValueDataEntry(xDate, caloriesList[i]))
+                    }
+
+                    // Add data to the line chart
+                    cartesian.line(data1).name("Water")
+                    cartesian.line(data2).name("Steps")
+                    cartesian.line(data3).name("Calories")
+
+                    // Set title for the line chart
+                    cartesian.title("Last 7 days ")
+
+                    // Add legend to the chart
+                    cartesian.legend().enabled(true)
+
+                    // Render the line chart
+                    anyChartView.setChart(cartesian)
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Log.e(TAG, "Failed to read value.", error.toException())
+                Toast.makeText(this@Insights, "Failed to retrieve data from Database", Toast.LENGTH_SHORT).show()
+            }
+        })
+
+
+
+
 
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
-    private fun getLabelArray(): List<String> {
-        val currentdate = LocalDate.now()
-        val datelist= mutableListOf<String>()
-        for (i in 0 until 7){
-            val date = currentdate.minusDays(i.toLong())
-            datelist.add("${date.dayOfMonth}-${date.month}")
-//            Log.i("date", "${date.dayOfMonth}-${date.month}")
-        }
 
-        return datelist.reversed()
-    }
+
+
     private fun observeViewModel() {
         viewModel.weeklySum.observe(this, Observer { weeklySum ->
             updateUIWithWeeklySum(weeklySum)
         })
 
         viewModel.insightPercentages.observe(this, Observer { insightPercentages ->
-            updateUIWithInsightPercentages(insightPercentages)
+//            updateUIWithInsightPercentages(insightPercentages)
         })
     }
 
@@ -244,11 +266,7 @@ class Insights : AppCompatActivity() {
             savedInsightPercentages.exercise = calculatePercentageDifference(currentlyWeeklySum.exercise, exerciseForTheWeek)
         }
 
-        // Update UI with insight percentages
-        updateInsightPercentage(binding.waterInsightPercentage, savedInsightPercentages.water)
-        updateInsightPercentage(binding.stepsInsightPercentage, savedInsightPercentages.steps)
-        updateInsightPercentage(binding.caloryInsightPercentage, savedInsightPercentages.calories)
-        updateInsightPercentage(binding.exerciseInsightPercentage, savedInsightPercentages.exercise)
+
 
         // Save updated data to SharedPreferences
         currentlyWeeklySum = MetricsData(waterForTheWeek, stepsForTheWeek, caloriesForTheWeek, exerciseForTheWeek)
@@ -259,34 +277,7 @@ class Insights : AppCompatActivity() {
         editor.apply()
     }
 
-    @SuppressLint("SetTextI18n")
-    private fun updateInsightPercentage(textView: TextView, percentage: Double) {
-        when {
-            percentage < 0 -> {
-                textView.setTextColor(ContextCompat.getColor(textView.context, R.color.red))
-                textView.text = "${percentage * -1}%"
-                textView.setCompoundDrawablesWithIntrinsicBounds(
-                    R.drawable.bottom_left_arrow,  // left drawable
-                    0,                              // top drawable
-                    0,                              // right drawable
-                    0                               // bottom drawable
-                )
-            }
-            percentage > 0 -> {
-                textView.setTextColor(ContextCompat.getColor(textView.context, R.color.green))
-                textView.text = "$percentage%"
-                textView.setCompoundDrawablesWithIntrinsicBounds(
-                    R.drawable.top_right_arrow,  // left drawable
-                    0,                              // top drawable
-                    0,                              // right drawable
-                    0                               // bottom drawable
-                )
-            }
-            else -> {
-                textView.text = "0%"
-            }
-        }
-    }
+
 
 
     private fun sumDailyMetrics(metricsList: MutableList<Int>): Int {
@@ -309,14 +300,6 @@ class Insights : AppCompatActivity() {
         binding.stepsIndicatorText.text = "${weeklySum.steps}"
         binding.caloryIndicatorText.text = "${weeklySum.calories} kcal"
         binding.exerciseText.text = "${weeklySum.exercise}"
-    }
-
-    @SuppressLint("SetTextI18n")
-    private fun updateUIWithInsightPercentages(insightPercentages: SavedInsightPercentage) {
-        updateInsightPercentage(binding.waterInsightPercentage, insightPercentages.water)
-        updateInsightPercentage(binding.stepsInsightPercentage, insightPercentages.steps)
-        updateInsightPercentage(binding.caloryInsightPercentage, insightPercentages.calories)
-        updateInsightPercentage(binding.exerciseInsightPercentage, insightPercentages.exercise)
     }
 
 

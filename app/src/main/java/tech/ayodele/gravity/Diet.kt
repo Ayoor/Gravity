@@ -17,11 +17,8 @@ import okhttp3.OkHttpClient
 import retrofit2.Call
 import tech.ayodele.gravity.databinding.ActivityDietBinding
 
-class Diet : AppCompatActivity() {
+open class Diet : AppCompatActivity() {
     private lateinit var binding: ActivityDietBinding
-    private lateinit var placesClient: PlacesClient
-    private lateinit var fusedLocationClient: FusedLocationProviderClient
-    private val client = OkHttpClient()
     override fun onCreate(savedInstanceState: Bundle?) {
         overridePendingTransition(0, 0)
         super.onCreate(savedInstanceState)
@@ -38,7 +35,7 @@ class Diet : AppCompatActivity() {
         setContentView(binding.root)
 //adapter
 
-        val recommendedMeals  = Meals.getMealDetails()
+        val recommendedMeals  = Meals.getMealDetails(this)
         val adapter = DietRecyclerAdapter(recommendedMeals, this)
         binding.recyclerView.layoutManager = LinearLayoutManager(this)
         binding.recyclerView.adapter = adapter
@@ -125,4 +122,6 @@ class Diet : AppCompatActivity() {
             }
         })
     }
+
+
 }

@@ -23,11 +23,12 @@ data class MetricsData(
     val exercise: Int,
 )
 
-data class  WeeklyMetricsList(
-    val weeklyML: MutableList<Int>,
-    val weeklySteps: MutableList<Int>,
-    val weeklyKcal: MutableList<Int>,
-    val weeklyExercise: MutableList<Int>
+data class WeeklyMetricsList(
+    val weeklyML: MutableList<Int> = mutableListOf(),
+    val weeklySteps: MutableList<Int> = mutableListOf(),
+    val weeklyKcal: MutableList<Int> = mutableListOf(),
+    val weeklyExercise: MutableList<Int> = mutableListOf(),
+    val date: String = ""
 )
 
 data class SavedInsightPercentage(

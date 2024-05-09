@@ -4,8 +4,8 @@
     android:layout_width="match_parent"
     android:padding="20dp"
     android:layout_marginBottom="10dp"
-    android:background="@drawable/comment_item_bg"
-    android:layout_height="155dp">
+    android:background="@drawable/tile4"
+    android:layout_height="wrap_content">
 
 <!--    <LinearLayout-->
 <!--        android:layout_width="match_parent"-->
@@ -36,25 +36,25 @@
         android:layout_marginTop="10dp"
         android:orientation="horizontal">
         <TextView
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Topic:"
             android:textStyle="bold"
-            android:layout_weight="1"
-            android:textSize="23sp"/>
+            android:layout_marginEnd="5dp"
+            android:textSize="20sp"/>
         <TextView
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:id="@+id/topic"
             android:layout_height="wrap_content"
             android:text="Light weight Exercises:"
-            android:layout_weight="4"
             android:textStyle="bold"
-            android:textSize="23sp"/>
+            android:textSize="20sp"/>
     </LinearLayout>
     <TextView
         android:layout_width="match_parent"
-        android:padding="10dp"
+        android:paddingVertical="10dp"
         android:id="@+id/content"
+        android:textStyle="bold"
         android:text="What are the light weight exercises you guys are using to lose weight? Can any one help me? Please!!!!!!"
         android:layout_height="wrap_content"/>
     <LinearLayout
@@ -75,7 +75,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/comments"
-            android:background="@color/lightGrey"
+            android:background="@color/white"
 
             android:layout_marginBottom="-40dp"
             android:contentDescription="@string/commenticon" />

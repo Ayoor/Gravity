@@ -4,8 +4,11 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.annotation.RequiresApi
@@ -69,15 +72,19 @@ class Signin : AppCompatActivity() {
                 val email: String = binding.emailET.text.toString()
                 val password = binding.passwordET.text.toString()
 
-
-                // confirm necessary fields
-                if (email.isNotEmpty() && password.isNotEmpty()) {
-                    //initialise firebase and database reference
-                    firebaseDatabase = FirebaseDatabase.getInstance()
-                    databaseReference = firebaseDatabase.getReference("Users")
-                    signIn(email, password)
-                } else {
-                    Toast.makeText(this, "Please fill in all fields", Toast.LENGTH_SHORT).show()
+                if (isInternetAvailable(this)) {
+                    // confirm necessary fields
+                    if (email.isNotEmpty() && password.isNotEmpty()) {
+                        //initialise firebase and database reference
+                        firebaseDatabase = FirebaseDatabase.getInstance()
+                        databaseReference = firebaseDatabase.getReference("Users")
+                        signIn(email, password)
+                    } else {
+                        Toast.makeText(this, "Please fill in all fields", Toast.LENGTH_SHORT).show()
+                    }
+                }
+                else{
+                    Toast.makeText(this, "No Internet Connection", Toast.LENGTH_SHORT).show()
                 }
             }
 //        redirect to Signup
@@ -113,7 +120,6 @@ class Signin : AppCompatActivity() {
                         val userData = userDataSnapshot.getValue(UserDetails::class.java)
                         if (userData?.password == hashedPassword) {
                             // Passwords match, proceed with login
-
 //                            saveuser data to device memory
                             saveUserData(userData)
 
@@ -140,6 +146,8 @@ class Signin : AppCompatActivity() {
     }
 
     fun saveUserData(user: UserDetails){
+      Log.i("theuser", user.userType.toString())
+
         prefs = getSharedPreferences("saveData", Context.MODE_PRIVATE)
         val editor = prefs.edit()
         editor.putBoolean("existingUser", true)
@@ -156,6 +164,17 @@ class Signin : AppCompatActivity() {
         val userData = gson.fromJson(userDataJson, UserDetails::class.java)
         return Pair(existingUser, userData)
     }
+    @SuppressLint("ServiceCast")
+    fun isInternetAvailable(context: Context): Boolean {
+        val connectivityManager =
+            context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
 
+        val network = connectivityManager.activeNetwork ?: return false
+        val networkCapabilities =
+            connectivityManager.getNetworkCapabilities(network) ?: return false
+
+        return networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) ||
+                networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR)
+    }
 
 }

@@ -76,5 +76,6 @@
     <string name="fat">Fat</string>
     <string name="carb">Carb</string>
     <string name="sign_out">Sign out</string>
+    <string name="subject">Subject:</string>
 
 </resources>

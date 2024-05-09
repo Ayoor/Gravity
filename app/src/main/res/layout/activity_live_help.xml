@@ -43,26 +43,30 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:textSize="16sp"
-                android:text="Subject:"/>
+                android:text="@string/subject"/>
             <EditText
                 android:layout_width="0dp"
                 android:id="@+id/subject"
                 android:hint="@string/help_subject"
                 android:layout_height="48dp"
-                android:background="@drawable/comment_item_bg"
-                android:layout_weight="3"/>
+                android:inputType="text"
+                android:background="@drawable/tile4"
+                android:layout_weight="3"
+                android:paddingHorizontal="15dp"
+                android:autofillHints="" />
         </LinearLayout>
 
         <EditText
             android:layout_width="match_parent"
             android:layout_height="400dp"
             android:layout_marginTop="10dp"
-            android:background="@drawable/comment_item_bg"
+            android:background="@drawable/tile4"
             android:gravity="top"
             android:id="@+id/mailBody"
             android:hint="@string/write_your_message_here"
             android:inputType="textMultiLine"
-            android:padding="15dp" />
+            android:padding="15dp"
+            android:autofillHints="" />
 
 
 

@@ -14,5 +14,5 @@
         android:icon="@drawable/cutlery"/>
     <item  android:id="@+id/liveHelp"
         android:title="@string/live_help"
-        android:icon="@drawable/help"/>
+        android:icon="@drawable/mail"/>
 </menu>

@@ -4,7 +4,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import com.google.gson.Gson
 
-object Meals {
+class Meal {
     private lateinit var preferences: SharedPreferences
 
     fun getMealDetails(context: Context): List<MealData> {
@@ -12,7 +12,7 @@ object Meals {
         var menulist: List<MealData> = listOf()
 
         when (userType) {
-            "Unavailable" ->   menulist =listOf(
+         "Unavailable" ->   menulist =listOf(
                 MealData(
                     "Quick Shrimp Puttanesca",
                     "Because refrigerated fresh pasta cooks much faster than dried pasta, this Italian-inspired pasta dish will be on the table lickety-split! Puttanesca, traditionally made with tomatoes, olives, capers, anchovies and garlic, gets shrimp for extra protein and artichoke hearts to boost the vegetable servings (and the fiber!). If you can't find frozen artichoke hearts, sub in drained canned artichoke hearts.",

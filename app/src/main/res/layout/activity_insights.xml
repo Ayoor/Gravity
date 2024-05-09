@@ -10,273 +10,269 @@ android:orientation="vertical"
 tools:context=".Insights">
 
 <!--user welcome -->
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_weight="1"
-    android:padding="20dp"
-    android:layout_marginTop="40dp"
-    android:orientation="vertical">
-
-
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="horizontal">
-
-    <ImageView
-        android:layout_width="0dp"
-        android:layout_height="27dp"
-        android:src="@drawable/back_arrow"
-        android:id="@+id/backArrow"
-        android:paddingEnd="30dp"
-        android:paddingStart="0dp"
-        android:layout_gravity="start"
-        android:layout_weight="1"
-        android:contentDescription="@string/menu"/>
-
-    <TextView
-        android:id="@+id/name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="22sp"
-        android:textAlignment="textStart"
-        android:textStyle="bold"
-        android:layout_weight="4"
-        android:text="Ayodele!" />
-
-
-</LinearLayout>
-
-
-
-<!--inspiration of the day-->
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:gravity="start"
-    android:orientation="vertical"
-
-    >
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:textAlignment="center"
-
-        android:text="Here is a Summary of Your Week!"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        />
-
-
-</LinearLayout>
-
-
-
-
-<!--metrics widget-->
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginTop="10dp"
-    android:baselineAligned="false"
-    android:orientation="horizontal">
-
-    <!-- First row -->
-    <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:orientation="vertical">
-
-        <!-- Water Metrics -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/tile2"
-            android:orientation="vertical"
-            android:padding="16dp">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/water"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                app:drawableStartCompat="@drawable/waterdrop" />
-
-            <TextView
-                android:id="@+id/waterText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:textStyle="bold"
-                android:text="400ml"
-
-                android:textSize="25sp" />
-
-            <TextView
-                android:id="@+id/waterInsightPercentage"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:textStyle="bold"
-                android:textSize="16sp" />
-
-
-        </LinearLayout>
-
-        <!-- Second item -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/tile1"
-            android:orientation="vertical"
-            android:layout_marginTop="10dp"
-            android:padding="16dp">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/calories"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                app:drawableStartCompat="@drawable/cutlery" />
-
-            <TextView
-                android:id="@+id/caloryIndicatorText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:textStyle="bold"
-                android:text="4500Kcal"
-
-                android:textSize="25sp" />
-
-            <TextView
-                android:id="@+id/caloryInsightPercentage"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:textStyle="bold"
-                android:textSize="16sp"/>
-
-
-        </LinearLayout>
-
-    </LinearLayout>
-
-    <!-- Second Column -->
-    <!-- First row -->
-    <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:layout_marginStart="10dp"
-        android:orientation="vertical">
-
-        <!-- Water Metrics -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/tile1"
-            android:orientation="vertical"
-            android:padding="16dp">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="No of Exercices"
-                android:textSize="17sp"
-                android:textStyle="bold"
-                app:drawableStartCompat="@drawable/exercise_gym" />
-
-            <TextView
-                android:id="@+id/exerciseText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:textStyle="bold"
-                android:text="17"
-
-                android:textSize="25sp" />
-
-            <TextView
-                android:id="@+id/exerciseInsightPercentage"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:textStyle="bold"
-                android:textSize="16sp"/>
-
-
-        </LinearLayout>
-
-        <!-- Second item -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/tile3"
-            android:orientation="vertical"
-            android:layout_marginTop="10dp"
-            android:padding="16dp">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/steps"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                app:drawableStartCompat="@drawable/footprint" />
-
-            <TextView
-                android:id="@+id/stepsIndicatorText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:textStyle="bold"
-                android:text="15k"
-
-                android:textSize="25sp" />
-
-            <TextView
-                android:id="@+id/stepsInsightPercentage"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:textStyle="bold"
-                android:textSize="16sp"/>
-
-
-        </LinearLayout>
-
-    </LinearLayout>
-</LinearLayout>
-
-
-<TextView
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_marginTop="30dp"
-    android:layout_marginBottom="15dp"
-    android:text="@string/weekly_points"
-    android:textSize="18sp"
-    android:textStyle="bold" />
-
-<!--    <ImageView-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:src="@drawable/graph"/>-->
-
-    <com.github.mikephil.charting.charts.LineChart
-        android:id="@+id/lineChart"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-</LinearLayout>
 
     <!--  BottomNavigationView -->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="40dp"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:padding="20dp">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/backArrow"
+                android:layout_width="0dp"
+                android:layout_height="27dp"
+                android:layout_gravity="start"
+                android:layout_weight="1"
+                android:contentDescription="@string/menu"
+                android:paddingStart="0dp"
+                android:paddingEnd="30dp"
+                android:src="@drawable/back_arrow" />
+
+            <TextView
+                android:id="@+id/name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="4"
+                android:text="Ayodele!"
+                android:textAlignment="textStart"
+                android:textSize="22sp"
+                android:textStyle="bold" />
+
+
+        </LinearLayout>
+
+
+        <!--inspiration of the day-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="start"
+            android:orientation="vertical"
+
+            >
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="Here is a Summary of Your Week!"
+
+                android:textAlignment="center"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+
+        </LinearLayout>
+
+
+        <!--metrics widget-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:baselineAligned="false"
+            android:orientation="horizontal">
+
+            <!-- First row -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <!-- Water Metrics -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="110dp"
+                    android:background="@drawable/tile2"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/water"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        app:drawableStartCompat="@drawable/waterdrop" />
+
+                    <TextView
+                        android:id="@+id/waterText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="15dp"
+                        android:text="400ml"
+                        android:textSize="25sp"
+
+                        android:textStyle="bold" />
+
+                    <!--            <TextView-->
+                    <!--                android:id="@+id/waterInsightPercentage"-->
+                    <!--                android:layout_width="wrap_content"-->
+                    <!--                android:layout_height="wrap_content"-->
+                    <!--                android:layout_marginTop="5dp"-->
+                    <!--                android:textStyle="bold"-->
+                    <!--                android:textSize="16sp" />-->
+
+
+                </LinearLayout>
+
+                <!-- Second item -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="110dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/tile1"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/calories"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        app:drawableStartCompat="@drawable/cutlery" />
+
+                    <TextView
+                        android:id="@+id/caloryIndicatorText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="15dp"
+                        android:text="4500Kcal"
+                        android:textSize="25sp"
+
+                        android:textStyle="bold" />
+
+                    <!--            <TextView-->
+                    <!--                android:id="@+id/caloryInsightPercentage"-->
+                    <!--                android:layout_width="wrap_content"-->
+                    <!--                android:layout_height="wrap_content"-->
+                    <!--                android:layout_marginTop="5dp"-->
+                    <!--                android:textStyle="bold"-->
+                    <!--                android:textSize="16sp"/>-->
+
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <!-- Second Column -->
+            <!-- First row -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <!-- Water Metrics -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="110dp"
+                    android:background="@drawable/tile1"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="No of Exercices"
+                        android:textSize="15sp"
+                        android:textStyle="bold"
+                        app:drawableStartCompat="@drawable/exercise_gym" />
+
+                    <TextView
+                        android:id="@+id/exerciseText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="15dp"
+                        android:text="17"
+                        android:textSize="25sp"
+
+                        android:textStyle="bold" />
+
+                    <!--            <TextView-->
+                    <!--                android:id="@+id/exerciseInsightPercentage"-->
+                    <!--                android:layout_width="wrap_content"-->
+                    <!--                android:layout_height="wrap_content"-->
+                    <!--                android:layout_marginTop="5dp"-->
+                    <!--                android:textStyle="bold"-->
+                    <!--                android:textSize="16sp"/>-->
+
+
+                </LinearLayout>
+
+                <!-- Second item -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="110dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/tile3"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/steps"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        app:drawableStartCompat="@drawable/footprint" />
+
+                    <TextView
+                        android:id="@+id/stepsIndicatorText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="15dp"
+                        android:text="15k"
+                        android:textSize="25sp"
+
+                        android:textStyle="bold" />
+
+                    <!--            <TextView-->
+                    <!--                android:id="@+id/stepsInsightPercentage"-->
+                    <!--                android:layout_width="wrap_content"-->
+                    <!--                android:layout_height="wrap_content"-->
+                    <!--                android:layout_marginTop="5dp"-->
+                    <!--                android:textStyle="bold"-->
+                    <!--                android:textSize="16sp"/>-->
+
+
+                </LinearLayout>
+
+            </LinearLayout>
+        </LinearLayout>
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:layout_marginBottom="15dp"
+            android:text="@string/weekly_points"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+
+        <com.anychart.AnyChartView
+            android:id="@+id/lineChart"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+
+    </LinearLayout>
+
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation"
         android:layout_width="match_parent"

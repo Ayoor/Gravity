@@ -4,6 +4,8 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
 import android.os.Build
 import android.os.Bundle
 import android.view.View
@@ -70,15 +72,20 @@ class Signup : AppCompatActivity() {
             val weight = binding.weightET.text.toString()
             val height = binding.heightET.text.toString()
 
-            // verify all required fields
-            if (email.isNotEmpty() && password.isNotEmpty() && name.isNotEmpty()) {
-                val hashedPassword = encryptPassword(password)
-                signupUser(name, hashedPassword, email, height.toInt(), weight.toDouble())
+            if (isInternetAvailable(this)) {
+                // verify all required fields
+                if (email.isNotEmpty() && password.isNotEmpty() && name.isNotEmpty()) {
+                    val hashedPassword = encryptPassword(password)
+                    signupUser(name, hashedPassword, email, height.toInt(), weight.toDouble())
+                } else {
+                    Toast.makeText(this, "Please fill in all fields", Toast.LENGTH_SHORT).show()
+                }
+
+
             } else {
-                Toast.makeText(this, "Please fill in all fields", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Please check your internet connection", Toast.LENGTH_SHORT)
+                    .show()
             }
-
-
         }
         //redirect to signin page
         binding.redirectET.setOnClickListener {
@@ -122,7 +129,7 @@ class Signup : AppCompatActivity() {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
                     if (!dataSnapshot.exists()) {
                         val id = databaseReference.push().key ?: ""
-                        val userData = UserDetails(id, userName, email, password, height, weight)
+                        val userData = UserDetails(id=id, name = userName, email = email, password = password, height = height, weight = weight)
                         databaseReference.child(id).setValue(userData)
                             .addOnSuccessListener {
                                 Toast.makeText(
@@ -229,6 +236,19 @@ class Signup : AppCompatActivity() {
         val json = gson.toJson(user)
         editor.putString("userdata", json)
         editor.apply()
+    }
+
+    @SuppressLint("ServiceCast")
+    fun isInternetAvailable(context: Context): Boolean {
+        val connectivityManager =
+            context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+
+        val network = connectivityManager.activeNetwork ?: return false
+        val networkCapabilities =
+            connectivityManager.getNetworkCapabilities(network) ?: return false
+
+        return networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) ||
+                networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR)
     }
 
 }

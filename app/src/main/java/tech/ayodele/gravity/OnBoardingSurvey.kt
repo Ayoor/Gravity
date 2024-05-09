@@ -4,6 +4,8 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -80,13 +82,20 @@ class OnBoardingSurvey : AppCompatActivity() {
                     val alertDialog = alertDialogBuilder.create()
                     alertDialog.show()
             }
-        } else { // survey has been completed
+        }
+        else { // survey has been completed
             finishSurvey(prefs)
         }
 //            button finish the survey
         binding.finish.setOnClickListener {
-            submitSurvey(passUserData()?.id.toString())
-            finishSurvey(prefs)
+//            check internet status
+            if(isInternetAvailable(this)) {
+                submitSurvey(passUserData()?.id.toString())
+                finishSurvey(prefs)
+            }
+            else{
+                Toast.makeText(this, "No Internet Connection", Toast.LENGTH_SHORT).show()
+            }
         }
 
 //        handle the previous text click
@@ -125,6 +134,20 @@ class OnBoardingSurvey : AppCompatActivity() {
 
         }
     }
+
+    @SuppressLint("ServiceCast")
+    fun isInternetAvailable(context: Context): Boolean {
+        val connectivityManager =
+            context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+
+        val network = connectivityManager.activeNetwork ?: return false
+        val networkCapabilities =
+            connectivityManager.getNetworkCapabilities(network) ?: return false
+
+        return networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) ||
+                networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR)
+    }
+
 //method to complete the survey and save the user's preferences
     private fun finishSurvey(preferences: SharedPreferences) {
         val editor = preferences.edit()
@@ -247,6 +270,8 @@ class OnBoardingSurvey : AppCompatActivity() {
 
     }
 
+    //submit survey to database
+
     private fun submitSurvey(
         userID: String
     ) {
@@ -267,8 +292,10 @@ class OnBoardingSurvey : AppCompatActivity() {
 
         }
         userAndResponse.add(0, userID)
-
-        // Save the survey data map to Firebase Realtime Database
+        val userType = getUserType(selectedAnswers)
+        userAndResponse.add( 0, userType)
+Log.i("submit", userAndResponse.toString())
+//         Save the survey data map to Firebase Realtime Database
         databaseReference.child("Survey Data").child(userID).setValue(userAndResponse)
             .addOnSuccessListener {
                 Toast.makeText(
@@ -285,5 +312,77 @@ class OnBoardingSurvey : AppCompatActivity() {
                     Toast.LENGTH_SHORT
                 ).show()
             }
+
+        val userTypeRef = databaseReference.child("Users").child(userID).child("userType")
+        userTypeRef.setValue(userType)
+
     }
+    private fun getUserType(userSurveyResponse: List<String>): String {
+        var activeUser = 0
+        var passiveUser = 0
+        var sedentaryUser = 0
+        var userType = ""
+
+
+        when (userSurveyResponse[0]) {
+            "Sedentary" -> sedentaryUser++
+            "Lightly active" -> passiveUser++
+            "Moderately active" -> passiveUser++
+            "Very active" -> activeUser++
+        }
+
+        when (userSurveyResponse[1]) {
+            "Very Easily" -> activeUser++
+            "Easily" -> passiveUser++
+            "Normal" -> passiveUser++
+            "Difficult" -> sedentaryUser++
+            "Very Difficult" -> sedentaryUser++
+        }
+
+        when (userSurveyResponse[2]) {
+            "Very Comfortable" -> activeUser++
+            "Somewhat Comfortable" -> passiveUser++
+            "Neutral" -> passiveUser++
+            "Somewhat Uncomfortable" -> sedentaryUser++
+            "Very Uncomfortable" -> sedentaryUser++
+        }
+
+        if (userSurveyResponse[3] == "Yes") {
+            sedentaryUser++
+        }
+
+        when (userSurveyResponse[4]) {
+            "Balanced and healthy" -> activeUser++
+            "Excessive consumption of processed foods" -> passiveUser++
+            "Regular consumption of energy-dense foods" -> passiveUser++
+            "Eating disorders or irregular eating patterns" -> sedentaryUser++
+        }
+
+        if (userSurveyResponse[5] == "Yes") {
+            sedentaryUser++
+        }
+
+        when (userSurveyResponse[6]) {
+            "Regularly (several times a week)" -> activeUser++
+            "Occasionally (once or twice a week)" -> passiveUser++
+            "Rarely (less than once a week)" -> passiveUser++
+            "Never" -> sedentaryUser++
+        }
+
+        if (userSurveyResponse[7] == "Yes") {
+            sedentaryUser++
+        }
+
+        // Determine user type based on the counts
+        userType = if (activeUser > passiveUser && activeUser > sedentaryUser) {
+            "Active User"
+        } else if (passiveUser > activeUser && passiveUser > sedentaryUser) {
+            "Passive User"
+        } else {
+            "Sedentary User"
+        }
+
+        return userType
+    }
+
 }

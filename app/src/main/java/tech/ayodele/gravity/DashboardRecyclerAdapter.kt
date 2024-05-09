@@ -33,6 +33,7 @@ import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
 import java.time.ZoneId
+import java.time.format.DateTimeFormatter
 import java.util.Date
 import java.util.Locale
 import kotlin.math.roundToInt
@@ -48,7 +49,7 @@ class DashboardRecyclerAdapter(
     private var lastDate: String? = null
 
     @RequiresApi(Build.VERSION_CODES.O)
-    private var currentDate = LocalDate.now().plusDays(7)
+    private var currentDate = LocalDate.now()
 
     private var waterProgress = 0
     private var stepsProgress = 0
@@ -77,6 +78,12 @@ class DashboardRecyclerAdapter(
         val binding = holder.binding
         val context = binding.root.context
 
+        // userdetails
+
+        val name = dashboardData.name
+
+        val userID = dashboardData.userID
+
         lastDate = prefs.getString("lastMetricsDate", "Unavailable")
 
         if (currentDate.toString() != lastDate) { // it is a new day, use new data
@@ -93,7 +100,7 @@ class DashboardRecyclerAdapter(
 
         }
 
-            saveDailyMetricsData(holder,MetricsData(totalMills,totalSteps, totalCalories,totalExercise))
+//            saveDailyMetricsData(holder,MetricsData(totalMills,totalSteps, totalCalories,totalExercise), userID)
 
 
 
@@ -119,12 +126,7 @@ class DashboardRecyclerAdapter(
         binding.stepsProgressIndicator.setIndicatorColor(indicatorColor)
         binding.stepsProgressIndicator.trackColor = whiteColor
 
-        // userdetails
-//        val weight = dashboardData.userWeight
-//        val height = dashboardData.userHeight
-        val name = dashboardData.name
-//        val email = dashboardData.email
-        val userID = dashboardData.userID
+
 
         // Set dashboard details
         binding.name.text = name
@@ -155,7 +157,7 @@ class DashboardRecyclerAdapter(
 //        update metrics
         holder.binding.updateMetric.setOnClickListener {
             //trigger metrics alert
-            metricsAlert(appcontext, binding, holder)
+            metricsAlert(appcontext, binding, holder, userID)
         }
 
 //         disclaimer
@@ -177,7 +179,7 @@ class DashboardRecyclerAdapter(
 
     }
     @RequiresApi(Build.VERSION_CODES.O)
-    private fun saveDailyMetricsData(holder: DashboardViewHolder, userMetrics: MetricsData) {
+    private fun saveDailyMetricsData(holder: DashboardViewHolder, userMetrics: MetricsData, userID: String) {
 
 
             val prefs = holder.itemView.context.getSharedPreferences("weekPrefs", Context.MODE_PRIVATE)
@@ -234,14 +236,21 @@ class DashboardRecyclerAdapter(
 
                  }
 
+//save to database
+        val database = FirebaseDatabase.getInstance()
+        val insightRef = database.getReference("Insights").child(userID)
+        val date = LocalDate.now()
+        val xDate = date.format(DateTimeFormatter.ofPattern("dd-MMM"))
+        // Save weight to Firebase Realtime Database
+        val weeklyMetrics = WeeklyMetricsList(
+            waterWeeklyData,
+            stepsWeeklyData,
+            caloryWeeklyData,
+            exerciseWeeklyData,
+            xDate
 
-            val weeklyMetrics = WeeklyMetricsList(
-                waterWeeklyData,
-                stepsWeeklyData,
-                caloryWeeklyData,
-                exerciseWeeklyData
-
-            )
+        )
+        insightRef.setValue(weeklyMetrics)
 
             //save to memory
 
@@ -351,6 +360,8 @@ class DashboardRecyclerAdapter(
                     binding.userBMI.text = "$userBMI BMI"
                     binding.BMIscale.text = BMIScale(userBMI)
                     binding.targetWeight.text = targetWeight(weightData.height)
+                    Log.i("kim", targetWeight(weightData.height))
+
                     binding.userWeight.text = "${weightData.value}Kg"
 
                 } else {
@@ -369,12 +380,11 @@ class DashboardRecyclerAdapter(
 
 
     private fun targetWeight(height: Int): String {
-        //24.8
         val heightInMeters = height * 0.01
         val targetBMI = heightInMeters * heightInMeters * 24.8
         val decimalFormat = DecimalFormat("#.##")
         val bmi = decimalFormat.format(targetBMI)
-        return "Your Goal Weight: $bmi Kg"
+        return "Goal Weight: $bmi Kg"
 
     }
 
@@ -422,7 +432,7 @@ class DashboardRecyclerAdapter(
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    private fun metricsAlert(context: Context, binding: DashboardItemsBinding, holder: DashboardViewHolder) {
+    private fun metricsAlert(context: Context, binding: DashboardItemsBinding, holder: DashboardViewHolder, userID: String) {
         val dialogView = LayoutInflater.from(context).inflate(R.layout.dashboar_update_alert, null)
         val activityCount = dialogView.findViewById<Spinner>(R.id.exerciseCount)
         val stepsCount = dialogView.findViewById<EditText>(R.id.stepsCount)
@@ -459,7 +469,7 @@ class DashboardRecyclerAdapter(
                 steps.toInt(), holder
             )
             updateMetricsChart(binding)
-        saveDailyMetricsData(holder, MetricsData( waterInML.toInt(),steps.toInt(),calories.toInt(),exerciseCount.toInt()))
+        saveDailyMetricsData(holder, MetricsData( waterInML.toInt(),steps.toInt(),calories.toInt(),exerciseCount.toInt()), userID)
 
             Toast.makeText(context, "Metrics Updated", Toast.LENGTH_SHORT).show()
             alertDialog.dismiss()
