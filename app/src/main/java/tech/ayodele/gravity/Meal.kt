@@ -3,6 +3,7 @@ package tech.ayodele.gravity
 import android.content.Context
 import android.content.SharedPreferences
 import com.google.gson.Gson
+import tech.ayodele.gravity.model.UserDetails
 
 class Meal {
     private lateinit var preferences: SharedPreferences

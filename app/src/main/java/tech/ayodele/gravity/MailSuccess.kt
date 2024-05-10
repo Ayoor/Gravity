@@ -9,6 +9,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import tech.ayodele.gravity.databinding.ActivityMailSuccessBinding
 import tech.ayodele.gravity.databinding.ActivityMainBinding
+import tech.ayodele.gravity.view.Dashboard
 
 class MailSuccess : AppCompatActivity() {
     private lateinit var binding: ActivityMailSuccessBinding

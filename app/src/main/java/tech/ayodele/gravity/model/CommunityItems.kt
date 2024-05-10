@@ -1,4 +1,4 @@
-package tech.ayodele.gravity
+package tech.ayodele.gravity.model
 
 data class CommunityItems(
     val topic: String,

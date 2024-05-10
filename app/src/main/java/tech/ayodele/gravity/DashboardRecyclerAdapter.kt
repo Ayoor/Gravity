@@ -27,6 +27,9 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.gson.Gson
 import tech.ayodele.gravity.databinding.DashboardItemsBinding
+import tech.ayodele.gravity.model.DashboardData
+import tech.ayodele.gravity.model.MetricsData
+import tech.ayodele.gravity.model.WeeklyMetricsList
 import java.text.DecimalFormat
 import java.text.SimpleDateFormat
 import java.time.LocalDate

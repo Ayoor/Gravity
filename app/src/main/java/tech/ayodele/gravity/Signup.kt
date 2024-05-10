@@ -8,7 +8,6 @@ import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.Build
 import android.os.Bundle
-import android.view.View
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.annotation.RequiresApi
@@ -22,7 +21,7 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.gson.Gson
 import tech.ayodele.gravity.databinding.ActivitySignupBinding
-import tech.ayodele.gravity.databinding.DashboardItemsBinding
+import tech.ayodele.gravity.model.UserDetails
 import java.security.Key
 import java.text.DecimalFormat
 import java.text.SimpleDateFormat

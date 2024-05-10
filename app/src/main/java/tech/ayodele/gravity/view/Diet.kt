@@ -1,21 +1,18 @@
-package tech.ayodele.gravity
+package tech.ayodele.gravity.view
 
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.MenuItem
-import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.libraries.places.api.net.PlacesClient
 import com.google.android.material.navigation.NavigationBarView
-import okhttp3.OkHttpClient
-import retrofit2.Call
+import tech.ayodele.gravity.DietRecyclerAdapter
+import tech.ayodele.gravity.Meals
+import tech.ayodele.gravity.R
 import tech.ayodele.gravity.databinding.ActivityDietBinding
 
 open class Diet : AppCompatActivity() {
@@ -43,9 +40,9 @@ open class Diet : AppCompatActivity() {
             "Active User" -> "AU"
             "Passive User" -> "PU"
             "Sedentary User" -> "SU"
-        else ->{
-            "DU"
-        }
+            else ->{
+                "DU"
+            }
         }
 
         binding.dietTitle.text = "Your Meal Suggestions ($userTyp)"
@@ -80,7 +77,7 @@ open class Diet : AppCompatActivity() {
                     }
 
                     R.id.insightIcon -> {
-                        startActivity(Intent(this@Diet, Insights::class.java))
+                        startActivity(Intent(this@Diet, InsightsActivity::class.java))
                         finish()
                         return true
                     }

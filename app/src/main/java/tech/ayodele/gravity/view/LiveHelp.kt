@@ -1,4 +1,4 @@
-package tech.ayodele.gravity
+package tech.ayodele.gravity.view
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -16,7 +16,10 @@ import androidx.core.view.WindowInsetsCompat
 import com.google.android.material.navigation.NavigationBarView
 import com.google.gson.Gson
 import papaya.`in`.sendmail.SendMail
+import tech.ayodele.gravity.MailSuccess
+import tech.ayodele.gravity.R
 import tech.ayodele.gravity.databinding.ActivityLiveHelpBinding
+import tech.ayodele.gravity.model.UserDetails
 
 class LiveHelp : AppCompatActivity() {
     private lateinit var binding: ActivityLiveHelpBinding
@@ -57,7 +60,7 @@ class LiveHelp : AppCompatActivity() {
                     }
 
                     R.id.insightIcon -> {
-                        startActivity(Intent(this@LiveHelp, Insights::class.java))
+                        startActivity(Intent(this@LiveHelp, InsightsActivity::class.java))
                         finish()
                         return true
                     }

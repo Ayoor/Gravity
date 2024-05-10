@@ -21,40 +21,42 @@
             android:name=".DietDetails"
             android:exported="false" />
         <activity
-            android:name=".Insights"
+            android:name=".view.InsightsActivity"
             android:exported="false"
-            android:parentActivityName=".Dashboard" />
+            android:parentActivityName=".view.Dashboard" />
         <activity
             android:name=".MailSuccess"
             android:exported="false"
-            android:parentActivityName=".Dashboard" />
+            android:parentActivityName=".view.Dashboard" />
         <activity
-            android:name=".LiveHelp"
+            android:name=".view.LiveHelp"
             android:exported="false"
-            android:parentActivityName=".Dashboard" />
+            android:parentActivityName=".view.Dashboard" />
         <activity
-            android:name=".Diet"
+            android:name=".view.Diet"
             android:exported="false"
-            android:parentActivityName=".Dashboard" /> <!-- Note:  android:windowSoftInputMode="adjustPan" prevent keyboard covering edittext -->
+            android:parentActivityName=".view.Dashboard" /> <!-- Note:  android:windowSoftInputMode="adjustPan" prevent keyboard covering edittext -->
         <activity
             android:name=".TopicForum"
             android:exported="false"
-            android:parentActivityName=".Community"
+            android:parentActivityName=".view.Community"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".Community"
+            android:name=".view.Community"
             android:exported="false"
-            android:parentActivityName=".Dashboard" />
+            android:parentActivityName=".view.Dashboard" />
         <activity
             android:name=".SignupSuccess"
             android:exported="false" />
         <activity
             android:name=".OnBoardingSurvey"
             android:exported="false"
-            android:parentActivityName=".Community" />
+            android:parentActivityName=".view.Community" />
         <activity
-            android:name=".Dashboard"
-            android:exported="false"></activity>
+            android:name=".view.Dashboard"
+            android:exported="false">
+
+        </activity>
         <activity
             android:name=".Signin"
             android:exported="false" />

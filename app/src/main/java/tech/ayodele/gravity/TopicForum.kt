@@ -22,6 +22,8 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.gson.Gson
 import tech.ayodele.gravity.databinding.ActivityTopicForumBinding
+import tech.ayodele.gravity.model.UserDetails
+import tech.ayodele.gravity.view.Community
 import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.LocalDateTime

@@ -21,6 +21,8 @@ import com.google.android.material.button.MaterialButton
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import tech.ayodele.gravity.databinding.ActivityOnBoardingSurveyBinding
+import tech.ayodele.gravity.model.UserDetails
+import tech.ayodele.gravity.view.Dashboard
 
 // Initial Onboarding survey for the users
 class OnBoardingSurvey : AppCompatActivity() {

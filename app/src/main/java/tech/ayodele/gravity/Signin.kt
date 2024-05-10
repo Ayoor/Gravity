@@ -22,6 +22,7 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.gson.Gson
 import tech.ayodele.gravity.databinding.ActivitySigninBinding
+import tech.ayodele.gravity.model.UserDetails
 import java.util.Base64
 import javax.crypto.Cipher
 import javax.crypto.spec.SecretKeySpec

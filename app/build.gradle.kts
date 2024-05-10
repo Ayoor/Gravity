@@ -89,6 +89,8 @@ dependencies {
     //chart
     implementation ("com.github.AnyChart:AnyChart-Android:1.1.5")
 
+    implementation  ("androidx.activity:activity-ktx:1.9.0")
+
     implementation ("com.google.android.gms:play-services-location:18.0.0") // Google Play Services
     implementation ("com.google.android.libraries.places:places:2.5.0") // Google Places
 

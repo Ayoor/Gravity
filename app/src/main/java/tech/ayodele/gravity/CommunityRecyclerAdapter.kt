@@ -8,8 +8,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import tech.ayodele.gravity.databinding.CommunityItemsBinding
+import tech.ayodele.gravity.model.CommunityItems
 
-class CommunityAdapter(private val items: List<CommunityItems>, private val listener: OnItemClickListener) : RecyclerView.Adapter<CommunityAdapter.CommunityViewHolder>() {
+class CommunityAdapter(private var items: List<CommunityItems>, private val listener: OnItemClickListener) : RecyclerView.Adapter<CommunityAdapter.CommunityViewHolder>() {
 
     interface OnItemClickListener {
         fun onItemClick(item: CommunityItems)
@@ -21,12 +22,18 @@ class CommunityAdapter(private val items: List<CommunityItems>, private val list
         return CommunityViewHolder(binding, listener)
     }
 
+    override fun getItemCount() = items.size
+
     override fun onBindViewHolder(holder: CommunityViewHolder, position: Int) {
         val currentItem = items[position]
         holder.bind(currentItem)
     }
 
-    override fun getItemCount() = items.size
+    fun updateItems(newItems: List<CommunityItems>) {
+        items = newItems
+        notifyDataSetChanged()
+    }
+
 
     inner class CommunityViewHolder(private val binding: CommunityItemsBinding, private val listener: OnItemClickListener) : RecyclerView.ViewHolder(binding.root), View.OnClickListener {
 
@@ -53,6 +60,7 @@ class CommunityAdapter(private val items: List<CommunityItems>, private val list
                 }
             }
         }
+     
 
         override fun onClick(view: View?) {
             val position = adapterPosition
