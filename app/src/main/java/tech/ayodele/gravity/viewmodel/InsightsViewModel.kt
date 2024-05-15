@@ -1,6 +1,7 @@
 package tech.ayodele.gravity.viewmodel
 
 import android.os.Build
+import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -27,60 +28,25 @@ class InsightsViewModel : ViewModel() {
     val insightPercentages: LiveData<SavedInsightPercentage>
         get() = _insightPercentages
 
+    private val _waterInWeek = MutableLiveData<Int>()
+    val waterInWeek: LiveData<Int>
+        get() = _waterInWeek
+
+    private val _kcalInWeek = MutableLiveData<Int>()
+    val kcalInWeek: LiveData<Int>
+        get() = _kcalInWeek
+
+    private val _stepsInWeek = MutableLiveData<Int>()
+    val stepsInWeek: LiveData<Int>
+        get() = _stepsInWeek
+
+    private val _exercisesInWeek = MutableLiveData<Int>()
+    val exercisesInWeek: LiveData<Int>
+        get() = _exercisesInWeek
+
     private val databaseReference: DatabaseReference by lazy {
         FirebaseDatabase.getInstance().getReference("Insights")
     }
-
-//    fun fetchWeeklyMetrics(userID: String) {
-//        val waterList = mutableListOf<Int>()
-//        val stepsList = mutableListOf<Int>()
-//        val caloriesList = mutableListOf<Int>()
-//
-//        databaseReference.child(userID).addListenerForSingleValueEvent(object : ValueEventListener {
-//            @RequiresApi(Build.VERSION_CODES.O)
-//            override fun onDataChange(dataSnapshot: DataSnapshot) {
-//                if (dataSnapshot.exists()) {
-//                    val weeklyMetrics = dataSnapshot.getValue(WeeklyMetricsList::class.java)
-//                    if (weeklyMetrics != null) {
-//                        waterList.addAll(weeklyMetrics.weeklyML)
-//                        stepsList.addAll(weeklyMetrics.weeklySteps)
-//                        caloriesList.addAll(weeklyMetrics.weeklyKcal)
-//                    }
-//
-//                    val metricsData = MetricsData(
-//                        waterList.sum(),
-//                        stepsList.sum(),
-//                        caloriesList.sum(),
-//                        weeklyMetrics?.weeklyExercise?.sum() ?: 0
-//                    )
-//                    _weeklySum.postValue(metricsData)
-//
-//                    val lineChartDataList = mutableListOf<DataEntry>()
-//                    weeklyMetrics?.let {
-//                        val currentdate = LocalDate.now()
-//                        val xDates = mutableListOf<String>()
-//
-//                        for (i in waterList.indices) {
-//                            val date = currentdate.minusDays(i.toLong())
-//                            val xDate = date.format(DateTimeFormatter.ofPattern("dd-MMM"))
-//                            xDates.add(xDate)
-//                        }
-//                        xDates.reverse()
-//
-//                        for (i in waterList.indices) {
-//                            val xDate = xDates[i]
-//                            lineChartDataList.add(ValueDataEntry(xDate, waterList[i]))
-//                        }
-//                    }
-//                    _lineChartData.postValue(lineChartDataList)
-//                }
-//            }
-//
-//            override fun onCancelled(databaseError: DatabaseError) {
-//                // Handle error
-//            }
-//        })
-//    }
 
     fun fetchDataForLineChart(userID: String, onDataLoaded: (List<List<DataEntry>>) -> Unit, onError: (String) -> Unit) {
         val waterList = mutableListOf<Int>()
@@ -98,6 +64,13 @@ class InsightsViewModel : ViewModel() {
                         waterList.addAll(weeklyMetrics.weeklyML)
                         stepsList.addAll(weeklyMetrics.weeklySteps)
                         caloriesList.addAll(weeklyMetrics.weeklyKcal)
+
+                        _waterInWeek.value = waterList.sum()
+                        _kcalInWeek.value = caloriesList.sum()
+                        _stepsInWeek.value = stepsList.sum()
+                        _exercisesInWeek.value = weeklyMetrics.weeklyExercise.sum()
+
+                        Log.i("newd", "${_waterInWeek.value}, ${_kcalInWeek.value}, ${_stepsInWeek.value}, ${_exercisesInWeek.value}")
 
                         val data = processDataForLineChart(waterList, stepsList, caloriesList)
                         onDataLoaded(data)
@@ -138,5 +111,3 @@ class InsightsViewModel : ViewModel() {
         return listOf(data1, data2, data3)
     }
 }
-
-    // Add other methods as needed

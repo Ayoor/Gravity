@@ -14,6 +14,7 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.anychart.AnyChart
 import com.anychart.AnyChartView
@@ -80,6 +81,8 @@ class InsightsActivity : AppCompatActivity() {
             }
         })
 
+
+
         val userdata = retrieveUserData(userprefs)
         val firstname = firstName(userdata.name ?: "")
         binding.name.text = "Hi $firstname"
@@ -88,6 +91,25 @@ class InsightsActivity : AppCompatActivity() {
             startActivity(Intent(this@InsightsActivity, Dashboard::class.java))
             finish()
         }
+
+            //setup tile values
+        // Observe LiveData
+        viewModel.waterInWeek.observe(this, Observer { waterInWeek ->
+            binding.waterText.text = waterInWeek.toString()
+        })
+
+        viewModel.kcalInWeek.observe(this, Observer { kcalInWeek ->
+            binding.caloryIndicatorText.text = kcalInWeek.toString()
+        })
+
+        viewModel.stepsInWeek.observe(this, Observer { stepsInWeek ->
+            binding.stepsIndicatorText.text = stepsInWeek.toString()
+        })
+
+        viewModel.exercisesInWeek.observe(this, Observer { exercisesInWeek ->
+            binding.exerciseText.text = exercisesInWeek.toString()
+        })
+
 
         viewModel.fetchDataForLineChart(userdata.id.toString(),
             { data ->
