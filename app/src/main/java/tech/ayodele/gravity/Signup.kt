@@ -181,7 +181,7 @@ class Signup : AppCompatActivity() {
                 if (!dataSnapshot.exists()) {
                     // User ID does not exist, save the weight data
                     val dateTime = formattedDate()
-                    val weightData = WeightData(userID, dateTime, userWeightF, height)
+                    val weightData = WeightData(dateTime, userWeightF, height)
                     weightRef.child(userID).setValue(weightData)
 
                         .addOnFailureListener { e ->

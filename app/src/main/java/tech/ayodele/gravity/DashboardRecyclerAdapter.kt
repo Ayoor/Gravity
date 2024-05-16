@@ -303,11 +303,10 @@ class DashboardRecyclerAdapter(
 
                 //save to database
                 val database = FirebaseDatabase.getInstance()
-                val weightRef = database.getReference("Weight Data")
+                val weightRef = database.getReference("Weight Data/$userID")
                 val dateTime = formattedDate(currentDate)
                 // Save weight to Firebase Realtime Database
                 val weightData = WeightData(
-                    userID,
                     dateTime,
                     userWeightF, userHeight
                 )
@@ -345,14 +344,16 @@ class DashboardRecyclerAdapter(
     private fun refreshWeightData(id: String, context: Context, binding: DashboardItemsBinding) {
         // Get a reference to the Firebase database
         val database = FirebaseDatabase.getInstance()
-        val databaseReference = database.getReference("/Weight Data/$id") // Update the path
+        val databaseReference = database.getReference("/Weight Data/$id")
+
         var weightData: WeightData
+       databaseReference.addListenerForSingleValueEvent(object : ValueEventListener {
         // Add a ValueEventListener to listen for changes in the data
-        databaseReference.addListenerForSingleValueEvent(object : ValueEventListener {
-            @SuppressLint("SetTextI18n")
+                   @SuppressLint("SetTextI18n")
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 // Check if the dataSnapshot contains any data
                 if (dataSnapshot.exists()) {
+                    Log.i("dd", "dataexist")
                     // Retrieve the data for the given user ID and convert it to a WeightData object
                     weightData = dataSnapshot.getValue(WeightData::class.java)!!
                     Log.i("weightData", weightData.value.toString())
